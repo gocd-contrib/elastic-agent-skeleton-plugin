@@ -73,6 +73,12 @@ public class ExamplePlugin implements GoPlugin {
                     return new GetPluginConfigurationExecutor().execute();
                 case PLUGIN_SETTINGS_VALIDATE_CONFIGURATION:
                     return ValidatePluginSettings.fromJSON(request.requestBody()).executor().execute();
+                case REQUEST_CAPABILITIES:
+                    return new GetCapabilitiesExecutor().execute();
+                case REQUEST_STATUS_REPORT:
+                    return new StatusReportExecutor(pluginRequest, agentInstances).execute();
+                case REQUEST_AGENT_STATUS_REPORT:
+                    return new AgentStatusReportExecutor(pluginRequest, agentInstances).execute();
                 default:
                     throw new UnhandledRequestTypeException(request.requestName());
             }
@@ -83,7 +89,9 @@ public class ExamplePlugin implements GoPlugin {
 
     private void refreshInstances() {
         try {
-            agentInstances.refreshAll(pluginRequest);
+            if (agentInstances != null) {
+                agentInstances.refreshAll(pluginRequest);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
