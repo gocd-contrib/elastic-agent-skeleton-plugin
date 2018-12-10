@@ -3,6 +3,12 @@
 out/
 *.iml
 
+# Eclipse files
+.settings/
+bin/
+.classpath
+.project
+
 # gradle's output dir
 build/
 
