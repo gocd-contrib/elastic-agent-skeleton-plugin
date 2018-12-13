@@ -20,12 +20,16 @@ import com.example.elasticagent.models.AgentStatusReport;
 import com.example.elasticagent.models.JobIdentifier;
 import com.example.elasticagent.models.StatusReport;
 import com.example.elasticagent.requests.CreateAgentRequest;
+import com.thoughtworks.go.plugin.api.logging.Logger;
+import software.amazon.awssdk.services.ec2.Ec2Client;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
 
+	public static final Logger LOG = Logger.getLoggerFor(ExamplePlugin.class);
+	
     private final ConcurrentHashMap<String, ExampleInstance> instances = new ConcurrentHashMap<>();
 
     private boolean refreshed;
@@ -34,6 +38,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     @Override
     public ExampleInstance create(CreateAgentRequest request, PluginSettings settings) throws Exception {
         // TODO: Implement me!
+    	LOG.info("MyPlugin: create");
         throw new UnsupportedOperationException();
 //        ExampleInstance instance = ExampleInstance.create(request, settings);
 //        register(instance);
@@ -43,6 +48,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     @Override
     public void terminate(String agentId, PluginSettings settings) throws Exception {
         // TODO: Implement me!
+    	LOG.info("MyPlugin: terminate");
         throw new UnsupportedOperationException();
 
 //        ExampleInstance instance = instances.get(agentId);
@@ -57,6 +63,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     @Override
     public void terminateUnregisteredInstances(PluginSettings settings, Agents agents) throws Exception {
         // TODO: Implement me!
+    	LOG.info("MyPlugin: terminateUnregisteredInstances");
         throw new UnsupportedOperationException();
 
 //        ExampleAgentInstances toTerminate = unregisteredAfterTimeout(settings, agents);
@@ -73,6 +80,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     @Override
     // TODO: Implement me!
     public Agents instancesCreatedAfterTimeout(PluginSettings settings, Agents agents) {
+    	LOG.info("MyPlugin: instancesCreatedAfterTimeout");
         ArrayList<Agent> oldAgents = new ArrayList<>();
         for (Agent agent : agents.agents()) {
             ExampleInstance instance = instances.get(agent.elasticAgentId());
@@ -89,6 +97,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
 
     @Override
     public void refreshAll(PluginRequest pluginRequest) throws Exception {
+    	LOG.info("MyPlugin: refreshAll");
         // TODO: Implement me!
         throw new UnsupportedOperationException();
 
@@ -105,11 +114,13 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
 
     @Override
     public ExampleInstance find(String agentId) {
+    	LOG.info("MyPlugin: find agentID");
         return instances.get(agentId);
     }
 
     @Override
     public ExampleInstance find(JobIdentifier jobIdentifier) {
+    	LOG.info("MyPlugin: find jobId");
         // TODO: Implement me!
 //        return instances.values()
 //                .stream()
@@ -121,6 +132,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
 
     @Override
     public StatusReport getStatusReport(PluginSettings pluginSettings) throws Exception {
+    	LOG.info("MyPlugin: getStatusReport");
         // TODO: Implement me!
         // TODO: Read status information about agent instances from the cloud provider
 //        return new StatusReport("")
@@ -129,6 +141,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
 
     @Override
     public AgentStatusReport getAgentStatusReport(PluginSettings pluginSettings, ExampleInstance agentInstance) {
+    	LOG.info("MyPlugin: getAgentStatusReport");
         // TODO: Implement me!
         // TODO: Read status information about agent instance from the cloud provider
 //        return new AgentStatusReport(null, null, null)
@@ -137,10 +150,12 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
 
     // used by tests
     public boolean hasInstance(String agentId) {
+    	LOG.info("MyPlugin: hasInstance");
         return instances.containsKey(agentId);
     }
 
     private void register(ExampleInstance instance) {
+    	LOG.info("MyPlugin: register");
         instances.put(instance.name(), instance);
     }
 
