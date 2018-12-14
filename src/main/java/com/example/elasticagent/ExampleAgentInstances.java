@@ -22,6 +22,11 @@ import com.example.elasticagent.models.StatusReport;
 import com.example.elasticagent.requests.CreateAgentRequest;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.InstanceType;
+import software.amazon.awssdk.services.ec2.model.RunInstancesRequest;
+import software.amazon.awssdk.services.ec2.model.RunInstancesResponse;
+import software.amazon.awssdk.services.ec2.model.Tag;
+import software.amazon.awssdk.services.ec2.model.CreateTagsRequest;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,6 +44,46 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     public ExampleInstance create(CreateAgentRequest request, PluginSettings settings) throws Exception {
         // TODO: Implement me!
     	LOG.info("MyPlugin: create");
+    	Ec2Client myClient = Ec2Client.create();
+    	
+    	
+    	RunInstancesRequest runInstancesRequest = RunInstancesRequest.builder()
+    			.imageId("ami-017bf00eb0d4c7182")
+    			.instanceType(InstanceType.T2_MICRO)
+    			.minCount(1)
+    			.maxCount(1).build();
+    			
+
+    			/*
+    		    newInstances = ec2.create_instances(LaunchTemplate={'LaunchTemplateName': 'BulletHellMetaServer'},
+                KeyName='MyFirstKey.pem',
+                SecurityGroupIds=[
+                    'sg-00a22b0befc186b4c',
+                ],
+                UserData=
+                """<powershell>
+mkdir "C:\\Program Files (x86)\\Go Agent\\config"
+$key = "4f6482d7-9a7c-4ced-9b4d-694ee9f345c2"
+$resources = "Windows,EC2"
+$UserInfoToFile = @"
+agent.auto.register.key=$key
+agent.auto.register.resources=$resources
+"@
+$UserInfoToFile | Out-File -FilePath "C:\\Program Files (x86)\\Go Agent\\config\\autoregister.properties" -Encoding ASCII
+Invoke-WebRequest -OutFile C:\\Users\\Administrator\\Downloads\\go-agent-18.11.0-8024-jre-64bit-setup.exe https://download.gocd.org/binaries/18.11.0-8024/win/go-agent-18.11.0-8024-jre-64bit-setup.exe
+C:\\Users\\Administrator\\Downloads\\go-agent-18.11.0-8024-jre-64bit-setup.exe /S /START_AGENT=YES /SERVERURL=`"https://gocd.benalexander.org:8154/go`"
+</powershell>""",
+                InstanceType='t2.micro',
+                Monitoring={'Enabled':True},
+                TagSpecifications=[{
+                    'ResourceType':'instance',
+                    'Tags': [{
+                        'Key': 'StopAt',
+                        'Value': stopTime.isoformat()
+                    }]
+                }])*/
+    	
+    	
         throw new UnsupportedOperationException();
 //        ExampleInstance instance = ExampleInstance.create(request, settings);
 //        register(instance);
@@ -98,8 +143,9 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     @Override
     public void refreshAll(PluginRequest pluginRequest) throws Exception {
     	LOG.info("MyPlugin: refreshAll");
+    	refreshed = true;
         // TODO: Implement me!
-        throw new UnsupportedOperationException();
+        //throw new UnsupportedOperationException();
 
 //        if (!refreshed) {
 //            TODO: List all instances from the cloud provider and select the ones that are created by this plugin
