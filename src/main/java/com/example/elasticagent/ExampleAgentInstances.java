@@ -42,19 +42,20 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
 
     private boolean refreshed;
     public Clock clock = Clock.DEFAULT;
-
-
     
     @Override
     public ExampleInstance create(CreateAgentRequest request, PluginSettings settings) throws Exception {
         // TODO: Implement me!
     	LOG.info("MyPlugin: create for jobIdentifier: " + request.jobIdentifier());
+    	ExampleInstance existingInstance = this.find(request.jobIdentifier());
+    	if(existingInstance != null)
+    	{
+    		LOG.info("MyPlugin: agent has already been created for that job");
+    		return existingInstance;
+    	}
     	
     	AWSInstance newInstance = AWSInstance.Factory(request, settings);
-
-    	//TODO: add instances to this thing ConcurrentHashMap<String, ExampleInstance> instances = new ConcurrentHashMap<>();
-    	instances.put(newInstance.name(), newInstance);
-    	
+    	this.register(newInstance);
     	return newInstance;
     			/*
                 TagSpecifications=[{
@@ -152,14 +153,13 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
 
     @Override
     public ExampleInstance find(JobIdentifier jobIdentifier) {
-    	LOG.info("MyPlugin: find jobId");
+    	LOG.info("MyPlugin: find jobId: " + jobIdentifier);
         // TODO: Implement me!
-//        return instances.values()
-//                .stream()
-//                .filter(x -> x.jobIdentifier().equals(jobIdentifier))
-//                .findFirst()
-//                .orElse(null);
-        throw new UnsupportedOperationException();
+        return instances.values()
+                .stream()
+                .filter(x -> x.jobIdentifier().equals(jobIdentifier))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override

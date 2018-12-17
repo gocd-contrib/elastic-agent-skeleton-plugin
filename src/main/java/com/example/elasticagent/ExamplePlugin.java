@@ -49,40 +49,55 @@ public class ExamplePlugin implements GoPlugin {
         try {
             switch (Request.fromString(request.requestName())) {
                 case REQUEST_SHOULD_ASSIGN_WORK:
+                	LOG.info("REQUEST_SHOULD_ASSIGN_WORK");
                     refreshInstances();
                     return ShouldAssignWorkRequest.fromJSON(request.requestBody()).executor(agentInstances).execute();
                 case REQUEST_CREATE_AGENT:
+                	LOG.info("REQUEST_CREATE_AGENT");
                     refreshInstances();
                     return CreateAgentRequest.fromJSON(request.requestBody()).executor(agentInstances, pluginRequest).execute();
                 case REQUEST_SERVER_PING:
+                	LOG.info("REQUEST_SERVER_PING");
                     refreshInstances();
                     return new ServerPingRequestExecutor(agentInstances, pluginRequest).execute();
                 case PLUGIN_SETTINGS_GET_VIEW:
+                	LOG.info("PLUGIN_SETTINGS_GET_VIEW");
                     return new GetViewRequestExecutor().execute();
                 case REQUEST_GET_PROFILE_METADATA:
+                	LOG.info("REQUEST_GET_PROFILE_METADATA");
                     return new GetProfileMetadataExecutor().execute();
                 case REQUEST_GET_PROFILE_VIEW:
+                	LOG.info("REQUEST_GET_PROFILE_VIEW");
                     return new GetProfileViewExecutor().execute();
                 case REQUEST_VALIDATE_PROFILE:
+                	LOG.info("REQUEST_VALIDATE_PROFILE");
                     return ProfileValidateRequest.fromJSON(request.requestBody()).executor().execute();
                 case PLUGIN_SETTINGS_GET_ICON:
+                	LOG.info("PLUGIN_SETTINGS_GET_ICON");
                     return new GetPluginSettingsIconExecutor().execute();
                 case PLUGIN_SETTINGS_GET_CONFIGURATION:
+                	LOG.info("PLUGIN_SETTINGS_GET_CONFIGURATION");
                     return new GetPluginConfigurationExecutor().execute();
                 case PLUGIN_SETTINGS_VALIDATE_CONFIGURATION:
+                	LOG.info("PLUGIN_SETTINGS_VALIDATE_CONFIGURATION");
                     return ValidatePluginSettings.fromJSON(request.requestBody()).executor().execute();
                 case REQUEST_JOB_COMPLETION:
+                	LOG.info("REQUEST_JOB_COMPLETION");
                     refreshInstances();
                     return JobCompletionRequest.fromJSON(request.requestBody()).executor(agentInstances, pluginRequest).execute();
                 case REQUEST_STATUS_REPORT:
+                	LOG.info("REQUEST_STATUS_REPORT");
                     refreshInstances();
                     return new StatusReportExecutor(pluginRequest, agentInstances, ViewBuilder.instance()).execute();
                 case REQUEST_AGENT_STATUS_REPORT:
+                	LOG.info("REQUEST_AGENT_STATUS_REPORT");
                     refreshInstances();
                     return AgentStatusReportRequest.fromJSON(request.requestBody()).executor(pluginRequest, agentInstances, ViewBuilder.instance()).execute();
                 case REQUEST_CAPABILITIES:
+                	LOG.info("REQUEST_CAPABILITIES");
                     return new GetCapabilitiesExecutor().execute();
                 default:
+                	LOG.info("UnhandledRequestTypeException");
                     throw new UnhandledRequestTypeException(request.requestName());
             }
         } catch (Exception e) {

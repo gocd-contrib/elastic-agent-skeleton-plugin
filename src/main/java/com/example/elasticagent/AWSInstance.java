@@ -15,6 +15,7 @@ import software.amazon.awssdk.services.ec2.model.RunInstancesMonitoringEnabled;
 import software.amazon.awssdk.services.ec2.model.RunInstancesRequest;
 import software.amazon.awssdk.services.ec2.model.RunInstancesResponse;
 
+//TODO: clean up this file
 public class AWSInstance extends ExampleInstance{
 
 	private static Ec2Client ec2 = null;
@@ -32,14 +33,12 @@ public class AWSInstance extends ExampleInstance{
 		if(ec2 == null) {
 			ec2 = Ec2Client.create();
 		}
-		
-		
-		
+	
     	String userData = "";
     	userData = addNewline(userData, "<powershell>");
     	userData = addNewline(userData, "mkdir \"C:\\Program Files (x86)\\Go Agent\\config\"");
     	userData = addNewline(userData, "$key = \"" + request.autoRegisterKey() + "\"");
-    	userData = addNewline(userData, "$resources = \"Windows,EC2\""); //TODO: figure out how to tag resources properly
+    	//userData = addNewline(userData, "$resources = \"Windows,EC2\""); //TODO: figure out how to tag resources properly
     	userData = addNewline(userData, "$instanceId = (Invoke-WebRequest http://169.254.169.254/latest/meta-data/instance-id).Content");
     	userData = addNewline(userData, "$hostName = (Invoke-WebRequest http://169.254.169.254/latest/meta-data/public-hostname).Content");	
     	userData = addNewline(userData, "$UserInfoToFile = @\"");
@@ -49,7 +48,7 @@ public class AWSInstance extends ExampleInstance{
     		userData = addNewline(userData, "agent.auto.register.environments=" + request.environment());
     	}
     	
-    	userData = addNewline(userData, "agent.auto.register.resources=$resources");
+    	//userData = addNewline(userData, "agent.auto.register.resources=$resources");
     	userData = addNewline(userData, "agent.auto.register.hostname=$hostName");
     	userData = addNewline(userData, "agent.auto.register.elasticAgent.agentId=$instanceId");
     	userData = addNewline(userData, "agent.auto.register.elasticAgent.pluginId=" + Constants.PLUGIN_ID);

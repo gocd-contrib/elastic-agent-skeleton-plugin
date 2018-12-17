@@ -20,13 +20,16 @@ import com.example.elasticagent.AgentInstances;
 import com.example.elasticagent.ExampleInstance;
 import com.example.elasticagent.RequestExecutor;
 import com.example.elasticagent.requests.ShouldAssignWorkRequest;
+import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
 public class ShouldAssignWorkRequestExecutor implements RequestExecutor {
     private final AgentInstances<ExampleInstance> agentInstances;
     private final ShouldAssignWorkRequest request;
-
+    
+	public static final Logger LOG = Logger.getLoggerFor(ShouldAssignWorkRequestExecutor.class);
+	
     public ShouldAssignWorkRequestExecutor(ShouldAssignWorkRequest request, AgentInstances<ExampleInstance> agentInstances) {
         this.request = request;
         this.agentInstances = agentInstances;
@@ -34,16 +37,21 @@ public class ShouldAssignWorkRequestExecutor implements RequestExecutor {
 
     @Override
     public GoPluginApiResponse execute() {
+    	LOG.info("Should assign work - Agent: " + request.agent().elasticAgentId());
+    	LOG.info("Should assign work - JobId: " + request.jobIdentifier());
         ExampleInstance instance = agentInstances.find(request.agent().elasticAgentId());
 
         if (instance == null) {
+        	LOG.info("Should assign work - false (null)");
             return DefaultGoPluginApiResponse.success("false");
         }
-
+        LOG.info("Should assign work - found: " + instance.name());
+        LOG.info("Should assign work - FJ Id: " + instance.jobIdentifier());
         if (instance.jobIdentifier().equals(request.jobIdentifier())) {
+        	LOG.info("Should assign work - True");
             return DefaultGoPluginApiResponse.success("true");
         }
-
+        LOG.info("Should assign work - false (job id does not match)");
         return DefaultGoPluginApiResponse.success("false");
     }
 }
