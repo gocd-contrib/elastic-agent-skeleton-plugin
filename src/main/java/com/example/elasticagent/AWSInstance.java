@@ -33,6 +33,8 @@ public class AWSInstance extends ExampleInstance{
 			ec2 = Ec2Client.create();
 		}
 		
+		
+		
     	String userData = "";
     	userData = addNewline(userData, "<powershell>");
     	userData = addNewline(userData, "mkdir \"C:\\Program Files (x86)\\Go Agent\\config\"");
@@ -43,7 +45,7 @@ public class AWSInstance extends ExampleInstance{
     	userData = addNewline(userData, "$UserInfoToFile = @\"");
     	userData = addNewline(userData, "agent.auto.register.key=$key");
     	
-    	if(!request.environment().equals("null")) {
+    	if(request.environment() != null) {
     		userData = addNewline(userData, "agent.auto.register.environments=" + request.environment());
     	}
     	
@@ -56,31 +58,34 @@ public class AWSInstance extends ExampleInstance{
     	userData = addNewline(userData, "$UserInfoToFile | Out-File -FilePath \"C:\\Program Files (x86)\\Go Agent\\config\\autoregister.properties\" -Encoding ASCII");
     	userData = addNewline(userData, "Invoke-WebRequest -OutFile C:\\Users\\Administrator\\Downloads\\go-agent-18.11.0-8024-jre-64bit-setup.exe https://download.gocd.org/binaries/18.11.0-8024/win/go-agent-18.11.0-8024-jre-64bit-setup.exe");
     	userData = addNewline(userData, "C:\\Users\\Administrator\\Downloads\\go-agent-18.11.0-8024-jre-64bit-setup.exe /S /START_AGENT=YES /SERVERURL=`\"" + settings.getGoServerUrl() + "`\"");  //TODO: set server URL correctly
-    	userData = addNewline(userData, "</powershell>");	
+    	userData = addNewline(userData, "</powershell>");
     	
     	userData = Base64.getEncoder().encodeToString(userData.getBytes());
     	
+    	//TODO: tag instance with request information
     	RunInstancesRequest runInstancesRequest = RunInstancesRequest.builder()
     			.imageId("ami-017bf00eb0d4c7182")
     			.instanceType(InstanceType.T2_MICRO)
     			.securityGroupIds("sg-00a22b0befc186b4c")
     			.keyName("MyFirstKey.pem")
-    			.monitoring(RunInstancesMonitoringEnabled.builder().enabled(false).build())
+    			.monitoring(RunInstancesMonitoringEnabled.builder().enabled(true).build())
     			.userData(userData)
     			.minCount(1)
     			.maxCount(1)
     			.build();
     	
+    	LOG.info("AWSInstance Factory: starting request");
     	RunInstancesResponse response = ec2.runInstances(runInstancesRequest);		
-    	LOG.info("MyPlugin: create: created " + response.instances().size() + " instances");
+    	LOG.info("AWSInstance Factory: create: created " + response.instances().size() + " instances");
     	for (Instance instance : response.instances())
     	{
-    		LOG.info("MyPlugin: create: id: " + instance.instanceId());
+    		LOG.info("AWSInstance Factory: create: id: " + instance.instanceId());
     	}
     	
     	Instance newinstance = response.instances().get(0);
     	
     	AWSInstance newInstance = new AWSInstance(newinstance.imageId(), clock.now().toDate(), request.properties(), request.environment(), request.jobIdentifier());  //TODO: tag ec2 instance to match this
+    	LOG.info("AWSInstance Factory: return");
     	return newInstance;
 	}
 	

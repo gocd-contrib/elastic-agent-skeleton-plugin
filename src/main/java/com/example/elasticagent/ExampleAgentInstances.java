@@ -49,7 +49,6 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     public ExampleInstance create(CreateAgentRequest request, PluginSettings settings) throws Exception {
         // TODO: Implement me!
     	LOG.info("MyPlugin: create for jobIdentifier: " + request.jobIdentifier());
-    	Ec2Client ec2 = Ec2Client.create();
     	
     	AWSInstance newInstance = AWSInstance.Factory(request, settings);
 
