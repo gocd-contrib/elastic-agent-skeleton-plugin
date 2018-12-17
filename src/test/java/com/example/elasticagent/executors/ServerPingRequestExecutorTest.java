@@ -72,6 +72,7 @@ public class ServerPingRequestExecutorTest extends BaseTest {
         verify(pluginRequest).deleteAgents(argThat(collectionMatches(values)));
     }
 
+    /* TODO: This test creates an instance.  Is there a way to rewrite this test to not create an actual AWS instance?
     @Test
     public void testShouldTerminateInstancesThatNeverAutoRegistered() throws Exception {
         PluginRequest pluginRequest = mock(PluginRequest.class);
@@ -87,7 +88,7 @@ public class ServerPingRequestExecutorTest extends BaseTest {
         serverPingRequestExecutor.execute();
 
         assertFalse(agentInstances.hasInstance(container.name()));
-    }
+    }*/
 
     @Test
     public void shouldDeleteAgentFromConfigWhenCorrespondingContainerIsNotPresent() throws Exception {

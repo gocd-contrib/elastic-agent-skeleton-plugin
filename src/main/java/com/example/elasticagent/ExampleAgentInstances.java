@@ -42,10 +42,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     private boolean refreshed;
     public Clock clock = Clock.DEFAULT;
 
-    private void addNewline(String str, String newLine)
-    {
-    	str = str + "\n" + newLine; 
-    }
+
     
     @Override
     public ExampleInstance create(CreateAgentRequest request, PluginSettings settings) throws Exception {
@@ -53,42 +50,11 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     	LOG.info("MyPlugin: create");
     	Ec2Client ec2 = Ec2Client.create();
     	
-    	String userData = "";
-    	addNewline(userData, "<powershell>");
-    	addNewline(userData, "mkdir \"C:\\Program Files (x86)\\Go Agent\\config\"");
-    	addNewline(userData, "$key = \"" + request.autoRegisterKey() + "\"");
-    	addNewline(userData, "$resources = \"Windows,EC2\""); //TODO: figure out how to tag resources properly
-    	addNewline(userData, "$UserInfoToFile = @\"");
-    	addNewline(userData, "agent.auto.register.key=$key");
-    	addNewline(userData, "agent.auto.register.resources=$resources");
-    	addNewline(userData, "\"@");
-    	addNewline(userData, "$UserInfoToFile | Out-File -FilePath \"C:\\Program Files (x86)\\Go Agent\\config\\autoregister.properties\" -Encoding ASCII");
-    	addNewline(userData, "Invoke-WebRequest -OutFile C:\\Users\\Administrator\\Downloads\\go-agent-18.11.0-8024-jre-64bit-setup.exe https://download.gocd.org/binaries/18.11.0-8024/win/go-agent-18.11.0-8024-jre-64bit-setup.exe");
-    	addNewline(userData, "C:\\Users\\Administrator\\Downloads\\go-agent-18.11.0-8024-jre-64bit-setup.exe /S /START_AGENT=YES /SERVERURL=`\"" + settings.getGoServerUrl() + "`\"");  //TODO: set server URL correctly
-    	addNewline(userData, "</powershell>");	
-    	
-    	RunInstancesRequest runInstancesRequest = RunInstancesRequest.builder()
-    			.imageId("ami-017bf00eb0d4c7182")
-    			.instanceType(InstanceType.T2_MICRO)
-    			.securityGroupIds("sg-00a22b0befc186b4c")
-    			.keyName("MyFirstKey.pem")
-    			.monitoring(RunInstancesMonitoringEnabled.builder().enabled(true).build())
-    			.userData(userData)
-    			.minCount(1)
-    			.maxCount(1)
-    			.build();
-    	
-    	RunInstancesResponse response = ec2.runInstances(runInstancesRequest);		
-    	LOG.info("MyPlugin: create: created " + response.instances().size() + " instances");
-    	for (Instance instance : response.instances())
-    	{
-    		LOG.info("MyPlugin: create: id: " + instance.instanceId());
-    	}
-    	
-    	Instance newinstance = response.instances().get(0);
-    	
-    	ExampleInstance newInstance = new ExampleInstance(newinstance.imageId(), clock.now().toDate(), request.properties(), request.environment(), request.jobIdentifier());  //TODO: tag ec2 instance to match this
+    	AWSInstance newInstance = AWSInstance.Factory(request, settings);
+
     	//TODO: add instances to this thing ConcurrentHashMap<String, ExampleInstance> instances = new ConcurrentHashMap<>();
+    	instances.put(newInstance.name(), newInstance);
+    	
     	return newInstance;
     			/*
                 TagSpecifications=[{

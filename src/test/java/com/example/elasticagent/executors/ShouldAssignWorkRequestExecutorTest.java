@@ -40,6 +40,7 @@ public class ShouldAssignWorkRequestExecutorTest extends BaseTest {
     private Map<String, String> properties = new HashMap<>();
     private final JobIdentifier jobIdentifier = JobIdentifierMother.get();
 
+    /* TODO: This test creates an instance.  Is there a way to rewrite this test to not create an actual AWS instance?
     @Before
     public void setUp() throws Exception {
         agentInstances = new ExampleAgentInstances();
@@ -71,5 +72,5 @@ public class ShouldAssignWorkRequestExecutorTest extends BaseTest {
         GoPluginApiResponse response = new ShouldAssignWorkRequestExecutor(request, agentInstances).execute();
         assertThat(response.responseCode(), is(200));
         assertThat(response.responseBody(), is("false"));
-    }
+    }*/
 }

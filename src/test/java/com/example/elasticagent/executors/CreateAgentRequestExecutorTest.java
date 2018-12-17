@@ -25,6 +25,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 public class CreateAgentRequestExecutorTest {
+	/* TODO: This test creates an instance.  Is there a way to rewrite this test to not create an actual AWS instance?
     @Test
     public void shouldAskDockerContainersToCreateAnAgent() throws Exception {
         CreateAgentRequest request = new CreateAgentRequest();
@@ -35,5 +36,5 @@ public class CreateAgentRequestExecutorTest {
         new CreateAgentRequestExecutor(request, agentInstances, pluginRequest).execute();
 
         verify(agentInstances).create(request, settings);
-    }
+    }*/
 }
