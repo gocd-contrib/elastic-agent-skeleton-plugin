@@ -17,7 +17,6 @@ import software.amazon.awssdk.services.ec2.model.RunInstancesResponse;
 
 public class AWSInstance extends ExampleInstance{
 
-	public static final String pluginId = "BenAlexanderAWSElasticAgent";
 	private static Ec2Client ec2 = null;
 	
 	public static final Logger LOG = Logger.getLoggerFor(AWSInstance.class);
@@ -43,11 +42,15 @@ public class AWSInstance extends ExampleInstance{
     	userData = addNewline(userData, "$hostName = (Invoke-WebRequest http://169.254.169.254/latest/meta-data/public-hostname).Content");	
     	userData = addNewline(userData, "$UserInfoToFile = @\"");
     	userData = addNewline(userData, "agent.auto.register.key=$key");
-    	userData = addNewline(userData, "agent.auto.register.environments=" + request.environment());
+    	
+    	if(!request.environment().equals("null")) {
+    		userData = addNewline(userData, "agent.auto.register.environments=" + request.environment());
+    	}
+    	
     	userData = addNewline(userData, "agent.auto.register.resources=$resources");
     	userData = addNewline(userData, "agent.auto.register.hostname=$hostName");
     	userData = addNewline(userData, "agent.auto.register.elasticAgent.agentId=$instanceId");
-    	userData = addNewline(userData, "agent.auto.register.elasticAgent.pluginId=" + pluginId);
+    	userData = addNewline(userData, "agent.auto.register.elasticAgent.pluginId=" + Constants.PLUGIN_ID);
     	userData = addNewline(userData, "\"@");
     	userData = addNewline(userData, "echo $UserInfoToFile");
     	userData = addNewline(userData, "$UserInfoToFile | Out-File -FilePath \"C:\\Program Files (x86)\\Go Agent\\config\\autoregister.properties\" -Encoding ASCII");
@@ -62,7 +65,7 @@ public class AWSInstance extends ExampleInstance{
     			.instanceType(InstanceType.T2_MICRO)
     			.securityGroupIds("sg-00a22b0befc186b4c")
     			.keyName("MyFirstKey.pem")
-    			.monitoring(RunInstancesMonitoringEnabled.builder().enabled(true).build())
+    			.monitoring(RunInstancesMonitoringEnabled.builder().enabled(false).build())
     			.userData(userData)
     			.minCount(1)
     			.maxCount(1)

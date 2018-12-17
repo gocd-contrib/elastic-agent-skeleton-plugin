@@ -23,7 +23,7 @@ version = '0.2-SNAPSHOT'
 // these values that go into plugin.xml
 // TODO: change these
 project.ext.pluginDesc = [
-    id         : 'com.example.elasticagent.foocloud',
+    id         : 'BenAlexanderAWSElasticAgent',
     version    : project.version,
     goCdVersion: '18.2.0',
     name       : 'AWS Elastic Agent Plugin',

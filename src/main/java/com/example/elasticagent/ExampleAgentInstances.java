@@ -35,6 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
 
+	//TODO: make everything threadsafe
 	public static final Logger LOG = Logger.getLoggerFor(ExamplePlugin.class);
 	
     private final ConcurrentHashMap<String, ExampleInstance> instances = new ConcurrentHashMap<>();
@@ -47,7 +48,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     @Override
     public ExampleInstance create(CreateAgentRequest request, PluginSettings settings) throws Exception {
         // TODO: Implement me!
-    	LOG.info("MyPlugin: create");
+    	LOG.info("MyPlugin: create for jobIdentifier: " + request.jobIdentifier());
     	Ec2Client ec2 = Ec2Client.create();
     	
     	AWSInstance newInstance = AWSInstance.Factory(request, settings);
@@ -110,15 +111,19 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     	LOG.info("MyPlugin: instancesCreatedAfterTimeout");
         ArrayList<Agent> oldAgents = new ArrayList<>();
         for (Agent agent : agents.agents()) {
+        	LOG.info("MyPlugin: looking for " + agent.elasticAgentId());
             ExampleInstance instance = instances.get(agent.elasticAgentId());
             if (instance == null) {
+            	LOG.info("MyPlugin: instance not found in ConcurrentHashMap");
                 continue;
             }
 
             if (clock.now().isAfter(instance.createdAt().plus(settings.getAutoRegisterPeriod()))) {
+            	LOG.info("MyPlugin: agent is old");
                 oldAgents.add(agent);
             }
         }
+        LOG.info("MyPlugin: instancesCreatedAfterTimeout return");
         return new Agents(oldAgents);
     }
 
