@@ -22,7 +22,7 @@ import com.example.elasticagent.PluginSettings;
 import com.example.elasticagent.models.JobIdentifier;
 import com.example.elasticagent.requests.CreateAgentRequest;
 import com.example.elasticagent.requests.JobCompletionRequest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
 

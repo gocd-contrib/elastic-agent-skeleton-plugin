@@ -20,7 +20,7 @@ import com.example.elasticagent.AgentInstances;
 import com.example.elasticagent.PluginRequest;
 import com.example.elasticagent.PluginSettings;
 import com.example.elasticagent.requests.CreateAgentRequest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
 

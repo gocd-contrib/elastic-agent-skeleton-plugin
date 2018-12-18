@@ -17,7 +17,7 @@
 package com.example.elasticagent.executors;
 
 import com.example.elasticagent.requests.ProfileValidateRequest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 

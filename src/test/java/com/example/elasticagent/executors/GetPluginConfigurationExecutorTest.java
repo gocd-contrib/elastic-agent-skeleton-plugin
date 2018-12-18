@@ -18,25 +18,25 @@ package com.example.elasticagent.executors;
 
 import com.google.gson.Gson;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GetPluginConfigurationExecutorTest {
 
     @Test
-    public void shouldSerializeAllFields() throws Exception {
+    public void shouldSerializeAllFields() {
         GoPluginApiResponse response = new GetPluginConfigurationExecutor().execute();
         HashMap hashMap = new Gson().fromJson(response.responseBody(), HashMap.class);
-        assertEquals("Are you using anonymous inner classes — see https://github.com/google/gson/issues/298",
-                hashMap.size(),
-                GetPluginConfigurationExecutor.FIELDS.size()
-        );
+         assertEquals(hashMap.size(),
+              GetPluginConfigurationExecutor.FIELDS.size(),
+              "Are you using anonymous inner classes — see https://github.com/google/gson/issues/298"
+         );
     }
 
     @Test

@@ -22,15 +22,15 @@ import com.example.elasticagent.models.JobIdentifierMother;
 import com.example.elasticagent.requests.CreateAgentRequest;
 import com.example.elasticagent.requests.ShouldAssignWorkRequest;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 public class ShouldAssignWorkRequestExecutorTest extends BaseTest {
 
@@ -40,7 +40,7 @@ public class ShouldAssignWorkRequestExecutorTest extends BaseTest {
     private Map<String, String> properties = new HashMap<>();
     private final JobIdentifier jobIdentifier = JobIdentifierMother.get();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         agentInstances = new ExampleAgentInstances();
         properties.put("foo", "bar");

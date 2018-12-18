@@ -2,7 +2,7 @@ package com.example.elasticagent.requests;
 
 import com.example.elasticagent.models.JobIdentifierMother;
 import com.google.gson.JsonObject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

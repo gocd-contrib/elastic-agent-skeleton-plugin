@@ -20,13 +20,13 @@ import com.example.elasticagent.*;
 import com.example.elasticagent.models.JobIdentifier;
 import com.example.elasticagent.requests.CreateAgentRequest;
 import org.joda.time.Period;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatcher;
 
 import java.util.*;
 
 import static com.example.elasticagent.Agent.ConfigState.Disabled;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.*;
 
 public class ServerPingRequestExecutorTest extends BaseTest {
@@ -48,12 +48,7 @@ public class ServerPingRequestExecutorTest extends BaseTest {
     }
 
     private ArgumentMatcher<Collection<Agent>> collectionMatches(final Collection<Agent> values) {
-        return new ArgumentMatcher<Collection<Agent>>() {
-            @Override
-            public boolean matches(Collection<Agent> argument) {
-                return new ArrayList<>(argument).equals(new ArrayList<>(values));
-            }
-        };
+        return argument -> new ArrayList<>(argument).equals(new ArrayList<>(values));
     }
 
     @Test

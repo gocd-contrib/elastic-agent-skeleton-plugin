@@ -18,11 +18,11 @@ package com.example.elasticagent.executors;
 
 import com.example.elasticagent.requests.ValidatePluginSettings;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 public class ValidateConfigurationExecutorTest {
     @Test

@@ -16,19 +16,19 @@
 
 package com.example.elasticagent.executors;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MemoryMetadataTest {
 
     @Test
-    public void shouldValidateMemoryBytes() throws Exception {
+    public void shouldValidateMemoryBytes() {
         assertTrue(new MemoryMetadata("Disk", false).validate("100mb").isEmpty());
 
         Map<String, String> validate = new MemoryMetadata("Disk", false).validate("xxx");
