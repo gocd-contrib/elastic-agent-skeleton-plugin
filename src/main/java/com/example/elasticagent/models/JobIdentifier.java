@@ -1,11 +1,17 @@
 package com.example.elasticagent.models;
 
+import com.example.elasticagent.AWSInstance;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
-import org.apache.commons.lang3.StringUtils;
+import com.thoughtworks.go.plugin.api.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
+import software.amazon.awssdk.services.ec2.model.Tag;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
 import static java.text.MessageFormat.format;
@@ -14,7 +20,8 @@ public class JobIdentifier {
     private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .create();
-
+    private static final Logger LOG = Logger.getLoggerFor(AWSInstance.class);
+	
     @Expose
     private String pipelineName;
 
@@ -132,5 +139,49 @@ public class JobIdentifier {
 
     public static JobIdentifier fromJson(String json) {
         return GSON.fromJson(json, JobIdentifier.class);
+    }
+    
+    
+    //TODO: refactor this
+    public Collection<Tag> getTags()
+    {
+    	ArrayList<Tag> tags = new ArrayList<Tag>();
+    	LOG.info("building JobID Tags");
+    	if(pipelineName != null)
+    	{
+    		tags.add(Tag.builder().key("pipelineName").value(pipelineName).build());
+    		LOG.info("adding tags");
+    	}
+    	if(pipelineCounter != null)
+    	{
+    		tags.add(Tag.builder().key("pipelineCounter").value(Long.toString(pipelineCounter)).build());
+    		LOG.info("adding tags");
+    	}
+    	if(pipelineLabel != null)
+    	{
+    		tags.add(Tag.builder().key("pipelineLabel").value(pipelineLabel).build());
+    		LOG.info("adding tags");
+    	}
+    	if(stageName != null)
+    	{
+    		tags.add(Tag.builder().key("stageName").value(stageName).build());
+    		LOG.info("adding tags");
+    	}
+    	if(stageCounter != null)
+    	{
+    		tags.add(Tag.builder().key("stageCounter").value(stageCounter).build());
+    		LOG.info("adding tags");
+    	}
+    	if(jobName != null)
+    	{
+    		tags.add(Tag.builder().key("jobName").value(jobName).build());
+    		LOG.info("adding tags");
+    	}
+    	if(jobId != null)
+    	{
+    		tags.add(Tag.builder().key("jobId").value(Long.toString(jobId)).build());
+    		LOG.info("adding tags");
+    	}
+    	return tags;
     }
 }

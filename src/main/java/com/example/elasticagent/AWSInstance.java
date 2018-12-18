@@ -11,9 +11,13 @@ import com.thoughtworks.go.plugin.api.logging.Logger;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.Instance;
 import software.amazon.awssdk.services.ec2.model.InstanceType;
+import software.amazon.awssdk.services.ec2.model.ResourceType;
 import software.amazon.awssdk.services.ec2.model.RunInstancesMonitoringEnabled;
 import software.amazon.awssdk.services.ec2.model.RunInstancesRequest;
 import software.amazon.awssdk.services.ec2.model.RunInstancesResponse;
+import software.amazon.awssdk.services.ec2.model.Tag;
+import software.amazon.awssdk.services.ec2.model.TagSpecification;
+import software.amazon.awssdk.services.ec2.model.TagSpecification.Builder;
 
 //TODO: clean up this file
 public class AWSInstance extends ExampleInstance{
@@ -61,6 +65,8 @@ public class AWSInstance extends ExampleInstance{
     	
     	userData = Base64.getEncoder().encodeToString(userData.getBytes());
     	
+    	TagSpecification tagBuilder = TagSpecification.builder().tags(request.jobIdentifier().getTags()).resourceType(ResourceType.INSTANCE).build();
+    	
     	//TODO: tag instance with request information
     	RunInstancesRequest runInstancesRequest = RunInstancesRequest.builder()
     			.imageId("ami-017bf00eb0d4c7182")
@@ -71,6 +77,7 @@ public class AWSInstance extends ExampleInstance{
     			.userData(userData)
     			.minCount(1)
     			.maxCount(1)
+    			.tagSpecifications(tagBuilder)
     			.build();
     	
     	LOG.info("AWSInstance Factory: starting request");
@@ -83,7 +90,7 @@ public class AWSInstance extends ExampleInstance{
     	
     	Instance newinstance = response.instances().get(0);
     	
-    	AWSInstance newInstance = new AWSInstance(newinstance.imageId(), clock.now().toDate(), request.properties(), request.environment(), request.jobIdentifier());  //TODO: tag ec2 instance to match this
+    	AWSInstance newInstance = new AWSInstance(newinstance.instanceId(), clock.now().toDate(), request.properties(), request.environment(), request.jobIdentifier());  //TODO: tag ec2 instance to match this
     	LOG.info("AWSInstance Factory: return");
     	return newInstance;
 	}
