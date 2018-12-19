@@ -16,14 +16,28 @@
 
 <div class="row">
   <div class="columns medium-4 large-3">
-    <label ng-class="{'is-invalid-label': GOINPUTNAME[Image].$error.server}">Image:<span class="asterix">*</span></label>
-    <input ng-class="{'is-invalid-input': GOINPUTNAME[Image].$error.server}" type="text" ng-model="Image" ng-required="true" placeholder="alpine:latest"/>
-    <span class="form_error form-error" ng-class="{'is-visible': GOINPUTNAME[Image].$error.server}" ng-show="GOINPUTNAME[Image].$error.server">{{GOINPUTNAME[Image].$error.server}}</span>
+    <label ng-class="{'is-invalid-label': GOINPUTNAME[ImageId].$error.server}">Image Id:<span class="asterix">*</span></label>
+    <input ng-class="{'is-invalid-input': GOINPUTNAME[ImageId].$error.server}" type="text" ng-model="ImageId" ng-required="true" placeholder="ami-017bf00eb0d4c7182"/>
+    <span class="form_error form-error" ng-class="{'is-visible': GOINPUTNAME[ImageId].$error.server}" ng-show="GOINPUTNAME[ImageId].$error.server">{{GOINPUTNAME[ImageId].$error.server}}</span>
   </div>
 
   <div class="columns medium-4 large-3 end">
-    <label ng-class="{'is-invalid-label': GOINPUTNAME[MaxMemory].$error.server}">Maximum hard limit:</label>
-    <input ng-class="{'is-invalid-input': GOINPUTNAME[MaxMemory].$error.server}" type="text" ng-model="MaxMemory" ng-required="true" rows="7" placeholder="1024MB"/>
-    <span class="form_error form-error" ng-class="{'is-visible': GOINPUTNAME[MaxMemory].$error.server}" ng-show="GOINPUTNAME[MaxMemory].$error.server">{{GOINPUTNAME[MaxMemory].$error.server}}</span>
+    <label ng-class="{'is-invalid-label': GOINPUTNAME[InstanceType].$error.server}">Instance Type:</label>
+    <input ng-class="{'is-invalid-input': GOINPUTNAME[InstanceType].$error.server}" type="text" ng-model="InstanceType" ng-required="true" placeholder="t2.micro"/>
+    <span class="form_error form-error" ng-class="{'is-visible': GOINPUTNAME[InstanceType].$error.server}" ng-show="GOINPUTNAME[InstanceType].$error.server">{{GOINPUTNAME[InstanceType].$error.server}}</span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="columns medium-4 large-3">
+    <label ng-class="{'is-invalid-label': GOINPUTNAME[SecurityGroupId].$error.server}">Security Group Id:</label>
+    <input ng-class="{'is-invalid-input': GOINPUTNAME[SecurityGroupId].$error.server}" type="text" ng-model="SecurityGroupId" ng-required="true" placeholder="sg-00a22b0befc186b4c"/>
+    <span class="form_error form-error" ng-class="{'is-visible': GOINPUTNAME[SecurityGroupId].$error.server}" ng-show="GOINPUTNAME[SecurityGroupId].$error.server">{{GOINPUTNAME[SecurityGroupId].$error.server}}</span>
+  </div>
+
+  <div class="columns medium-4 large-3 end">
+    <label ng-class="{'is-invalid-label': GOINPUTNAME[KeyName].$error.server}">Key Name:</label>
+    <input ng-class="{'is-invalid-input': GOINPUTNAME[KeyName].$error.server}" type="text" ng-model="KeyName" ng-required="true" placeholder="MyFirstKey.pem"/>
+    <span class="form_error form-error" ng-class="{'is-visible': GOINPUTNAME[KeyName].$error.server}" ng-show="GOINPUTNAME[KeyName].$error.server">{{GOINPUTNAME[KeyName].$error.server}}</span>
   </div>
 </div>

@@ -65,6 +65,10 @@ public class CreateAgentRequest {
     public JobIdentifier jobIdentifier() {
         return jobIdentifier;
     }
+    
+    public String toJson() {
+        return GSON.toJson(this);
+    }
 
     public static CreateAgentRequest fromJSON(String json) {
         return GSON.fromJson(json, CreateAgentRequest.class);

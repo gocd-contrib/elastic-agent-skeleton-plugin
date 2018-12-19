@@ -28,14 +28,18 @@ import java.util.List;
 public class GetProfileMetadataExecutor implements RequestExecutor {
     private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
-    public static final Metadata IMAGE = new Metadata("Image", true, false);
-    public static final Metadata MAX_MEMORY = new MemoryMetadata("MaxMemory", false);
+    public static final Metadata IMAGE_ID = new Metadata("ImageId", true, false);
+    public static final Metadata INSTANCE_TYPE = new Metadata("InstanceType", true, false);
+    public static final Metadata SECURITY_GROUP_ID = new Metadata("SecurityGroupId", true, false);
+    public static final Metadata KEY_NAME = new Metadata("KeyName", true, false);
 
     public static final List<Metadata> FIELDS = new ArrayList<>();
 
     static {
-        FIELDS.add(IMAGE);
-        FIELDS.add(MAX_MEMORY);
+        FIELDS.add(IMAGE_ID);
+        FIELDS.add(INSTANCE_TYPE);
+        FIELDS.add(SECURITY_GROUP_ID);
+        FIELDS.add(KEY_NAME);
     }
 
     @Override

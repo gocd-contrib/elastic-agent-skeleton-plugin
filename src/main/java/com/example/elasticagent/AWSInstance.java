@@ -37,12 +37,12 @@ public class AWSInstance extends ExampleInstance{
 		if(ec2 == null) {
 			ec2 = Ec2Client.create();
 		}
+		LOG.info("CreateAgentRequest JSON: " + request.toJson());
 	
     	String userData = "";
     	userData = addNewline(userData, "<powershell>");
     	userData = addNewline(userData, "mkdir \"C:\\Program Files (x86)\\Go Agent\\config\"");
     	userData = addNewline(userData, "$key = \"" + request.autoRegisterKey() + "\"");
-    	//userData = addNewline(userData, "$resources = \"Windows,EC2\""); //TODO: figure out how to tag resources properly
     	userData = addNewline(userData, "$instanceId = (Invoke-WebRequest http://169.254.169.254/latest/meta-data/instance-id).Content");
     	userData = addNewline(userData, "$hostName = (Invoke-WebRequest http://169.254.169.254/latest/meta-data/public-hostname).Content");	
     	userData = addNewline(userData, "$UserInfoToFile = @\"");
@@ -52,7 +52,6 @@ public class AWSInstance extends ExampleInstance{
     		userData = addNewline(userData, "agent.auto.register.environments=" + request.environment());
     	}
     	
-    	//userData = addNewline(userData, "agent.auto.register.resources=$resources");
     	userData = addNewline(userData, "agent.auto.register.hostname=$hostName");
     	userData = addNewline(userData, "agent.auto.register.elasticAgent.agentId=$instanceId");
     	userData = addNewline(userData, "agent.auto.register.elasticAgent.pluginId=" + Constants.PLUGIN_ID);
@@ -70,10 +69,10 @@ public class AWSInstance extends ExampleInstance{
     	//TODO: tag instance with request information
     	RunInstancesRequest runInstancesRequest = RunInstancesRequest.builder()
     			.imageId("ami-017bf00eb0d4c7182")
-    			.instanceType(InstanceType.T2_MICRO)
+    			.instanceType("t2.micro")
     			.securityGroupIds("sg-00a22b0befc186b4c")
     			.keyName("MyFirstKey.pem")
-    			.monitoring(RunInstancesMonitoringEnabled.builder().enabled(true).build())
+    			.monitoring(RunInstancesMonitoringEnabled.builder().enabled(false).build())
     			.userData(userData)
     			.minCount(1)
     			.maxCount(1)
