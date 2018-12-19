@@ -16,20 +16,37 @@
 
 package com.example.elasticagent.executors;
 
+import java.io.StringWriter;
+import java.util.List;
+
 import com.example.elasticagent.RequestExecutor;
-import com.example.elasticagent.utils.Util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.Mustache;
+import com.github.mustachejava.MustacheFactory;
 
 public class GetProfileViewExecutor implements RequestExecutor {
     private static final Gson GSON = new Gson();
-
+    
     @Override
     public GoPluginApiResponse execute() throws Exception {
+    	class Fields
+    	{
+    		public List<Metadata> fields = GetProfileMetadataExecutor.FIELDS;
+    		public String openCurly = "{";
+    		public String closeCurly = "}";
+    	}
+    	
+    	MustacheFactory mustacheFactory = new DefaultMustacheFactory();
+        Mustache mustache = mustacheFactory.compile("profile.mustache");
+        StringWriter templateWriter = new StringWriter();
+        mustache.execute(templateWriter, new Fields());
+
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("template", Util.readResource("/profile.template.html"));
+        jsonObject.addProperty("template", templateWriter.toString());
         DefaultGoPluginApiResponse defaultGoPluginApiResponse = new DefaultGoPluginApiResponse(200, GSON.toJson(jsonObject));
         return defaultGoPluginApiResponse;
     }
