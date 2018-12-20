@@ -29,7 +29,7 @@ project.ext.pluginDesc = [
     name       : 'AWS Elastic Agent Plugin',
     description: 'Some longer description of your plugin goes here',
     vendorName : 'Benjamin Alexander',
-    vendorUrl  : 'https://github.com/BenjaminAlexander/elastic-agent-skeleton-plugin'
+    vendorUrl  : 'https://github.com/BenjaminAlexander/gocd-aws-elastic-agent-plugin'
 ]
 
 // Force 1.7 compatibility to ensure that it works with older JVMs

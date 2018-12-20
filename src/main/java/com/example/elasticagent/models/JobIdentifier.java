@@ -20,7 +20,6 @@ public class JobIdentifier {
     private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .create();
-    private static final Logger LOG = Logger.getLoggerFor(AWSInstance.class);
 	
     @Expose
     private String pipelineName;
@@ -141,47 +140,16 @@ public class JobIdentifier {
         return GSON.fromJson(json, JobIdentifier.class);
     }
     
-    
-    //TODO: refactor this
-    public Collection<Tag> getTags()
+    public Collection<Tag> getTagsForInstance()
     {
     	ArrayList<Tag> tags = new ArrayList<Tag>();
-    	LOG.info("building JobID Tags");
-    	if(pipelineName != null)
-    	{
-    		tags.add(Tag.builder().key("pipelineName").value(pipelineName).build());
-    		LOG.info("adding tags");
-    	}
-    	if(pipelineCounter != null)
-    	{
-    		tags.add(Tag.builder().key("pipelineCounter").value(Long.toString(pipelineCounter)).build());
-    		LOG.info("adding tags");
-    	}
-    	if(pipelineLabel != null)
-    	{
-    		tags.add(Tag.builder().key("pipelineLabel").value(pipelineLabel).build());
-    		LOG.info("adding tags");
-    	}
-    	if(stageName != null)
-    	{
-    		tags.add(Tag.builder().key("stageName").value(stageName).build());
-    		LOG.info("adding tags");
-    	}
-    	if(stageCounter != null)
-    	{
-    		tags.add(Tag.builder().key("stageCounter").value(stageCounter).build());
-    		LOG.info("adding tags");
-    	}
-    	if(jobName != null)
-    	{
-    		tags.add(Tag.builder().key("jobName").value(jobName).build());
-    		LOG.info("adding tags");
-    	}
-    	if(jobId != null)
-    	{
-    		tags.add(Tag.builder().key("jobId").value(Long.toString(jobId)).build());
-    		LOG.info("adding tags");
-    	}
+		tags.add(Tag.builder().key("pipelineName").value(GSON.toJson(pipelineName)).build());
+		tags.add(Tag.builder().key("pipelineCounter").value(GSON.toJson(pipelineCounter)).build());
+		tags.add(Tag.builder().key("pipelineLabel").value(GSON.toJson(pipelineLabel)).build());
+		tags.add(Tag.builder().key("stageName").value(GSON.toJson(stageName)).build());
+		tags.add(Tag.builder().key("stageCounter").value(GSON.toJson(stageCounter)).build());
+		tags.add(Tag.builder().key("jobName").value(GSON.toJson(jobName)).build());
+		tags.add(Tag.builder().key("jobId").value(GSON.toJson(jobId)).build());
     	return tags;
     }
 }
