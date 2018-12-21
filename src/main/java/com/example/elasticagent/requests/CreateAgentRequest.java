@@ -21,6 +21,8 @@ import com.example.elasticagent.Constants;
 import com.example.elasticagent.PluginRequest;
 import com.example.elasticagent.RequestExecutor;
 import com.example.elasticagent.executors.CreateAgentRequestExecutor;
+import com.example.elasticagent.executors.GetProfileMetadataExecutor;
+import com.example.elasticagent.executors.Metadata;
 import com.example.elasticagent.models.JobIdentifier;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -36,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CreateAgentRequest {
 	private static final String AGENT_AUTO_REGISTER_KEY = "agent.auto.register.key";
@@ -66,6 +69,13 @@ public class CreateAgentRequest {
 
     public Map<String, String> properties() {
         return properties;
+    }
+    
+    
+    public Map<Metadata, String> propertiesAsFields(){
+    	ConcurrentHashMap<Metadata, String> propertiesFieldsMap = new ConcurrentHashMap<Metadata, String>();
+    	properties.forEach((String key, String value) -> {propertiesFieldsMap.put(GetProfileMetadataExecutor.getField(key), value);});
+    	return null;
     }
 
     public String environment() {

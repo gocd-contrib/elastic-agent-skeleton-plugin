@@ -1,7 +1,10 @@
 package com.example.elasticagent;
 
+import java.util.Map;
+
 import com.example.elasticagent.executors.GetProfileMetadataExecutor;
 import com.example.elasticagent.executors.Metadata;
+import com.example.elasticagent.executors.RunInstanceRequestBuilderInterface;
 import com.example.elasticagent.requests.CreateAgentRequest;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 
@@ -29,27 +32,15 @@ public class AWSInstanceBuilder {
 		runInstancesRequestBuilder = RunInstancesRequest.builder();
 	}
 	
-	public AWSInstanceBuilder awsImageID(String id)
+	public AWSInstanceBuilder RunInstancesRequestBuilder(RunInstanceRequestBuilderInterface builder, String value)
 	{
-		runInstancesRequestBuilder.imageId(id);
+		this.runInstancesRequestBuilder = builder.buildRequest(this.runInstancesRequestBuilder, value);
 		return this;
 	}
 	
-	public AWSInstanceBuilder awsInstanceType(String instanceType)
+	public AWSInstanceBuilder applyField(Metadata field, String value)
 	{
-		runInstancesRequestBuilder.instanceType(instanceType);
-		return this;
-	}
-	
-	public AWSInstanceBuilder awsSecurityGroupId(String id)
-	{
-		runInstancesRequestBuilder.securityGroupIds(id);
-		return this;
-	}
-	
-	public AWSInstanceBuilder awsKeyName(String keyName)
-	{
-		runInstancesRequestBuilder.keyName(keyName);
+		field.buildInstance(this, value);
 		return this;
 	}
 	
@@ -58,11 +49,9 @@ public class AWSInstanceBuilder {
 		this.request = request;
 		
 		//TODO: maybe push this functionality into request
-		for(String key : this.request.properties().keySet())
-		{
-			Metadata field = GetProfileMetadataExecutor.getField(key);
-			field.buildInstance(this, this.request.properties().get(key));
-		}
+		this.request.propertiesAsFields().forEach((Metadata field, String value) -> {
+			field.buildInstance(this, value);
+		});
 		
 		TagSpecification tagBuilder = TagSpecification.builder().tags(request.getTagsForInstance()).resourceType(ResourceType.INSTANCE).build();
 		runInstancesRequestBuilder.tagSpecifications(tagBuilder);

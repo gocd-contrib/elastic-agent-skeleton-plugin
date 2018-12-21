@@ -16,27 +16,20 @@
 
 package com.example.elasticagent.executors;
 
-import com.example.elasticagent.AWSInstanceBuilder;
 import com.example.elasticagent.RequestExecutor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
-
+import software.amazon.awssdk.services.ec2.model.RunInstancesRequest.Builder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GetProfileMetadataExecutor implements RequestExecutor {
     private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-    
-    //TODO: how many steps does it take to add a field?  can the number of steps be reduced?
-    public static final Metadata IMAGE_ID = new Metadata("ImageId", true, false, (AWSInstanceBuilder builder, String value) -> {return builder.awsImageID(value);});
-    public static final Metadata INSTANCE_TYPE = new Metadata("InstanceType", true, false, (AWSInstanceBuilder builder, String value) -> {return builder.awsInstanceType(value);});
-    public static final Metadata SECURITY_GROUP_ID = new Metadata("SecurityGroupId", true, false, (AWSInstanceBuilder builder, String value) -> {return builder.awsSecurityGroupId(value);});
-    public static final Metadata KEY_NAME = new Metadata("KeyName", true, false, (AWSInstanceBuilder builder, String value) -> {return builder.awsKeyName(value);});
 
-    public static final ConcurrentHashMap<String, Metadata> FIELDS = new ConcurrentHashMap<String, Metadata>();
+    private static final ConcurrentHashMap<String, Metadata> FIELDS = new ConcurrentHashMap<String, Metadata>();
     
     public static List<Metadata> getFields()
     {
@@ -54,15 +47,15 @@ public class GetProfileMetadataExecutor implements RequestExecutor {
     }
     
     static {
-    	addField(IMAGE_ID);
-    	addField(INSTANCE_TYPE);
-    	addField(SECURITY_GROUP_ID);
-    	addField(KEY_NAME);
+        //TODO: how many steps does it take to add a field?  can the number of steps be reduced?
+        addField(new RunInstanceRequestMetadata("ImageId", true, false, (Builder builder, String value) -> {return builder.imageId(value);}));
+        addField(new RunInstanceRequestMetadata("InstanceType", true, false, (Builder builder, String value) -> {return builder.instanceType(value);}));
+        addField(new RunInstanceRequestMetadata("SecurityGroupId", true, false, (Builder builder, String value) -> {return builder.securityGroupIds(value);}));
+        addField(new RunInstanceRequestMetadata("KeyName", true, false, (Builder builder, String value) -> {return builder.keyName(value);}));
     }
 
     @Override
-
     public GoPluginApiResponse execute() throws Exception {
-        return new DefaultGoPluginApiResponse(200, GSON.toJson(FIELDS));
+        return new DefaultGoPluginApiResponse(200, GSON.toJson(GetProfileMetadataExecutor.getFields()));
     }
 }
