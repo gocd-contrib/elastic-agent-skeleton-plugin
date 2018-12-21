@@ -42,22 +42,11 @@ public class AWSInstance extends ExampleInstance{
     	String userData = "";
     	userData = addNewline(userData, "<powershell>");
     	userData = addNewline(userData, "mkdir \"C:\\Program Files (x86)\\Go Agent\\config\"");
-    	//userData = addNewline(userData, "$key = \"" + request.autoRegisterKey() + "\"");
     	userData = addNewline(userData, "$instanceId = (Invoke-WebRequest http://169.254.169.254/latest/meta-data/instance-id).Content");
     	userData = addNewline(userData, "$hostName = (Invoke-WebRequest http://169.254.169.254/latest/meta-data/public-hostname).Content");	
     	userData = addNewline(userData, "$UserInfoToFile = @\"");
-    	/*userData = addNewline(userData, "agent.auto.register.key=$key");
-    	
-    	if(request.environment() != null) {
-    		userData = addNewline(userData, "agent.auto.register.environments=" + request.environment());
-    	}
-    	
-    	userData = addNewline(userData, "agent.auto.register.hostname=$hostName");
-    	userData = addNewline(userData, "agent.auto.register.elasticAgent.agentId=$instanceId");
-    	userData = addNewline(userData, "agent.auto.register.elasticAgent.pluginId=" + Constants.PLUGIN_ID);*/
     	userData = addNewline(userData, request.autoregisterPropertiesAsString("$instanceId", "$hostName"));
     	userData = addNewline(userData, "\"@");
-    	//userData = addNewline(userData, "echo $UserInfoToFile");
     	userData = addNewline(userData, "$UserInfoToFile | Out-File -FilePath \"C:\\Program Files (x86)\\Go Agent\\config\\autoregister.properties\" -Encoding ASCII");
     	userData = addNewline(userData, "Invoke-WebRequest -OutFile C:\\Users\\Administrator\\Downloads\\go-agent-18.11.0-8024-jre-64bit-setup.exe https://download.gocd.org/binaries/18.11.0-8024/win/go-agent-18.11.0-8024-jre-64bit-setup.exe");
     	userData = addNewline(userData, "C:\\Users\\Administrator\\Downloads\\go-agent-18.11.0-8024-jre-64bit-setup.exe /S /START_AGENT=YES /SERVERURL=`\"" + settings.getGoServerUrl() + "`\"");  //TODO: set server URL correctly
@@ -66,10 +55,13 @@ public class AWSInstance extends ExampleInstance{
     	userData = Base64.getEncoder().encodeToString(userData.getBytes());
     	
     	TagSpecification tagBuilder = TagSpecification.builder().tags(request.getTagsForInstance()).resourceType(ResourceType.INSTANCE).build();
-    	LOG.info("TEST SHIT");
-    	LOG.info(request.autoregisterPropertiesAsString("$instanceId", "$hostName"));
     	
     	//TODO: build this with information from the request
+    	AWSInstanceBuilder awsBuilder = new AWSInstanceBuilder();
+    	awsBuilder.createAgentRequest(request);
+    	RunInstancesRequest runInstancesRequest = awsBuilder.build(userData);
+    	
+    	/*
     	RunInstancesRequest runInstancesRequest = RunInstancesRequest.builder()
     			.imageId("ami-017bf00eb0d4c7182")
     			.instanceType("t2.micro")
@@ -80,7 +72,7 @@ public class AWSInstance extends ExampleInstance{
     			.minCount(1)
     			.maxCount(1)
     			.tagSpecifications(tagBuilder)
-    			.build();
+    			.build();*/
     	
     	LOG.info("AWSInstance Factory: starting request");
     	RunInstancesResponse response = ec2.runInstances(runInstancesRequest);		

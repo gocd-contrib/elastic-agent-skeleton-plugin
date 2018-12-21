@@ -20,8 +20,9 @@ public class AWSInstanceTest {
     public void AWSInstanceFactory() throws Exception {
     	
     	//Here is some json for testing
-    	//"{\"auto_register_key\":\"4f6482d7-9a7c-4ced-9b4d-694ee9f345c2\",\"properties\":{\"ImageId\":\"ami-017bf00eb0d4c7182\",\"InstanceType\":\"t2.micro\",\"SecurityGroupId\":\"sg-00a22b0befc186b4c\",\"KeyName\":\"MyFirstKey.pem\"},\"job_identifier\":{\"pipeline_name\":\"CleanUpAWS\",\"pipeline_counter\":23,\"pipeline_label\":\"23\",\"stage_name\":\"defaultStage\",\"stage_counter\":\"1\",\"job_name\":\"defaultJob\",\"job_id\":45}}"
-        String json = "{\n" +
+    	String json = "{\"auto_register_key\":\"4f6482d7-9a7c-4ced-9b4d-694ee9f345c2\",\"properties\":{\"ImageId\":\"ami-017bf00eb0d4c7182\",\"InstanceType\":\"t2.micro\",\"SecurityGroupId\":\"sg-00a22b0befc186b4c\",\"KeyName\":\"MyFirstKey.pem\"},\"job_identifier\":{\"pipeline_name\":\"CleanUpAWS\",\"pipeline_counter\":23,\"pipeline_label\":\"23\",\"stage_name\":\"defaultStage\",\"stage_counter\":\"1\",\"job_name\":\"defaultJob\",\"job_id\":45}}";
+        
+    	/*String json = "{\n" +
                 "  \"auto_register_key\": \"secret-key\",\n" +
                 "  \"properties\": {\n" +
                 "    \"key1\": \"value1\",\n" +
@@ -37,7 +38,7 @@ public class AWSInstanceTest {
                 "    \"job_name\": \"defaultJob\",\n" +
                 "    \"job_id\": 42\n" +
                 "  }\n" +
-                "}";
+                "}";*/
 
         CreateAgentRequest request = CreateAgentRequest.fromJSON(json);
         

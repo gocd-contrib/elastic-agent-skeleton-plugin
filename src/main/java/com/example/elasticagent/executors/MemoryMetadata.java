@@ -31,7 +31,7 @@ import java.util.List;
 public class MemoryMetadata extends Metadata {
 
     public MemoryMetadata(String key, boolean required) {
-        super(key, required, false);
+        super(key, required, false, (AWSInstanceBuilder builder, String value) -> {return builder;});
     }
 
     @Override
@@ -51,9 +51,4 @@ public class MemoryMetadata extends Metadata {
         }
         return StringUtils.join(errors, ". ");
     }
-
-	@Override
-	public AWSInstanceBuilder buildInstance(AWSInstanceBuilder builder, String value) {
-		return builder;
-	}
 }

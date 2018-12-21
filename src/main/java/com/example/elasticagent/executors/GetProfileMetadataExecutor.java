@@ -29,55 +29,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class GetProfileMetadataExecutor implements RequestExecutor {
     private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-
-    public static class MetadataImageID extends Metadata {
-    	public MetadataImageID() {
-    		super("ImageId", true, false);
-    	}
-
-		@Override
-		public AWSInstanceBuilder buildInstance(AWSInstanceBuilder builder, String value) {
-			return builder.awsImageID(value);
-		}
-    }
     
-    public static class MetadataInstanceType extends Metadata {
-    	public MetadataInstanceType() {
-    		super("InstanceType", true, false);
-    	}
-
-		@Override
-		public AWSInstanceBuilder buildInstance(AWSInstanceBuilder builder, String value) {
-			return builder.awsInstanceType(value);
-		}
-    }
-    
-    public static class MetadataSecurityGroupId extends Metadata {
-    	public MetadataSecurityGroupId() {
-    		super("SecurityGroupId", true, false);
-    	}
-
-		@Override
-		public AWSInstanceBuilder buildInstance(AWSInstanceBuilder builder, String value) {
-			return builder.awsSecurityGroupId(value);
-		}
-    }
-    
-    public static class MetadataKeyName extends Metadata {
-    	public MetadataKeyName() {
-    		super("KeyName", true, false);
-    	}
-
-		@Override
-		public AWSInstanceBuilder buildInstance(AWSInstanceBuilder builder, String value) {
-			return builder.awsKeyName(value);
-		}
-    }
-    
-    //public static final Metadata IMAGE_ID = new Metadata("ImageId", true, false);
-    //public static final Metadata INSTANCE_TYPE = new Metadata("InstanceType", true, false);
-    //public static final Metadata SECURITY_GROUP_ID = new Metadata("SecurityGroupId", true, false);
-    //public static final Metadata KEY_NAME = new Metadata("KeyName", true, false);
+    //TODO: how many steps does it take to add a field?  can the number of steps be reduced?
+    public static final Metadata IMAGE_ID = new Metadata("ImageId", true, false, (AWSInstanceBuilder builder, String value) -> {return builder.awsImageID(value);});
+    public static final Metadata INSTANCE_TYPE = new Metadata("InstanceType", true, false, (AWSInstanceBuilder builder, String value) -> {return builder.awsInstanceType(value);});
+    public static final Metadata SECURITY_GROUP_ID = new Metadata("SecurityGroupId", true, false, (AWSInstanceBuilder builder, String value) -> {return builder.awsSecurityGroupId(value);});
+    public static final Metadata KEY_NAME = new Metadata("KeyName", true, false, (AWSInstanceBuilder builder, String value) -> {return builder.awsKeyName(value);});
 
     public static final ConcurrentHashMap<String, Metadata> FIELDS = new ConcurrentHashMap<String, Metadata>();
     
@@ -97,10 +54,10 @@ public class GetProfileMetadataExecutor implements RequestExecutor {
     }
     
     static {
-    	addField(new MetadataImageID());
-    	addField(new MetadataInstanceType());
-    	addField(new MetadataSecurityGroupId());
-    	addField(new MetadataKeyName());
+    	addField(IMAGE_ID);
+    	addField(INSTANCE_TYPE);
+    	addField(SECURITY_GROUP_ID);
+    	addField(KEY_NAME);
     }
 
     @Override

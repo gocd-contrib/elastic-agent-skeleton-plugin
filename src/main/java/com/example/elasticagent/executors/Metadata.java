@@ -27,8 +27,15 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+//TODO: name and refactor this
+@FunctionalInterface
+interface AWSBuilderInterface 
+{ 
+	AWSInstanceBuilder buildInstance(AWSInstanceBuilder builder, String value); 
+}
+
 //TODO: why is there metadat and profileMetaData? is it JSON structure?
-public abstract class Metadata {
+public class Metadata {
 
     @Expose
     @SerializedName("key")
@@ -37,18 +44,22 @@ public abstract class Metadata {
     @Expose
     @SerializedName("metadata")
     private ProfileMetadata metadata;
+    
+    //TODO: name this appropriately 
+    private AWSBuilderInterface builderInterface;
 
-    public Metadata(String key, boolean required, boolean secure) {
-        this(key, new ProfileMetadata(required, secure));
+    public Metadata(String key, boolean required, boolean secure, AWSBuilderInterface builderInterface) {
+        this(key, new ProfileMetadata(required, secure), builderInterface);
     }
 
-    public Metadata(String key) {
-        this(key, new ProfileMetadata(false, false));
+    public Metadata(String key, AWSBuilderInterface builderInterface) {
+        this(key, new ProfileMetadata(false, false), builderInterface);
     }
 
-    public Metadata(String key, ProfileMetadata metadata) {
+    public Metadata(String key, ProfileMetadata metadata, AWSBuilderInterface builderInterface) {
         this.key = key;
         this.metadata = metadata;
+        this.builderInterface = builderInterface;
     }
 
     public Map<String, String> validate(String input) {
@@ -79,7 +90,9 @@ public abstract class Metadata {
         return metadata.required;
     }
     
-    public abstract AWSInstanceBuilder buildInstance(AWSInstanceBuilder builder, String value);
+    public AWSInstanceBuilder buildInstance(AWSInstanceBuilder builder, String value){
+    	return builderInterface.buildInstance(builder, value);
+    }
 
     public static class ProfileMetadata {
         @Expose

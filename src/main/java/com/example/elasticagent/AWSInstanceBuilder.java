@@ -6,7 +6,10 @@ import com.example.elasticagent.requests.CreateAgentRequest;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 
 import software.amazon.awssdk.services.ec2.Ec2Client;
+import software.amazon.awssdk.services.ec2.model.ResourceType;
+import software.amazon.awssdk.services.ec2.model.RunInstancesMonitoringEnabled;
 import software.amazon.awssdk.services.ec2.model.RunInstancesRequest;
+import software.amazon.awssdk.services.ec2.model.TagSpecification;
 
 public class AWSInstanceBuilder {
 	//TODO: the ec2 object should probably be a singleton
@@ -58,9 +61,21 @@ public class AWSInstanceBuilder {
 		for(String key : this.request.properties().keySet())
 		{
 			Metadata field = GetProfileMetadataExecutor.getField(key);
-			
+			field.buildInstance(this, this.request.properties().get(key));
 		}
 		
+		TagSpecification tagBuilder = TagSpecification.builder().tags(request.getTagsForInstance()).resourceType(ResourceType.INSTANCE).build();
+		runInstancesRequestBuilder.tagSpecifications(tagBuilder);
 		return this;
+	}
+	
+	public RunInstancesRequest build(String userData) {
+		RunInstancesRequest runInstancesRequest = runInstancesRequestBuilder				
+    			.monitoring(RunInstancesMonitoringEnabled.builder().enabled(false).build())
+    			.userData(userData)
+    			.minCount(1)
+    			.maxCount(1)
+    			.build();
+		return runInstancesRequest;
 	}
 }
