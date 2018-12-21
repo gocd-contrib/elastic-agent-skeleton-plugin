@@ -30,6 +30,7 @@ public class PluginSettings {
             .excludeFieldsWithoutExposeAnnotation()
             .create();
 
+    //TODO: these constants match the constants in GetPluginConfigurationExecutor but are defined separately.  this needs to be fixed
     @Expose
     @SerializedName("go_server_url")
     private String goServerUrl;

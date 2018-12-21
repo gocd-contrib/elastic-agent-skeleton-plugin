@@ -16,16 +16,19 @@
 
 package com.example.elasticagent.executors;
 
+import com.example.elasticagent.AWSInstanceBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-public class Metadata {
+//TODO: why is there metadat and profileMetaData? is it JSON structure?
+public abstract class Metadata {
 
     @Expose
     @SerializedName("key")
@@ -75,6 +78,8 @@ public class Metadata {
     public boolean isRequired() {
         return metadata.required;
     }
+    
+    public abstract AWSInstanceBuilder buildInstance(AWSInstanceBuilder builder, String value);
 
     public static class ProfileMetadata {
         @Expose

@@ -40,7 +40,7 @@ public class GetProfileViewExecutorTest {
     public void allFieldsShouldBePresentInView() throws Exception {
         String template = Util.readResource("/profile.template.html");
 
-        for (Metadata field : GetProfileMetadataExecutor.FIELDS) {
+        for (Metadata field : GetProfileMetadataExecutor.getFields()) {
             assertThat(template, containsString("ng-model=\"" + field.getKey() + "\""));
             assertThat(template, containsString("<span class=\"form_error form-error\" ng-class=\"{'is-visible': GOINPUTNAME[" +
                     field.getKey() + "].$error.server}\" ng-show=\"GOINPUTNAME[" +

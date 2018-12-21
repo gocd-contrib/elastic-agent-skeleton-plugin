@@ -88,7 +88,6 @@ public class CreateAgentRequest {
         return new CreateAgentRequestExecutor(this, agentInstances, pluginRequest);
     }
 
-    //TODO: use this method instead of what i wrote before
     public Properties autoregisterProperties() {
         Properties properties = new Properties();
 

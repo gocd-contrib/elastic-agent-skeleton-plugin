@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+//TODO: this class seems similar to metadata.  can the be refactord to be the same?
 public class Field {
     protected final String key;
 

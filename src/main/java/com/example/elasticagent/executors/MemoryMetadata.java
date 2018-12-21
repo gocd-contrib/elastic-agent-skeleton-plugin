@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
+//TODO: this entire class can probably be removed
 package com.example.elasticagent.executors;
 
 
+import com.example.elasticagent.AWSInstanceBuilder;
 import com.example.elasticagent.utils.Size;
 import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,4 +51,9 @@ public class MemoryMetadata extends Metadata {
         }
         return StringUtils.join(errors, ". ");
     }
+
+	@Override
+	public AWSInstanceBuilder buildInstance(AWSInstanceBuilder builder, String value) {
+		return builder;
+	}
 }

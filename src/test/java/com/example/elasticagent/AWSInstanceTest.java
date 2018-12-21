@@ -47,6 +47,7 @@ public class AWSInstanceTest {
                 "\"api_url\": \"https://cloud.example.com/api/v1\" " +
                 "}");
         
+        //TODO: set a way to run AWS and non-AWS test separately
         AWSInstance newInstance = AWSInstance.Factory(request, pluginSettings);
     }
 	
