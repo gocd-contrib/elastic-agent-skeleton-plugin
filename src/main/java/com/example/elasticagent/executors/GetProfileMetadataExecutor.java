@@ -37,9 +37,12 @@ public class GetProfileMetadataExecutor implements RequestExecutor {
     	return new ArrayList<Metadata>(FIELDS.values());
     }
     
-    public static Metadata getField(String key)
+    public static Metadata getField(String key) throws Exception
     {
-    	return FIELDS.get(key);
+    	if(FIELDS.containsKey(key))
+    		return FIELDS.get(key);
+    	else
+    		throw new Exception("Field Name \"" + key + "\" cannot be found in the elastic agent profile metadata.");
     }
     
     private static void addField(Metadata field)

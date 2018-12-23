@@ -44,7 +44,7 @@ public class AWSInstanceBuilder {
 		return this;
 	}
 	
-	public AWSInstanceBuilder createAgentRequest(CreateAgentRequest request)
+	public AWSInstanceBuilder createAgentRequest(CreateAgentRequest request) throws Exception
 	{
 		this.request = request;
 		

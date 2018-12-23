@@ -33,7 +33,7 @@ public class AWSInstance extends ExampleInstance{
     	return str;
     }
 	
-	public static AWSInstance Factory(CreateAgentRequest request, PluginSettings settings) {
+	public static AWSInstance Factory(CreateAgentRequest request, PluginSettings settings) throws Exception {
 		if(ec2 == null) {
 			ec2 = Ec2Client.create();
 		}

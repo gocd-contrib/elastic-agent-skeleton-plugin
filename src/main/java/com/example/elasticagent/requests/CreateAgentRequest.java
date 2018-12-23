@@ -74,10 +74,13 @@ public class CreateAgentRequest {
         return properties;
     }
     
-    public void forEachProperty(BiConsumer<? super Metadata, ? super String> action)
+    public void forEachProperty(BiConsumer<? super Metadata, ? super String> action) throws Exception
     {
     	ConcurrentHashMap<Metadata, String> propertiesFieldsMap = new ConcurrentHashMap<Metadata, String>();
-    	properties.forEach((String key, String value) -> {propertiesFieldsMap.put(GetProfileMetadataExecutor.getField(key), value);});
+    	for(Map.Entry<String, String> property : properties.entrySet())
+    	{
+    		propertiesFieldsMap.put(GetProfileMetadataExecutor.getField(property.getKey()), property.getValue());
+    	}
     	propertiesFieldsMap.forEach(action);
     }
 
