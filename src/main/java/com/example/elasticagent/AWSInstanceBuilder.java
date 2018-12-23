@@ -49,7 +49,7 @@ public class AWSInstanceBuilder {
 		this.request = request;
 		
 		//TODO: maybe push this functionality into request
-		this.request.propertiesAsFields().forEach((Metadata field, String value) -> {
+		this.request.forEachProperty((Metadata field, String value) -> {
 			field.buildInstance(this, value);
 		});
 		

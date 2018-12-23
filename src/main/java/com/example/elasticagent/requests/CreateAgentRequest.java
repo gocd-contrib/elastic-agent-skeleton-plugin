@@ -27,6 +27,7 @@ import com.example.elasticagent.models.JobIdentifier;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.thoughtworks.go.plugin.api.logging.Logger;
 
 import software.amazon.awssdk.services.ec2.model.Tag;
 
@@ -39,6 +40,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 
 public class CreateAgentRequest {
 	private static final String AGENT_AUTO_REGISTER_KEY = "agent.auto.register.key";
@@ -47,6 +49,7 @@ public class CreateAgentRequest {
 	private static final String AGENT_AUTO_REGISTER_ELASTIC_AGENT_PLUGIN_ID = "agent.auto.register.elasticAgent.pluginId";
 	private static final String AGENT_AUTO_REGISTER_HOSTNAME = "agent.auto.register.hostname";
     private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+    private static final Logger LOG = Logger.getLoggerFor(GetProfileMetadataExecutor.class);
     private String autoRegisterKey;
     private Map<String, String> properties;
     private String environment;
@@ -71,11 +74,11 @@ public class CreateAgentRequest {
         return properties;
     }
     
-    
-    public Map<Metadata, String> propertiesAsFields(){
+    public void forEachProperty(BiConsumer<? super Metadata, ? super String> action)
+    {
     	ConcurrentHashMap<Metadata, String> propertiesFieldsMap = new ConcurrentHashMap<Metadata, String>();
     	properties.forEach((String key, String value) -> {propertiesFieldsMap.put(GetProfileMetadataExecutor.getField(key), value);});
-    	return null;
+    	propertiesFieldsMap.forEach(action);
     }
 
     public String environment() {

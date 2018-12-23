@@ -19,6 +19,7 @@ package com.example.elasticagent.executors;
 import com.example.elasticagent.RequestExecutor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import software.amazon.awssdk.services.ec2.model.RunInstancesRequest.Builder;
@@ -28,8 +29,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class GetProfileMetadataExecutor implements RequestExecutor {
     private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-
     private static final ConcurrentHashMap<String, Metadata> FIELDS = new ConcurrentHashMap<String, Metadata>();
+    private static final Logger LOG = Logger.getLoggerFor(GetProfileMetadataExecutor.class);
     
     public static List<Metadata> getFields()
     {
