@@ -26,16 +26,24 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-//TODO: name and refactor this
-@FunctionalInterface
-interface AWSBuilderInterface 
-{ 
-	AWSInstanceBuilder buildInstance(AWSInstanceBuilder builder, String value); 
-}
+
 
 //TODO: why is there metadat and profileMetaData? is it JSON structure?
-public class Metadata {
+public class AgentProfileField {
 
+	//TODO: name and refactor this
+	@FunctionalInterface
+	interface CommandDefinition 
+	{ 
+		AWSInstanceBuilder apply(AWSInstanceBuilder builder, String value); 
+	}
+	
+	@FunctionalInterface
+	public interface Command 
+	{ 
+		AWSInstanceBuilder apply(AWSInstanceBuilder builder); 
+	}
+	
     @Expose
     @SerializedName("key")
     private String key;
@@ -45,20 +53,20 @@ public class Metadata {
     private ProfileMetadata metadata;
     
     //TODO: name this appropriately 
-    private AWSBuilderInterface builderInterface;
+    private CommandDefinition commandDefinition;
 
-    public Metadata(String key, boolean required, boolean secure, AWSBuilderInterface builderInterface) {
-        this(key, new ProfileMetadata(required, secure), builderInterface);
+    public AgentProfileField(String key, boolean required, boolean secure, CommandDefinition commandDefinition) {
+        this(key, new ProfileMetadata(required, secure), commandDefinition);
     }
 
-    public Metadata(String key, AWSBuilderInterface builderInterface) {
-        this(key, new ProfileMetadata(false, false), builderInterface);
+    public AgentProfileField(String key, CommandDefinition commandDefinition) {
+        this(key, new ProfileMetadata(false, false), commandDefinition);
     }
 
-    public Metadata(String key, ProfileMetadata metadata, AWSBuilderInterface builderInterface) {
+    public AgentProfileField(String key, ProfileMetadata metadata, CommandDefinition commandDefinition) {
         this.key = key;
         this.metadata = metadata;
-        this.builderInterface = builderInterface;
+        this.commandDefinition = commandDefinition;
     }
 
     public Map<String, String> validate(String input) {
@@ -90,7 +98,12 @@ public class Metadata {
     }
     
     public AWSInstanceBuilder buildInstance(AWSInstanceBuilder builder, String value){
-    	return builderInterface.buildInstance(builder, value);
+    	return commandDefinition.apply(builder, value);
+    }
+    
+    public Command getCommand(String value)
+    {
+    	return (AWSInstanceBuilder builder) -> { return commandDefinition.apply(builder, value); };
     }
 
     public static class ProfileMetadata {

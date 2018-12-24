@@ -38,7 +38,7 @@ public class ProfileValidateRequestExecutor implements RequestExecutor {
 
         List<String> knownFields = new ArrayList<>();
 
-        for (Metadata field : GetProfileMetadataExecutor.getFields()) {
+        for (AgentProfileField field : GetProfileMetadataExecutor.getFields()) {
             knownFields.add(field.getKey());
 
             Map<String, String> validationError = field.validate(request.getProperties().get(field.getKey()));

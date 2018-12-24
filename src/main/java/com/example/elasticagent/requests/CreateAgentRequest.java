@@ -16,13 +16,14 @@
 
 package com.example.elasticagent.requests;
 
+import com.example.elasticagent.AWSInstanceBuilder;
 import com.example.elasticagent.AgentInstances;
 import com.example.elasticagent.Constants;
 import com.example.elasticagent.PluginRequest;
 import com.example.elasticagent.RequestExecutor;
 import com.example.elasticagent.executors.CreateAgentRequestExecutor;
 import com.example.elasticagent.executors.GetProfileMetadataExecutor;
-import com.example.elasticagent.executors.Metadata;
+import com.example.elasticagent.executors.AgentProfileField;
 import com.example.elasticagent.models.JobIdentifier;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -74,14 +76,33 @@ public class CreateAgentRequest {
         return properties;
     }
     
-    public void forEachProperty(BiConsumer<? super Metadata, ? super String> action) throws Exception
+    /*public AWSInstanceBuilder apply(AWSInstanceBuilder builder) throws Exception
     {
-    	ConcurrentHashMap<Metadata, String> propertiesFieldsMap = new ConcurrentHashMap<Metadata, String>();
     	for(Map.Entry<String, String> property : properties.entrySet())
     	{
-    		propertiesFieldsMap.put(GetProfileMetadataExecutor.getField(property.getKey()), property.getValue());
+    		builder = GetProfileMetadataExecutor.getField(property.getKey()).getCommand(property.getValue()).apply(builder);
     	}
-    	propertiesFieldsMap.forEach(action);
+    	
+    	
+    	return builder;
+    }*/
+    
+    /*public void forEachProperty(BiConsumer<? super AgentProfileField, ? super String> action) throws Exception
+    {
+    	for(Map.Entry<String, String> property : properties.entrySet())
+    	{
+    		action.accept(GetProfileMetadataExecutor.getField(property.getKey(), property.getValue()));
+    	}
+    }*/
+    
+    public ArrayList<AgentProfileField.Command> getPropertyCommands() throws Exception
+    {
+    	ArrayList<AgentProfileField.Command> list = new ArrayList<AgentProfileField.Command>();
+    	for(Map.Entry<String, String> property : properties.entrySet())
+    	{
+    		list.add(GetProfileMetadataExecutor.getField(property.getKey(), property.getValue()));
+    	}
+    	return list;
     }
 
     public String environment() {

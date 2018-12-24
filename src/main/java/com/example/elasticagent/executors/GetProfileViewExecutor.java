@@ -35,7 +35,7 @@ public class GetProfileViewExecutor implements RequestExecutor {
     public GoPluginApiResponse execute() throws Exception {
     	class Fields
     	{
-    		public List<Metadata> fields = GetProfileMetadataExecutor.getFields();
+    		public List<AgentProfileField> fields = GetProfileMetadataExecutor.getFields();
     		public String openCurly = "{";
     		public String closeCurly = "}";
     	}

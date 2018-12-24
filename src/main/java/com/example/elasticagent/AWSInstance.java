@@ -4,6 +4,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
 
+import com.example.elasticagent.executors.AgentProfileField;
 import com.example.elasticagent.models.JobIdentifier;
 import com.example.elasticagent.requests.CreateAgentRequest;
 import com.thoughtworks.go.plugin.api.logging.Logger;
@@ -39,6 +40,7 @@ public class AWSInstance extends ExampleInstance{
 		}
 		LOG.info("CreateAgentRequest JSON: " + request.toJson());
 	
+		//TODO: build userdata in instanceBuilder
     	String userData = "";
     	userData = addNewline(userData, "<powershell>");
     	userData = addNewline(userData, "mkdir \"C:\\Program Files (x86)\\Go Agent\\config\"");
@@ -51,28 +53,21 @@ public class AWSInstance extends ExampleInstance{
     	userData = addNewline(userData, "Invoke-WebRequest -OutFile C:\\Users\\Administrator\\Downloads\\go-agent-18.11.0-8024-jre-64bit-setup.exe https://download.gocd.org/binaries/18.11.0-8024/win/go-agent-18.11.0-8024-jre-64bit-setup.exe");
     	userData = addNewline(userData, "C:\\Users\\Administrator\\Downloads\\go-agent-18.11.0-8024-jre-64bit-setup.exe /S /START_AGENT=YES /SERVERURL=`\"" + settings.getGoServerUrl() + "`\"");  //TODO: set server URL correctly
     	userData = addNewline(userData, "</powershell>");
-    	
     	userData = Base64.getEncoder().encodeToString(userData.getBytes());
-    	
-    	TagSpecification tagBuilder = TagSpecification.builder().tags(request.getTagsForInstance()).resourceType(ResourceType.INSTANCE).build();
     	
     	//TODO: build this with information from the request
     	AWSInstanceBuilder awsBuilder = new AWSInstanceBuilder();
-    	awsBuilder.createAgentRequest(request);
+    	for(AgentProfileField.Command command : request.getPropertyCommands())
+		{
+			command.apply(awsBuilder);
+		}
+    	awsBuilder.addInstanceTags(request.getTagsForInstance());
+    	
     	RunInstancesRequest runInstancesRequest = awsBuilder.build(userData);
     	
-    	/*
-    	RunInstancesRequest runInstancesRequest = RunInstancesRequest.builder()
-    			.imageId("ami-017bf00eb0d4c7182")
-    			.instanceType("t2.micro")
-    			.securityGroupIds("sg-00a22b0befc186b4c")
-    			.keyName("MyFirstKey.pem")
-    			.monitoring(RunInstancesMonitoringEnabled.builder().enabled(false).build())
-    			.userData(userData)
-    			.minCount(1)
-    			.maxCount(1)
-    			.tagSpecifications(tagBuilder)
-    			.build();*/
+
+    	
+    	
     	
     	LOG.info("AWSInstance Factory: starting request");
     	RunInstancesResponse response = ec2.runInstances(runInstancesRequest);		

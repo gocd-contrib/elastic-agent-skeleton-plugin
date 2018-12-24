@@ -29,33 +29,33 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class GetProfileMetadataExecutor implements RequestExecutor {
     private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-    private static final ConcurrentHashMap<String, Metadata> FIELDS = new ConcurrentHashMap<String, Metadata>();
+    private static final ConcurrentHashMap<String, AgentProfileField> FIELDS = new ConcurrentHashMap<String, AgentProfileField>();
     private static final Logger LOG = Logger.getLoggerFor(GetProfileMetadataExecutor.class);
     
-    public static List<Metadata> getFields()
+    public static List<AgentProfileField> getFields()
     {
-    	return new ArrayList<Metadata>(FIELDS.values());
+    	return new ArrayList<AgentProfileField>(FIELDS.values());
     }
     
-    public static Metadata getField(String key) throws Exception
+    public static AgentProfileField.Command getField(String key, String value) throws Exception
     {
     	if(FIELDS.containsKey(key))
-    		return FIELDS.get(key);
+    		return FIELDS.get(key).getCommand(value);
     	else
     		throw new Exception("Field Name \"" + key + "\" cannot be found in the elastic agent profile metadata.");
     }
     
-    private static void addField(Metadata field)
+    private static void addField(AgentProfileField field)
     {
     	FIELDS.put(field.getKey(), field);
     }
     
     static {
         //TODO: how many steps does it take to add a field?  can the number of steps be reduced?
-        addField(new RunInstanceRequestMetadata("ImageId", true, false, (Builder builder, String value) -> {return builder.imageId(value);}));
-        addField(new RunInstanceRequestMetadata("InstanceType", true, false, (Builder builder, String value) -> {return builder.instanceType(value);}));
-        addField(new RunInstanceRequestMetadata("SecurityGroupId", true, false, (Builder builder, String value) -> {return builder.securityGroupIds(value);}));
-        addField(new RunInstanceRequestMetadata("KeyName", true, false, (Builder builder, String value) -> {return builder.keyName(value);}));
+        addField(new AgentProfileEC2Field("ImageId", true, false, (Builder builder, String value) -> {return builder.imageId(value);}));
+        addField(new AgentProfileEC2Field("InstanceType", true, false, (Builder builder, String value) -> {return builder.instanceType(value);}));
+        addField(new AgentProfileEC2Field("SecurityGroupId", true, false, (Builder builder, String value) -> {return builder.securityGroupIds(value);}));
+        addField(new AgentProfileEC2Field("KeyName", true, false, (Builder builder, String value) -> {return builder.keyName(value);}));
     }
 
     @Override

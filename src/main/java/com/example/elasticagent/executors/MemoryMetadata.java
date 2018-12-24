@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class MemoryMetadata extends Metadata {
+public class MemoryMetadata extends AgentProfileField {
 
     public MemoryMetadata(String key, boolean required) {
         super(key, required, false, (AWSInstanceBuilder builder, String value) -> {return builder;});
