@@ -57,7 +57,7 @@ dependencies {
   compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
   compile group: 'joda-time', name: 'joda-time', version: '2.10.1'
 
-  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.2'
+  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.2'
   testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.4.1'
   testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.3.2'
   testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '2.1'
