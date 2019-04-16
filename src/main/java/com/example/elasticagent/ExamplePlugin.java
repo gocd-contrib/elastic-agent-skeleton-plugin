@@ -28,6 +28,9 @@ import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.example.elasticagent.Constants.PLUGIN_IDENTIFIER;
 
 @Extension
@@ -37,11 +40,18 @@ public class ExamplePlugin implements GoPlugin {
 
     private PluginRequest pluginRequest;
     private AgentInstances agentInstances;
+    private Map<String, AgentInstances> clusterSpecificAgentInstances;
 
     @Override
     public void initializeGoApplicationAccessor(GoApplicationAccessor accessor) {
         pluginRequest = new PluginRequest(accessor);
         agentInstances = new ExampleAgentInstances();
+        clusterSpecificAgentInstances = new HashMap<>();
+    }
+
+    @Override
+    public GoPluginIdentifier pluginIdentifier() {
+        return PLUGIN_IDENTIFIER;
     }
 
     @Override
@@ -51,11 +61,16 @@ public class ExamplePlugin implements GoPlugin {
                 case REQUEST_GET_ICON:
                     return new GetPluginSettingsIconExecutor().execute();
                 case REQUEST_SHOULD_ASSIGN_WORK:
-                    refreshInstances();
-                    return ShouldAssignWorkRequest.fromJSON(request.requestBody()).executor(agentInstances).execute();
+                    ShouldAssignWorkRequest shouldAssignWorkRequest = ShouldAssignWorkRequest.fromJSON(request.requestBody());
+                    refreshInstancesForCluster(shouldAssignWorkRequest.clusterProperties());
+                    return shouldAssignWorkRequest.executor(agentInstances).execute();
+                    
                 case REQUEST_CREATE_AGENT:
-                    refreshInstances();
-                    return CreateAgentRequest.fromJSON(request.requestBody()).executor(agentInstances).execute();
+                    CreateAgentRequest createAgentRequest = CreateAgentRequest.fromJSON(request.requestBody());
+                    refreshInstancesForCluster(createAgentRequest.clusterProperties());
+                    AgentInstances agentInstancesForCluster = getAgentInstancesForCluster(createAgentRequest.clusterProperties());
+                    return createAgentRequest.executor(agentInstancesForCluster).execute();
+
                 case REQUEST_SERVER_PING:
                     refreshInstances();
                     return new ServerPingRequestExecutor(agentInstances, pluginRequest).execute();
@@ -92,9 +107,14 @@ public class ExamplePlugin implements GoPlugin {
         }
     }
 
-    @Override
-    public GoPluginIdentifier pluginIdentifier() {
-        return PLUGIN_IDENTIFIER;
+    private void refreshInstancesForCluster(ClusterProfileProperties clusterProfileProperties) throws Exception {
+        AgentInstances agentInstances = getAgentInstancesForCluster(clusterProfileProperties);
+        agentInstances.refreshAll(clusterProfileProperties);
+        clusterSpecificAgentInstances.put(clusterProfileProperties.uuid(), agentInstances);
+    }
+
+    private AgentInstances getAgentInstancesForCluster(ClusterProfileProperties clusterProfileProperties) {
+        return clusterSpecificAgentInstances.get(clusterProfileProperties.uuid());
     }
 
 }

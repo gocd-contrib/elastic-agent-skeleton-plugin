@@ -73,9 +73,11 @@ public interface AgentInstances<T> {
      * This call should be should ideally remember if the agent instances are refreshed, and do nothing if instances
      * were previously refreshed.
      *
-     * @param pluginRequest the plugin request object
+     * @param clusterProfileProperties the cluster profile properties
      */
-    void refreshAll(PluginRequest pluginRequest) throws Exception;
+    void refreshAll(ClusterProfileProperties clusterProfileProperties) throws Exception;
+
+    void refreshAll(PluginRequest clusterProfileProperties) throws Exception;
 
     /**
      * This
