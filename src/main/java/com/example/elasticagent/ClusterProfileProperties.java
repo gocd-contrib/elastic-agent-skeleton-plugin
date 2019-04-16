@@ -122,4 +122,8 @@ public class ClusterProfileProperties {
     public String getGoServerUrl() {
         return goServerUrl;
     }
+
+    public String uuid() {
+        return Integer.toHexString(hashCode());
+    }
 }
