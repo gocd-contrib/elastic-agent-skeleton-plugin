@@ -17,10 +17,12 @@
 package com.example.elasticagent;
 
 import com.example.elasticagent.models.JobIdentifier;
+import com.example.elasticagent.requests.CreateAgentRequest;
 import org.joda.time.DateTime;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 public class ExampleInstance {
     private final DateTime createdAt;
@@ -35,6 +37,10 @@ public class ExampleInstance {
         this.properties = properties;
         this.environment = environment;
         this.jobIdentifier = jobIdentifier;
+    }
+
+    public static ExampleInstance create(CreateAgentRequest request, PluginSettings settings) {
+        return new ExampleInstance("agent_" + UUID.randomUUID().toString(), new Date(), request.properties(), request.environment(), request.jobIdentifier());
     }
 
     public String name() {

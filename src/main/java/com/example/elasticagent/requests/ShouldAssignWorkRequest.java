@@ -36,13 +36,16 @@ public class ShouldAssignWorkRequest {
     private Agent agent;
     private String environment;
     private JobIdentifier jobIdentifier;
-    private Map<String, String> properties;
+    private Map<String, String> elasticAgentProfileProperties;
+    private Map<String, String> clusterProfileProperties;
 
-    public ShouldAssignWorkRequest(Agent agent, String environment, JobIdentifier jobIdentifier, Map<String, String> properties) {
+
+    public ShouldAssignWorkRequest(Agent agent, String environment, JobIdentifier jobIdentifier, Map<String, String> elasticAgentProfileProperties, Map<String, String> clusterProfileProperties) {
         this.agent = agent;
         this.environment = environment;
         this.jobIdentifier = jobIdentifier;
-        this.properties = properties;
+        this.elasticAgentProfileProperties = elasticAgentProfileProperties;
+        this.clusterProfileProperties = clusterProfileProperties;
     }
 
     public ShouldAssignWorkRequest() {
@@ -60,8 +63,11 @@ public class ShouldAssignWorkRequest {
         return jobIdentifier;
     }
 
-    public Map<String, String> properties() {
-        return properties;
+    public Map<String, String> profileProperties() {
+        return elasticAgentProfileProperties;
+    }
+    public Map<String, String> clusterProperties() {
+        return clusterProfileProperties;
     }
 
     public static ShouldAssignWorkRequest fromJSON(String json) {

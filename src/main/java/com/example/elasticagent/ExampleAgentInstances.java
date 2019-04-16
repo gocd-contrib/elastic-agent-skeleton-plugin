@@ -34,10 +34,10 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     @Override
     public ExampleInstance create(CreateAgentRequest request, PluginSettings settings) throws Exception {
         // TODO: Implement me!
-        throw new UnsupportedOperationException();
-//        ExampleInstance instance = ExampleInstance.create(request, settings);
-//        register(instance);
-//        return instance;
+//        throw new UnsupportedOperationException();
+        ExampleInstance instance = ExampleInstance.create(request, settings);
+        register(instance);
+        return instance;
     }
 
     @Override

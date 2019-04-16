@@ -20,6 +20,7 @@ import com.example.elasticagent.Agent;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,16 +39,20 @@ public class ShouldAssignWorkRequestTest {
                 "    \"build_state\": \"Idle\",\n" +
                 "    \"config_state\": \"Enabled\"\n" +
                 "  },\n" +
-                "  \"properties\": {\n" +
-                "    \"property_name\": \"property_value\"\n" +
+                "  \"elastic_agent_profile_properties\": {\n" +
+                "    \"property_name1\": \"property_value1\"\n" +
+                "  },\n" +
+                "  \"cluster_profile_properties\": {\n" +
+                "    \"property_name2\": \"property_value2\"\n" +
                 "  }\n" +
                 "}";
 
         ShouldAssignWorkRequest request = ShouldAssignWorkRequest.fromJSON(json);
         assertThat(request.environment(), equalTo("prod"));
         assertThat(request.agent(), equalTo(new Agent("42", Agent.AgentState.Idle, Agent.BuildState.Idle, Agent.ConfigState.Enabled)));
-        HashMap<String, String> expectedProperties = new HashMap<>();
-        expectedProperties.put("property_name", "property_value");
-        assertThat(request.properties(), Matchers.<Map<String, String>>equalTo(expectedProperties));
+        Map<String, String> expectedProfileProperties = Collections.singletonMap("property_name1", "property_value1");
+        Map<String, String> expectedClusterProfiles = Collections.singletonMap("property_name2", "property_value2");
+        assertThat(request.profileProperties(), Matchers.equalTo(expectedProfileProperties));
+        assertThat(request.clusterProperties(), Matchers.equalTo(expectedClusterProfiles));
     }
 }
