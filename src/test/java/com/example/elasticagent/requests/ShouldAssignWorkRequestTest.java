@@ -17,6 +17,7 @@
 package com.example.elasticagent.requests;
 
 import com.example.elasticagent.Agent;
+import com.example.elasticagent.ClusterProfileProperties;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
@@ -43,16 +44,29 @@ public class ShouldAssignWorkRequestTest {
                 "    \"property_name1\": \"property_value1\"\n" +
                 "  },\n" +
                 "  \"cluster_profile_properties\": {\n" +
-                "    \"property_name2\": \"property_value2\"\n" +
+                "    \"go_server_url\": \"https://localhost:8154/go\",\n" +
+                "    \"auto_register_timeout\": \"20m\",\n" +
+                "    \"api_user\": \"test\",\n" +
+                "    \"api_key\": \"test-api-key\",\n" +
+                "    \"api_url\": \"https://aws.api.com/api\"\n" +
                 "  }\n" +
                 "}";
+
+        ClusterProfileProperties expectedClusterProperties = new ClusterProfileProperties(
+                "https://localhost:8154/go",
+                "20m",
+                "test",
+                "test-api-key",
+                "https://aws.api.com/api",
+                null
+        );
 
         ShouldAssignWorkRequest request = ShouldAssignWorkRequest.fromJSON(json);
         assertThat(request.environment(), equalTo("prod"));
         assertThat(request.agent(), equalTo(new Agent("42", Agent.AgentState.Idle, Agent.BuildState.Idle, Agent.ConfigState.Enabled)));
         Map<String, String> expectedProfileProperties = Collections.singletonMap("property_name1", "property_value1");
-        Map<String, String> expectedClusterProfiles = Collections.singletonMap("property_name2", "property_value2");
+
         assertThat(request.profileProperties(), Matchers.equalTo(expectedProfileProperties));
-        assertThat(request.clusterProperties(), Matchers.equalTo(expectedClusterProfiles));
+        assertThat(request.clusterProperties(), Matchers.equalTo(expectedClusterProperties));
     }
 }

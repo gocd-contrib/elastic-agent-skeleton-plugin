@@ -24,7 +24,6 @@ import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -37,11 +36,11 @@ public class GetPluginSettingsIconExecutorTest {
         GoPluginApiResponse response = new GetPluginSettingsIconExecutor().execute();
         Type type = new TypeToken<Map<String, String>>() {
         }.getType();
-        HashMap<String, String> hashMap = new Gson().fromJson(response.responseBody(),
+        Map<String, String> map = new Gson().fromJson(response.responseBody(),
                 type);
-        assertThat(hashMap.size(), is(2));
-        assertThat(hashMap.get("content_type"), is("image/svg+xml"));
-        System.out.println("hashMap = " + hashMap.get("data"));
-        assertThat(Util.readResourceBytes("/plugin-icon.svg"), is(BaseEncoding.base64().decode(hashMap.get("data"))));
+        assertThat(map.size(), is(2));
+        assertThat(map.get("content_type"), is("image/svg+xml"));
+        System.out.println("hashMap = " + map.get("data"));
+        assertThat(Util.readResourceBytes("/plugin-icon.svg"), is(BaseEncoding.base64().decode(map.get("data"))));
     }
 }

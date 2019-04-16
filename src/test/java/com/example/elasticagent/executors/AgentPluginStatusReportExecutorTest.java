@@ -24,7 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class AgentStatusReportExecutorTest {
+public class AgentPluginStatusReportExecutorTest {
 
     @Mock
     private PluginRequest pluginRequest;

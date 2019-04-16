@@ -10,14 +10,14 @@ import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
-public class StatusReportExecutor implements RequestExecutor {
+public class PluginStatusReportExecutor implements RequestExecutor {
 
     private final PluginRequest pluginRequest;
     private final AgentInstances agentInstances;
     private final ViewBuilder viewBuilder;
     private static final Logger LOG = Logger.getLoggerFor(AgentStatusReportExecutor.class);
 
-    public StatusReportExecutor(PluginRequest pluginRequest, AgentInstances agentInstances, ViewBuilder viewBuilder) {
+    public PluginStatusReportExecutor(PluginRequest pluginRequest, AgentInstances agentInstances, ViewBuilder viewBuilder) {
         this.pluginRequest = pluginRequest;
         this.agentInstances = agentInstances;
         this.viewBuilder = viewBuilder;

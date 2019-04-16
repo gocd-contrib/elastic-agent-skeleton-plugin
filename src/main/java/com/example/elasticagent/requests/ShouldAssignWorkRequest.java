@@ -16,10 +16,7 @@
 
 package com.example.elasticagent.requests;
 
-import com.example.elasticagent.Agent;
-import com.example.elasticagent.AgentInstances;
-import com.example.elasticagent.ExampleInstance;
-import com.example.elasticagent.RequestExecutor;
+import com.example.elasticagent.*;
 import com.example.elasticagent.executors.ShouldAssignWorkRequestExecutor;
 import com.example.elasticagent.models.JobIdentifier;
 import com.google.gson.FieldNamingPolicy;
@@ -37,10 +34,10 @@ public class ShouldAssignWorkRequest {
     private String environment;
     private JobIdentifier jobIdentifier;
     private Map<String, String> elasticAgentProfileProperties;
-    private Map<String, String> clusterProfileProperties;
+    private ClusterProfileProperties clusterProfileProperties;
 
 
-    public ShouldAssignWorkRequest(Agent agent, String environment, JobIdentifier jobIdentifier, Map<String, String> elasticAgentProfileProperties, Map<String, String> clusterProfileProperties) {
+    public ShouldAssignWorkRequest(Agent agent, String environment, JobIdentifier jobIdentifier, Map<String, String> elasticAgentProfileProperties, ClusterProfileProperties clusterProfileProperties) {
         this.agent = agent;
         this.environment = environment;
         this.jobIdentifier = jobIdentifier;
@@ -66,7 +63,8 @@ public class ShouldAssignWorkRequest {
     public Map<String, String> profileProperties() {
         return elasticAgentProfileProperties;
     }
-    public Map<String, String> clusterProperties() {
+
+    public ClusterProfileProperties clusterProperties() {
         return clusterProfileProperties;
     }
 
