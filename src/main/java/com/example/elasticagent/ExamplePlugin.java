@@ -45,9 +45,11 @@ public class ExamplePlugin implements GoPlugin {
     }
 
     @Override
-    public GoPluginApiResponse handle(GoPluginApiRequest request) throws UnhandledRequestTypeException {
+    public GoPluginApiResponse handle(GoPluginApiRequest request) {
         try {
             switch (Request.fromString(request.requestName())) {
+                case REQUEST_GET_ICON:
+                    return new GetPluginSettingsIconExecutor().execute();
                 case REQUEST_SHOULD_ASSIGN_WORK:
                     refreshInstances();
                     return ShouldAssignWorkRequest.fromJSON(request.requestBody()).executor(agentInstances).execute();
@@ -57,26 +59,18 @@ public class ExamplePlugin implements GoPlugin {
                 case REQUEST_SERVER_PING:
                     refreshInstances();
                     return new ServerPingRequestExecutor(agentInstances, pluginRequest).execute();
-                case PLUGIN_SETTINGS_GET_VIEW:
-                    return new GetViewRequestExecutor().execute();
-                case REQUEST_GET_PROFILE_METADATA:
+                case REQUEST_GET_ELASTIC_AGENT_PROFILE_METADATA:
                     return new GetProfileMetadataExecutor().execute();
-                case REQUEST_GET_PROFILE_VIEW:
+                case REQUEST_GET_ELASTIC_AGENT_PROFILE_VIEW:
                     return new GetProfileViewExecutor().execute();
-                case REQUEST_VALIDATE_PROFILE:
+                case REQUEST_VALIDATE_ELASTIC_AGENT_PROFILE:
                     return ProfileValidateRequest.fromJSON(request.requestBody()).executor().execute();
-                case PLUGIN_SETTINGS_GET_ICON:
-                    return new GetPluginSettingsIconExecutor().execute();
-                case PLUGIN_SETTINGS_GET_CONFIGURATION:
-                    return new GetPluginConfigurationExecutor().execute();
-                case PLUGIN_SETTINGS_VALIDATE_CONFIGURATION:
-                    return ValidatePluginSettings.fromJSON(request.requestBody()).executor().execute();
                 case REQUEST_JOB_COMPLETION:
                     refreshInstances();
                     return JobCompletionRequest.fromJSON(request.requestBody()).executor(agentInstances, pluginRequest).execute();
-                case REQUEST_STATUS_REPORT:
+                case REQUEST_PLUGIN_STATUS_REPORT:
                     refreshInstances();
-                    return new StatusReportExecutor(pluginRequest, agentInstances, ViewBuilder.instance()).execute();
+//                    return new PluginStatusReportExecutor(pluginRequest, agentInstances, ViewBuilder.instance()).execute();
                 case REQUEST_AGENT_STATUS_REPORT:
                     refreshInstances();
                     return AgentStatusReportRequest.fromJSON(request.requestBody()).executor(pluginRequest, agentInstances, ViewBuilder.instance()).execute();

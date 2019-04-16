@@ -16,7 +16,6 @@
 
 package com.example.elasticagent.utils;
 
-import com.example.elasticagent.executors.GetViewRequestExecutor;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 
@@ -30,7 +29,7 @@ import java.util.Properties;
 public class Util {
 
     public static String readResource(String resourceFile) {
-        try (InputStreamReader reader = new InputStreamReader(GetViewRequestExecutor.class.getResourceAsStream(resourceFile), StandardCharsets.UTF_8)) {
+        try (InputStreamReader reader = new InputStreamReader(Util.class.getResourceAsStream(resourceFile), StandardCharsets.UTF_8)) {
             return CharStreams.toString(reader);
         } catch (IOException e) {
             throw new RuntimeException("Could not find resource " + resourceFile, e);
@@ -38,7 +37,7 @@ public class Util {
     }
 
     public static byte[] readResourceBytes(String resourceFile) {
-        try (InputStream in = GetViewRequestExecutor.class.getResourceAsStream(resourceFile)) {
+        try (InputStream in = Util.class.getResourceAsStream(resourceFile)) {
             return ByteStreams.toByteArray(in);
         } catch (IOException e) {
             throw new RuntimeException("Could not find resource " + resourceFile, e);

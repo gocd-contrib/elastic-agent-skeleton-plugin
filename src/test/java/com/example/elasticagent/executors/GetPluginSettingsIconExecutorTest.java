@@ -19,10 +19,13 @@ package com.example.elasticagent.executors;
 import com.example.elasticagent.utils.Util;
 import com.google.common.io.BaseEncoding;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -32,7 +35,10 @@ public class GetPluginSettingsIconExecutorTest {
     @Test
     public void rendersIconInBase64() throws Exception {
         GoPluginApiResponse response = new GetPluginSettingsIconExecutor().execute();
-        HashMap<String, String> hashMap = new Gson().fromJson(response.responseBody(), HashMap.class);
+        Type type = new TypeToken<Map<String, String>>() {
+        }.getType();
+        HashMap<String, String> hashMap = new Gson().fromJson(response.responseBody(),
+                type);
         assertThat(hashMap.size(), is(2));
         assertThat(hashMap.get("content_type"), is("image/svg+xml"));
         System.out.println("hashMap = " + hashMap.get("data"));
