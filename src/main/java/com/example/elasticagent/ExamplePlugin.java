@@ -55,7 +55,7 @@ public class ExamplePlugin implements GoPlugin {
                     return ShouldAssignWorkRequest.fromJSON(request.requestBody()).executor(agentInstances).execute();
                 case REQUEST_CREATE_AGENT:
                     refreshInstances();
-                    return CreateAgentRequest.fromJSON(request.requestBody()).executor(agentInstances, pluginRequest).execute();
+                    return CreateAgentRequest.fromJSON(request.requestBody()).executor(agentInstances).execute();
                 case REQUEST_SERVER_PING:
                     refreshInstances();
                     return new ServerPingRequestExecutor(agentInstances, pluginRequest).execute();

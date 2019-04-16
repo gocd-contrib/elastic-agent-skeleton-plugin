@@ -39,8 +39,8 @@ public class ExampleInstance {
         this.jobIdentifier = jobIdentifier;
     }
 
-    public static ExampleInstance create(CreateAgentRequest request, PluginSettings settings) {
-        return new ExampleInstance("agent_" + UUID.randomUUID().toString(), new Date(), request.properties(), request.environment(), request.jobIdentifier());
+    public static ExampleInstance create(CreateAgentRequest request) {
+        return new ExampleInstance("agent_" + UUID.randomUUID().toString(), new Date(), request.profileProperties(), request.environment(), request.jobIdentifier());
     }
 
     public String name() {

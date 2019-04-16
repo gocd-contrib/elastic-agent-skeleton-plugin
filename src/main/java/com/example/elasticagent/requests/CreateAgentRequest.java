@@ -35,27 +35,28 @@ import java.util.Properties;
 public class CreateAgentRequest {
     private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
     private String autoRegisterKey;
-    private Map<String, String> properties;
     private String environment;
     private JobIdentifier jobIdentifier;
-
+    private Map<String, String> elasticAgentProfileProperties;
+    private Map<String, String> clusterProfileProperties;
 
     public CreateAgentRequest() {
     }
 
-    public CreateAgentRequest(String autoRegisterKey, Map<String, String> properties, String environment, JobIdentifier jobIdentifier) {
+    public CreateAgentRequest(String autoRegisterKey,
+                              Map<String, String> elasticAgentProfileProperties,
+                              Map<String, String> clusterProfileProperties,
+                              String environment,
+                              JobIdentifier jobIdentifier) {
         this.autoRegisterKey = autoRegisterKey;
-        this.properties = properties;
         this.environment = environment;
         this.jobIdentifier = jobIdentifier;
+        this.elasticAgentProfileProperties = elasticAgentProfileProperties;
+        this.clusterProfileProperties = clusterProfileProperties;
     }
 
     public String autoRegisterKey() {
         return autoRegisterKey;
-    }
-
-    public Map<String, String> properties() {
-        return properties;
     }
 
     public String environment() {
@@ -70,8 +71,8 @@ public class CreateAgentRequest {
         return GSON.fromJson(json, CreateAgentRequest.class);
     }
 
-    public RequestExecutor executor(AgentInstances agentInstances, PluginRequest pluginRequest) {
-        return new CreateAgentRequestExecutor(this, agentInstances, pluginRequest);
+    public RequestExecutor executor(AgentInstances agentInstances) {
+        return new CreateAgentRequestExecutor(this, agentInstances);
     }
 
     public Properties autoregisterProperties(String elasticAgentId) {
@@ -103,6 +104,13 @@ public class CreateAgentRequest {
         }
 
         return writer.toString();
+    }
+
+    public Map<String, String> profileProperties() {
+        return elasticAgentProfileProperties;
+    }
+    public Map<String, String> clusterProperties() {
+        return clusterProfileProperties;
     }
 
 }

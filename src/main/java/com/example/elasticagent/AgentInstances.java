@@ -35,9 +35,8 @@ public interface AgentInstances<T> {
      * <code>autoregister.properties</code> file.
      *
      * @param request   the request object
-     * @param settings  the plugin settings object
      */
-    T create(CreateAgentRequest request, PluginSettings settings) throws Exception;
+    T create(CreateAgentRequest request) throws Exception;
 
     /**
      * This message is sent when the plugin needs to terminate the agent instance.

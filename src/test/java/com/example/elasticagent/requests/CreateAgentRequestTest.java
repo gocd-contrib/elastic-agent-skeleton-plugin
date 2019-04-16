@@ -19,9 +19,11 @@ package com.example.elasticagent.requests;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.util.Collections.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -30,21 +32,31 @@ public class CreateAgentRequestTest {
     @Test
     public void shouldDeserializeFromJSON() throws Exception {
         String json = "{\n" +
-                "  \"auto_register_key\": \"secret-key\",\n" +
-                "  \"properties\": {\n" +
-                "    \"key1\": \"value1\",\n" +
-                "    \"key2\": \"value2\"\n" +
+                "  \"auto_register_key\": \"auto-registration-key\",\n" +
+                "  \"elastic_agent_profile_properties\": {\n" +
+                "    \"Image\": \"alpine:latest\"\n" +
                 "  },\n" +
-                "  \"environment\": \"prod\"\n" +
+                "  \"cluster_profile_properties\": {\n" +
+                "    \"ServerURL\": \"https://example.com/go\"\n" +
+                "  },\n" +
+                "  \"environment\": \"test-env\",\n" +
+                "  \"job_identifier\": {\n" +
+                "    \"pipeline_name\": \"up42\",\n" +
+                "    \"pipeline_label\": \"Test\",\n" +
+                "    \"pipeline_counter\": 2,\n" +
+                "    \"stage_name\": \"up42_stage\",\n" +
+                "    \"stage_counter\": \"10\",\n" +
+                "    \"job_name\": \"up42_job\",\n" +
+                "    \"job_id\": -1\n" +
+                "  }\n" +
                 "}";
 
         CreateAgentRequest request = CreateAgentRequest.fromJSON(json);
-        assertThat(request.autoRegisterKey(), equalTo("secret-key"));
-        assertThat(request.environment(), equalTo("prod"));
-        HashMap<String, String> expectedProperties = new HashMap<>();
-        expectedProperties.put("key1", "value1");
-        expectedProperties.put("key2", "value2");
-        assertThat(request.properties(), Matchers.<Map<String, String>>equalTo(expectedProperties));
+        assertThat(request.autoRegisterKey(), equalTo("auto-registration-key"));
+        assertThat(request.environment(), equalTo("test-env"));
+
+        assertThat(request.profileProperties(), Matchers.equalTo(singletonMap("Image", "alpine:latest")));
+        assertThat(request.clusterProperties(), Matchers.equalTo(singletonMap("ServerURL","https://example.com/go")));
 
     }
 }

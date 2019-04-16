@@ -32,10 +32,10 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     public Clock clock = Clock.DEFAULT;
 
     @Override
-    public ExampleInstance create(CreateAgentRequest request, PluginSettings settings) throws Exception {
+    public ExampleInstance create(CreateAgentRequest request) throws Exception {
         // TODO: Implement me!
 //        throw new UnsupportedOperationException();
-        ExampleInstance instance = ExampleInstance.create(request, settings);
+        ExampleInstance instance = ExampleInstance.create(request);
         register(instance);
         return instance;
     }

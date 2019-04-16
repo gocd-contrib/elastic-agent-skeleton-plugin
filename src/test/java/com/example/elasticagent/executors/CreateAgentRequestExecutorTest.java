@@ -32,8 +32,8 @@ public class CreateAgentRequestExecutorTest {
         PluginRequest pluginRequest = mock(PluginRequest.class);
         PluginSettings settings = mock(PluginSettings.class);
         when(pluginRequest.getPluginSettings()).thenReturn(settings);
-        new CreateAgentRequestExecutor(request, agentInstances, pluginRequest).execute();
+        new CreateAgentRequestExecutor(request, agentInstances).execute();
 
-        verify(agentInstances).create(request, settings);
+        verify(agentInstances).create(request);
     }
 }
