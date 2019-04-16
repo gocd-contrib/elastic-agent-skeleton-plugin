@@ -16,10 +16,7 @@
 
 package com.example.elasticagent.requests;
 
-import com.example.elasticagent.AgentInstances;
-import com.example.elasticagent.Constants;
-import com.example.elasticagent.PluginRequest;
-import com.example.elasticagent.RequestExecutor;
+import com.example.elasticagent.*;
 import com.example.elasticagent.executors.CreateAgentRequestExecutor;
 import com.example.elasticagent.models.JobIdentifier;
 import com.google.gson.FieldNamingPolicy;
@@ -38,14 +35,14 @@ public class CreateAgentRequest {
     private String environment;
     private JobIdentifier jobIdentifier;
     private Map<String, String> elasticAgentProfileProperties;
-    private Map<String, String> clusterProfileProperties;
+    private ClusterProfileProperties clusterProfileProperties;
 
     public CreateAgentRequest() {
     }
 
     public CreateAgentRequest(String autoRegisterKey,
                               Map<String, String> elasticAgentProfileProperties,
-                              Map<String, String> clusterProfileProperties,
+                              ClusterProfileProperties clusterProfileProperties,
                               String environment,
                               JobIdentifier jobIdentifier) {
         this.autoRegisterKey = autoRegisterKey;
@@ -109,7 +106,8 @@ public class CreateAgentRequest {
     public Map<String, String> profileProperties() {
         return elasticAgentProfileProperties;
     }
-    public Map<String, String> clusterProperties() {
+
+    public ClusterProfileProperties clusterProperties() {
         return clusterProfileProperties;
     }
 

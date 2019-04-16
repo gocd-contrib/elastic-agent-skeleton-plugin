@@ -76,7 +76,7 @@ public class ServerPingRequestExecutorTest extends BaseTest {
 
         ExampleAgentInstances agentInstances = new ExampleAgentInstances();
         agentInstances.clock = new Clock.TestClock().forward(Period.minutes(11));
-        ExampleInstance container = agentInstances.create(new CreateAgentRequest(null, new HashMap<>(), new HashMap<>(), null, new JobIdentifier()));
+        ExampleInstance container = agentInstances.create(new CreateAgentRequest(null, new HashMap<>(), new ClusterProfileProperties(), null, new JobIdentifier()));
 
         ServerPingRequestExecutor serverPingRequestExecutor = new ServerPingRequestExecutor(agentInstances, pluginRequest);
         serverPingRequestExecutor.execute();

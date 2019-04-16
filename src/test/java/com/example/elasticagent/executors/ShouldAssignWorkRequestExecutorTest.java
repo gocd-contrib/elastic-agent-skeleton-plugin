@@ -38,7 +38,7 @@ public class ShouldAssignWorkRequestExecutorTest {
     private ExampleInstance instance;
     private final String environment = "production";
     private Map<String, String> profileProperties = new HashMap<>();
-    private Map<String, String> clusterProperties = new HashMap<>();
+    private ClusterProfileProperties clusterProperties = new ClusterProfileProperties();
     private final JobIdentifier jobIdentifier = JobIdentifierMother.get();
 
     @BeforeEach
