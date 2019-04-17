@@ -17,17 +17,17 @@
 package com.example.elasticagent.requests;
 
 import com.example.elasticagent.RequestExecutor;
-import com.example.elasticagent.executors.ProfileValidateRequestExecutor;
+import com.example.elasticagent.executors.ValidateElasticAgentProfileRequestExecutor;
 import com.google.gson.Gson;
 
 import java.util.Map;
 
-public class ProfileValidateRequest {
+public class ValidateElasticAgentProfileRequest {
 
     private static final Gson GSON = new Gson();
     private Map<String, String> properties;
 
-    public ProfileValidateRequest(Map<String, String> properties) {
+    public ValidateElasticAgentProfileRequest(Map<String, String> properties) {
         this.properties = properties;
     }
 
@@ -36,11 +36,11 @@ public class ProfileValidateRequest {
         return properties;
     }
 
-    public static ProfileValidateRequest fromJSON(String json) {
-        return new ProfileValidateRequest(GSON.fromJson(json, Map.class));
+    public static ValidateElasticAgentProfileRequest fromJSON(String json) {
+        return new ValidateElasticAgentProfileRequest(GSON.fromJson(json, Map.class));
     }
 
     public RequestExecutor executor() {
-        return new ProfileValidateRequestExecutor(this);
+        return new ValidateElasticAgentProfileRequestExecutor(this);
     }
 }

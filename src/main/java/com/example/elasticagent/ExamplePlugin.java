@@ -61,20 +61,24 @@ public class ExamplePlugin implements GoPlugin {
             switch (Request.fromString(request.requestName())) {
                 case REQUEST_GET_ICON:
                     return new GetPluginSettingsIconExecutor().execute();
+
                 case REQUEST_SHOULD_ASSIGN_WORK:
                     ShouldAssignWorkRequest shouldAssignWorkRequest = ShouldAssignWorkRequest.fromJSON(request.requestBody());
                     refreshInstancesForCluster(shouldAssignWorkRequest.clusterProperties());
+
                     return shouldAssignWorkRequest.executor(agentInstances).execute();
 
                 case REQUEST_CREATE_AGENT:
                     CreateAgentRequest createAgentRequest = CreateAgentRequest.fromJSON(request.requestBody());
                     refreshInstancesForCluster(createAgentRequest.clusterProperties());
                     AgentInstances agentInstancesForCluster = getAgentInstancesForCluster(createAgentRequest.clusterProperties());
+
                     return createAgentRequest.executor(agentInstancesForCluster).execute();
 
                 case REQUEST_SERVER_PING:
                     ServerPingRequest serverPingRequest = ServerPingRequest.fromJSON(request.requestBody());
                     refreshInstancesForAllClusters(serverPingRequest.allClusterProfileProperties());
+
                     return serverPingRequest.executor(clusterSpecificAgentInstances, pluginRequest).execute();
 
                 case REQUEST_GET_ELASTIC_AGENT_PROFILE_METADATA:
@@ -82,10 +86,13 @@ public class ExamplePlugin implements GoPlugin {
                 case REQUEST_GET_ELASTIC_AGENT_PROFILE_VIEW:
                     return new GetProfileViewExecutor().execute();
                 case REQUEST_VALIDATE_ELASTIC_AGENT_PROFILE:
-                    return ProfileValidateRequest.fromJSON(request.requestBody()).executor().execute();
+                    return ValidateElasticAgentProfileRequest.fromJSON(request.requestBody()).executor().execute();
                 case REQUEST_JOB_COMPLETION:
-                    refreshInstances();
-                    return JobCompletionRequest.fromJSON(request.requestBody()).executor(agentInstances, pluginRequest).execute();
+                    JobCompletionRequest jobCompletionRequest = JobCompletionRequest.fromJSON(request.requestBody());
+                    ClusterProfileProperties clusterProfileProperties = jobCompletionRequest.clusterProperties();
+                    refreshInstancesForCluster(jobCompletionRequest.clusterProperties());
+
+                    return jobCompletionRequest.executor(getAgentInstancesForCluster(clusterProfileProperties)).execute();
                 case REQUEST_PLUGIN_STATUS_REPORT:
                     refreshInstances();
 //                    return new PluginStatusReportExecutor(pluginRequest, agentInstances, ViewBuilder.instance()).execute();

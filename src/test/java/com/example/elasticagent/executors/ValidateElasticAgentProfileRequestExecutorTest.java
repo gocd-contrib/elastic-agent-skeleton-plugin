@@ -16,24 +16,24 @@
 
 package com.example.elasticagent.executors;
 
-import com.example.elasticagent.requests.ProfileValidateRequest;
+import com.example.elasticagent.requests.ValidateElasticAgentProfileRequest;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 
 import java.util.Collections;
 
-public class ProfileValidateRequestExecutorTest {
+public class ValidateElasticAgentProfileRequestExecutorTest {
     @Test
     public void shouldBarfWhenUnknownKeysArePassed() throws Exception {
-        ProfileValidateRequestExecutor executor = new ProfileValidateRequestExecutor(new ProfileValidateRequest(Collections.singletonMap("foo", "bar")));
+        ValidateElasticAgentProfileRequestExecutor executor = new ValidateElasticAgentProfileRequestExecutor(new ValidateElasticAgentProfileRequest(Collections.singletonMap("foo", "bar")));
         String json = executor.execute().responseBody();
         JSONAssert.assertEquals("[{\"message\":\"Image must not be blank.\",\"key\":\"Image\"},{\"key\":\"foo\",\"message\":\"Is an unknown property\"}]", json, JSONCompareMode.NON_EXTENSIBLE);
     }
 
     @Test
     public void shouldValidateMandatoryKeys() throws Exception {
-        ProfileValidateRequestExecutor executor = new ProfileValidateRequestExecutor(new ProfileValidateRequest(Collections.<String, String>emptyMap()));
+        ValidateElasticAgentProfileRequestExecutor executor = new ValidateElasticAgentProfileRequestExecutor(new ValidateElasticAgentProfileRequest(Collections.<String, String>emptyMap()));
         String json = executor.execute().responseBody();
         JSONAssert.assertEquals("[{\"message\":\"Image must not be blank.\",\"key\":\"Image\"}]", json, JSONCompareMode.NON_EXTENSIBLE);
     }

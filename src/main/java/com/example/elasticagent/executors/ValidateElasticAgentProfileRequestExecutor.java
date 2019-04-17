@@ -17,18 +17,18 @@
 package com.example.elasticagent.executors;
 
 import com.example.elasticagent.RequestExecutor;
-import com.example.elasticagent.requests.ProfileValidateRequest;
+import com.example.elasticagent.requests.ValidateElasticAgentProfileRequest;
 import com.google.gson.Gson;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
 import java.util.*;
 
-public class ProfileValidateRequestExecutor implements RequestExecutor {
-    private final ProfileValidateRequest request;
+public class ValidateElasticAgentProfileRequestExecutor implements RequestExecutor {
+    private final ValidateElasticAgentProfileRequest request;
     private static final Gson GSON = new Gson();
 
-    public ProfileValidateRequestExecutor(ProfileValidateRequest request) {
+    public ValidateElasticAgentProfileRequestExecutor(ValidateElasticAgentProfileRequest request) {
         this.request = request;
     }
 

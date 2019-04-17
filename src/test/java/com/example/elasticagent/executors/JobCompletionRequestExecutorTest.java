@@ -17,6 +17,7 @@
 package com.example.elasticagent.executors;
 
 import com.example.elasticagent.AgentInstances;
+import com.example.elasticagent.ClusterProfileProperties;
 import com.example.elasticagent.PluginRequest;
 import com.example.elasticagent.PluginSettings;
 import com.example.elasticagent.models.JobIdentifier;
@@ -24,20 +25,18 @@ import com.example.elasticagent.requests.CreateAgentRequest;
 import com.example.elasticagent.requests.JobCompletionRequest;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+
 import static org.mockito.Mockito.*;
 
 public class JobCompletionRequestExecutorTest {
     @Test
     public void shouldAskDockerContainersToCreateAnAgent() throws Exception {
         String elasticAgentId = "agent-id";
-        JobCompletionRequest request = new JobCompletionRequest(elasticAgentId, new JobIdentifier());
+        ClusterProfileProperties clusterProfileProperties = new ClusterProfileProperties();
+        JobCompletionRequest request = new JobCompletionRequest(elasticAgentId, new JobIdentifier(), new HashMap<>(), clusterProfileProperties);
         AgentInstances agentInstances = mock(AgentInstances.class);
-        PluginRequest pluginRequest = mock(PluginRequest.class);
-        PluginSettings settings = mock(PluginSettings.class);
-        when(pluginRequest.getPluginSettings()).thenReturn(settings);
-        new JobCompletionRequestExecutor(request, agentInstances, pluginRequest).execute();
-
-        // todo: fix this
-        verify(agentInstances).terminate(elasticAgentId, null);
+        new JobCompletionRequestExecutor(request, agentInstances).execute();
+        verify(agentInstances).terminate(elasticAgentId, clusterProfileProperties);
     }
 }
