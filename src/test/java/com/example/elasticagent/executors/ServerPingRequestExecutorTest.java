@@ -19,6 +19,7 @@ package com.example.elasticagent.executors;
 import com.example.elasticagent.*;
 import com.example.elasticagent.models.JobIdentifier;
 import com.example.elasticagent.requests.CreateAgentRequest;
+import com.example.elasticagent.requests.ServerPingRequest;
 import org.joda.time.Period;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatcher;
@@ -26,6 +27,7 @@ import org.mockito.ArgumentMatcher;
 import java.util.*;
 
 import static com.example.elasticagent.Agent.ConfigState.Disabled;
+import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.*;
 
@@ -35,15 +37,18 @@ public class ServerPingRequestExecutorTest extends BaseTest {
     public void testShouldDisableIdleAgents() throws Exception {
         String agentId = UUID.randomUUID().toString();
         final Agents agents = new Agents(Arrays.asList(new Agent(agentId, Agent.AgentState.Idle, Agent.BuildState.Idle, Agent.ConfigState.Enabled)));
-        AgentInstances agentInstances = new ExampleAgentInstances();
-
         PluginRequest pluginRequest = mock(PluginRequest.class);
-        when(pluginRequest.getPluginSettings()).thenReturn(createSettings());
+        ClusterProfileProperties clusterProfileProperties = mock(ClusterProfileProperties.class);
+
+        when(clusterProfileProperties.uuid()).thenReturn("ffff");
         when(pluginRequest.listAgents()).thenReturn(agents);
         verifyNoMoreInteractions(pluginRequest);
 
+        final Map<String, AgentInstances> clusterSpecificInstance = Collections.singletonMap("ffff", new ExampleAgentInstances());
         final Collection<Agent> values = agents.agents();
-        new ServerPingRequestExecutor(agentInstances, pluginRequest).execute();
+        final ServerPingRequest serverPingRequest = new ServerPingRequest(singletonList(clusterProfileProperties));
+
+        new ServerPingRequestExecutor(clusterSpecificInstance, serverPingRequest, pluginRequest).execute();
         verify(pluginRequest).disableAgents(argThat(collectionMatches(values)));
     }
 
@@ -55,22 +60,28 @@ public class ServerPingRequestExecutorTest extends BaseTest {
     public void testShouldTerminateDisabledAgents() throws Exception {
         String agentId = UUID.randomUUID().toString();
         final Agents agents = new Agents(Arrays.asList(new Agent(agentId, Agent.AgentState.Idle, Agent.BuildState.Idle, Disabled)));
-        AgentInstances agentInstances = new ExampleAgentInstances();
 
+        ClusterProfileProperties clusterProfileProperties = mock(ClusterProfileProperties.class);
         PluginRequest pluginRequest = mock(PluginRequest.class);
-        when(pluginRequest.getPluginSettings()).thenReturn(createSettings());
+
+        when(clusterProfileProperties.uuid()).thenReturn("ffff");
         when(pluginRequest.listAgents()).thenReturn(agents);
         verifyNoMoreInteractions(pluginRequest);
 
-        new ServerPingRequestExecutor(agentInstances, pluginRequest).execute();
+        final Map<String, AgentInstances> clusterSpecificInstance = Collections.singletonMap("ffff", new ExampleAgentInstances());
+        final ServerPingRequest serverPingRequest = new ServerPingRequest(singletonList(clusterProfileProperties));
+
+        new ServerPingRequestExecutor(clusterSpecificInstance, serverPingRequest, pluginRequest).execute();
         final Collection<Agent> values = agents.agents();
         verify(pluginRequest).deleteAgents(argThat(collectionMatches(values)));
     }
 
     @Test
     public void testShouldTerminateInstancesThatNeverAutoRegistered() throws Exception {
+        ClusterProfileProperties clusterProfileProperties = mock(ClusterProfileProperties.class);
         PluginRequest pluginRequest = mock(PluginRequest.class);
-        when(pluginRequest.getPluginSettings()).thenReturn(createSettings());
+
+        when(clusterProfileProperties.uuid()).thenReturn("ffff");
         when(pluginRequest.listAgents()).thenReturn(new Agents());
         verifyNoMoreInteractions(pluginRequest);
 
@@ -78,21 +89,26 @@ public class ServerPingRequestExecutorTest extends BaseTest {
         agentInstances.clock = new Clock.TestClock().forward(Period.minutes(11));
         ExampleInstance container = agentInstances.create(new CreateAgentRequest(null, new HashMap<>(), new ClusterProfileProperties(), null, new JobIdentifier()));
 
-        ServerPingRequestExecutor serverPingRequestExecutor = new ServerPingRequestExecutor(agentInstances, pluginRequest);
-        serverPingRequestExecutor.execute();
+        final Map<String, AgentInstances> clusterSpecificInstance = Collections.singletonMap("ffff", agentInstances);
+        final ServerPingRequest serverPingRequest = new ServerPingRequest(singletonList(clusterProfileProperties));
+
+        new ServerPingRequestExecutor(clusterSpecificInstance, serverPingRequest, pluginRequest).execute();
 
         assertFalse(agentInstances.hasInstance(container.name()));
     }
 
     @Test
     public void shouldDeleteAgentFromConfigWhenCorrespondingContainerIsNotPresent() throws Exception {
+        ClusterProfileProperties clusterProfileProperties = mock(ClusterProfileProperties.class);
         PluginRequest pluginRequest = mock(PluginRequest.class);
-        when(pluginRequest.getPluginSettings()).thenReturn(createSettings());
+
+        when(clusterProfileProperties.uuid()).thenReturn("ffff");
         when(pluginRequest.listAgents()).thenReturn(new Agents(Arrays.asList(new Agent("foo", Agent.AgentState.Idle, Agent.BuildState.Idle, Agent.ConfigState.Enabled))));
         verifyNoMoreInteractions(pluginRequest);
 
-        AgentInstances agentInstances = mock(AgentInstances.class);
-        ServerPingRequestExecutor serverPingRequestExecutor = new ServerPingRequestExecutor(agentInstances, pluginRequest);
-        serverPingRequestExecutor.execute();
+        final Map<String, AgentInstances> clusterSpecificInstance = Collections.singletonMap("ffff", new ExampleAgentInstances());
+        final ServerPingRequest serverPingRequest = new ServerPingRequest(singletonList(clusterProfileProperties));
+
+        new ServerPingRequestExecutor(clusterSpecificInstance, serverPingRequest, pluginRequest).execute();
     }
 }

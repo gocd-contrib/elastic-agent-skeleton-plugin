@@ -42,9 +42,9 @@ public interface AgentInstances<T> {
      * This message is sent when the plugin needs to terminate the agent instance.
      *
      * @param agentId  the elastic agent id
-     * @param settings the plugin settings object
+     * @param clusterProfileProperties the plugin cluster profile properties object
      */
-    void terminate(String agentId, PluginSettings settings) throws Exception;
+    void terminate(String agentId, ClusterProfileProperties clusterProfileProperties) throws Exception;
 
     /**
      * This message is sent from the {@link com.example.elasticagent.executors.ServerPingRequestExecutor}
@@ -54,7 +54,7 @@ public interface AgentInstances<T> {
      * @param settings the plugin settings object
      * @param agents   the list of all the agents
      */
-    void terminateUnregisteredInstances(PluginSettings settings, Agents agents) throws Exception;
+    void terminateUnregisteredInstances(ClusterProfileProperties settings, Agents agents) throws Exception;
 
     /**
      * This message is sent from the {@link com.example.elasticagent.executors.ServerPingRequestExecutor}
@@ -65,7 +65,7 @@ public interface AgentInstances<T> {
      * @param agents   the list of all the agents
      * @return a list of agent instances which were created after {@link PluginSettings#getAutoRegisterPeriod()} ago.
      */
-    Agents instancesCreatedAfterTimeout(PluginSettings settings, Agents agents);
+    Agents instancesCreatedAfterTimeout(ClusterProfileProperties settings, Agents agents);
 
     /**
      * This message is sent after plugin initialization time so that the plugin may connect to the cloud provider

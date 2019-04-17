@@ -17,55 +17,64 @@
 package com.example.elasticagent.executors;
 
 import com.example.elasticagent.*;
+import com.example.elasticagent.requests.ServerPingRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
-import java.util.Collection;
-
-import static com.example.elasticagent.ExamplePlugin.LOG;
+import java.util.*;
 
 public class ServerPingRequestExecutor implements RequestExecutor {
-
-    private final AgentInstances agentInstances;
     private final PluginRequest pluginRequest;
+    private final Map<String, AgentInstances> clusterSpecificAgentInstances;
+    private final ServerPingRequest serverPingRequest;
 
-    public ServerPingRequestExecutor(AgentInstances agentInstances, PluginRequest pluginRequest) {
-        this.agentInstances = agentInstances;
+    public ServerPingRequestExecutor(Map<String, AgentInstances> clusterSpecificAgentInstances, ServerPingRequest serverPingRequest, PluginRequest pluginRequest) {
+
+        this.clusterSpecificAgentInstances = clusterSpecificAgentInstances;
+        this.serverPingRequest = serverPingRequest;
         this.pluginRequest = pluginRequest;
     }
 
     @Override
     public GoPluginApiResponse execute() throws Exception {
-        PluginSettings pluginSettings = pluginRequest.getPluginSettings();
+        List<ClusterProfileProperties> allClusterProfileProperties = serverPingRequest.allClusterProfileProperties();
 
+        for (ClusterProfileProperties clusterProfileProperties : allClusterProfileProperties) {
+            performCleanupForCluster(clusterProfileProperties, clusterSpecificAgentInstances.get(clusterProfileProperties.uuid()));
+        }
+
+        return DefaultGoPluginApiResponse.success("");
+    }
+
+    private void performCleanupForCluster(ClusterProfileProperties clusterProfileProperties, AgentInstances agentInstances) throws Exception {
         Agents allAgents = pluginRequest.listAgents();
-        Agents missingAgents = new Agents();
+        Set<Agent> missingAgents = new HashSet<>();
 
         for (Agent agent : allAgents.agents()) {
             if (agentInstances.find(agent.elasticAgentId()) == null) {
-                LOG.warn("Was expecting a container with name " + agent.elasticAgentId() + ", but it was missing!");
                 missingAgents.add(agent);
+            } else {
+                missingAgents.remove(agent);
             }
         }
 
-        Agents agentsToDisable = agentInstances.instancesCreatedAfterTimeout(pluginSettings, allAgents);
+        Agents agentsToDisable = agentInstances.instancesCreatedAfterTimeout(clusterProfileProperties, allAgents);
+
         agentsToDisable.addAll(missingAgents);
 
         disableIdleAgents(agentsToDisable);
 
         allAgents = pluginRequest.listAgents();
-        terminateDisabledAgents(allAgents, pluginSettings);
+        terminateDisabledAgents(allAgents, clusterProfileProperties, agentInstances);
 
-        agentInstances.terminateUnregisteredInstances(pluginSettings, allAgents);
-
-        return DefaultGoPluginApiResponse.success("");
+        agentInstances.terminateUnregisteredInstances(clusterProfileProperties, allAgents);
     }
 
     private void disableIdleAgents(Agents agents) throws ServerRequestFailedException {
         pluginRequest.disableAgents(agents.findInstancesToDisable());
     }
 
-    private void terminateDisabledAgents(Agents agents, PluginSettings pluginSettings) throws Exception {
+    private void terminateDisabledAgents(Agents agents, ClusterProfileProperties pluginSettings, AgentInstances agentInstances) throws Exception {
         Collection<Agent> toBeDeleted = agents.findInstancesToTerminate();
 
         for (Agent agent : toBeDeleted) {

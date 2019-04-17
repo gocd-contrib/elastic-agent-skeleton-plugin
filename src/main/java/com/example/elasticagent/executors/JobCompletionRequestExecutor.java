@@ -21,7 +21,8 @@ public class JobCompletionRequestExecutor implements RequestExecutor {
 
     @Override
     public GoPluginApiResponse execute() throws Exception {
-        agentInstances.terminate(jobCompletionRequest.getElasticAgentId(), pluginRequest.getPluginSettings());
+        //todo: fix this
+        agentInstances.terminate(jobCompletionRequest.getElasticAgentId(), null);
         return new DefaultGoPluginApiResponse(200);
     }
 }

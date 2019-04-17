@@ -29,6 +29,7 @@ import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.elasticagent.Constants.PLUGIN_IDENTIFIER;
@@ -64,7 +65,7 @@ public class ExamplePlugin implements GoPlugin {
                     ShouldAssignWorkRequest shouldAssignWorkRequest = ShouldAssignWorkRequest.fromJSON(request.requestBody());
                     refreshInstancesForCluster(shouldAssignWorkRequest.clusterProperties());
                     return shouldAssignWorkRequest.executor(agentInstances).execute();
-                    
+
                 case REQUEST_CREATE_AGENT:
                     CreateAgentRequest createAgentRequest = CreateAgentRequest.fromJSON(request.requestBody());
                     refreshInstancesForCluster(createAgentRequest.clusterProperties());
@@ -72,8 +73,10 @@ public class ExamplePlugin implements GoPlugin {
                     return createAgentRequest.executor(agentInstancesForCluster).execute();
 
                 case REQUEST_SERVER_PING:
-                    refreshInstances();
-                    return new ServerPingRequestExecutor(agentInstances, pluginRequest).execute();
+                    ServerPingRequest serverPingRequest = ServerPingRequest.fromJSON(request.requestBody());
+                    refreshInstancesForAllClusters(serverPingRequest.allClusterProfileProperties());
+                    return serverPingRequest.executor(clusterSpecificAgentInstances, pluginRequest).execute();
+
                 case REQUEST_GET_ELASTIC_AGENT_PROFILE_METADATA:
                     return new GetProfileMetadataExecutor().execute();
                 case REQUEST_GET_ELASTIC_AGENT_PROFILE_VIEW:
@@ -99,11 +102,18 @@ public class ExamplePlugin implements GoPlugin {
         }
     }
 
+    // todo: this needs to go
     private void refreshInstances() {
         try {
             agentInstances.refreshAll(pluginRequest);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void refreshInstancesForAllClusters(List<ClusterProfileProperties> listOfClusterProfileProperties) throws Exception {
+        for (ClusterProfileProperties clusterProfileProperties : listOfClusterProfileProperties) {
+            refreshInstancesForCluster(clusterProfileProperties);
         }
     }
 

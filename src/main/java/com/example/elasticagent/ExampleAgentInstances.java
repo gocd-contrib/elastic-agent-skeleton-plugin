@@ -20,9 +20,13 @@ import com.example.elasticagent.models.AgentStatusReport;
 import com.example.elasticagent.models.JobIdentifier;
 import com.example.elasticagent.models.StatusReport;
 import com.example.elasticagent.requests.CreateAgentRequest;
+import org.joda.time.DateTime;
+import org.joda.time.Period;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.example.elasticagent.ExamplePlugin.LOG;
 
 public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
 
@@ -41,38 +45,39 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     }
 
     @Override
-    public void terminate(String agentId, PluginSettings settings) throws Exception {
+    public void terminate(String agentId, ClusterProfileProperties clusterProperties) throws Exception {
         // TODO: Implement me!
-        throw new UnsupportedOperationException();
+//        throw new UnsupportedOperationException();
 
-//        ExampleInstance instance = instances.get(agentId);
-//        if (instance != null) {
-//            instance.terminate(docker(settings));
-//        } else {
-//            LOG.warn("Requested to terminate an instance that does not exist " + agentId);
-//        }
-//        instances.remove(agentId);
+        ExampleInstance instance = instances.get(agentId);
+        if (instance != null) {
+            // terminate instance
+            //instance.terminate(docker(settings));
+        } else {
+            LOG.warn("Requested to terminate an instance that does not exist " + agentId);
+        }
+        instances.remove(agentId);
     }
 
     @Override
-    public void terminateUnregisteredInstances(PluginSettings settings, Agents agents) throws Exception {
+    public void terminateUnregisteredInstances(ClusterProfileProperties clusterProperties, Agents agents) throws Exception {
         // TODO: Implement me!
-        throw new UnsupportedOperationException();
+//        throw new UnsupportedOperationException();
 
-//        ExampleAgentInstances toTerminate = unregisteredAfterTimeout(settings, agents);
-//        if (toTerminate.instances.isEmpty()) {
-//            return;
-//        }
-//
-//        LOG.warn("Terminating instances that did not register " + toTerminate.instances.keySet());
-//        for (ExampleInstance container : toTerminate.instances.values()) {
-//            terminate(container.name(), settings);
-//        }
+        ExampleAgentInstances toTerminate = unregisteredAfterTimeout(clusterProperties, agents);
+        if (toTerminate.instances.isEmpty()) {
+            return;
+        }
+
+        LOG.warn("Terminating instances that did not register " + toTerminate.instances.keySet());
+        for (ExampleInstance container : toTerminate.instances.values()) {
+            terminate(container.name(), clusterProperties);
+        }
     }
 
     @Override
     // TODO: Implement me!
-    public Agents instancesCreatedAfterTimeout(PluginSettings settings, Agents agents) {
+    public Agents instancesCreatedAfterTimeout(ClusterProfileProperties clusterProperties, Agents agents) {
         ArrayList<Agent> oldAgents = new ArrayList<>();
         for (Agent agent : agents.agents()) {
             ExampleInstance instance = instances.get(agent.elasticAgentId());
@@ -80,11 +85,16 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
                 continue;
             }
 
-            if (clock.now().isAfter(instance.createdAt().plus(settings.getAutoRegisterPeriod()))) {
+            if (clock.now().isAfter(instance.createdAt().plus(clusterProperties.getAutoRegisterPeriod()))) {
                 oldAgents.add(agent);
             }
         }
         return new Agents(oldAgents);
+    }
+
+    @Override
+    public void refreshAll(ClusterProfileProperties clusterProfileProperties) throws Exception {
+
     }
 
     @Override
@@ -144,23 +154,23 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
         instances.put(instance.name(), instance);
     }
 
-//    private ExampleAgentInstances unregisteredAfterTimeout(PluginSettings settings, Agents knownAgents) throws Exception {
-//        Period period = settings.getAutoRegisterPeriod();
-//        ExampleAgentInstances unregisteredContainers = new ExampleAgentInstances();
-//
-//        for (String instanceName : instances.keySet()) {
-//            if (knownAgents.containsAgentWithId(instanceName)) {
-//                continue;
-//            }
-//
-//            // TODO: Connect to the cloud provider to fetch information about this instance
-//            InstanceInfo instanceInfo = connection.inspectInstance(instanceName);
-//            DateTime dateTimeCreated = new DateTime(instanceInfo.created());
-//
-//            if (clock.now().isAfter(dateTimeCreated.plus(period))) {
-//                unregisteredContainers.register(ExampleInstance.fromInstanceInfo(instanceInfo));
-//            }
-//        }
-//        return unregisteredContainers;
-//    }
+    private ExampleAgentInstances unregisteredAfterTimeout(ClusterProfileProperties settings, Agents knownAgents) throws Exception {
+        Period period = settings.getAutoRegisterPeriod();
+        ExampleAgentInstances unregisteredContainers = new ExampleAgentInstances();
+
+        for (String instanceName : instances.keySet()) {
+            if (knownAgents.containsAgentWithId(instanceName)) {
+                continue;
+            }
+
+            // TODO: Connect to the cloud provider to fetch information about this instance
+            // InstanceInfo instanceInfo = connection.inspectInstance(instanceName);
+            DateTime dateTimeCreated = new DateTime();
+
+            if (clock.now().isAfter(dateTimeCreated.plus(period))) {
+                unregisteredContainers.register(new ExampleInstance(instanceName, dateTimeCreated.toDate(), null, null, null));
+            }
+        }
+        return unregisteredContainers;
+    }
 }
