@@ -109,6 +109,7 @@ public class ExamplePlugin implements GoPlugin {
 
                 case REQUEST_GET_CLUSTER_PROFILE_METADATA: return new GetClusterProfileMetadataExecutor().execute();
                 case REQUEST_GET_CLUSTER_PROFILE_VIEW: return new GetClusterProfileViewRequestExecutor().execute();
+                case REQUEST_VALIDATE_CLUSTER_PROFILE: return ClusterProfileValidateRequest.fromJSON(request.requestBody()).executor().execute();
                 case REQUEST_CLUSTER_PROFILE_CHANGED: throw new UnsupportedOperationException();
                 case REQUEST_MIGRATE_CONFIGURATION: throw new UnsupportedOperationException();
 

@@ -17,19 +17,19 @@ public class GetClusterProfileMetadataExecutor implements RequestExecutor {
     public static final Metadata AUTO_REGISTER_TIMEOUT = new Metadata("auto_register_timeout", true, false);
 
 
-    public static final List<Metadata> FIELDS = new ArrayList<>();
+    public static final List<Metadata> CLUSTER_PROFILE_FIELDS = new ArrayList<>();
 
     static {
-        FIELDS.add(GO_SERVER_URL);
-        FIELDS.add(API_USER);
-        FIELDS.add(API_KEY);
-        FIELDS.add(API_URL);
-        FIELDS.add(AUTO_REGISTER_TIMEOUT);
+        CLUSTER_PROFILE_FIELDS.add(GO_SERVER_URL);
+        CLUSTER_PROFILE_FIELDS.add(API_USER);
+        CLUSTER_PROFILE_FIELDS.add(API_KEY);
+        CLUSTER_PROFILE_FIELDS.add(API_URL);
+        CLUSTER_PROFILE_FIELDS.add(AUTO_REGISTER_TIMEOUT);
     }
 
     @Override
 
     public GoPluginApiResponse execute() throws Exception {
-        return new DefaultGoPluginApiResponse(200, GSON.toJson(FIELDS));
+        return new DefaultGoPluginApiResponse(200, GSON.toJson(CLUSTER_PROFILE_FIELDS));
     }
 }
