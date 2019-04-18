@@ -23,6 +23,8 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.joda.time.Period;
 
+import java.util.Map;
+
 // TODO: Implement any settings that your plugin needs
 public class ClusterProfileProperties {
     public static final Gson GSON = new GsonBuilder()
@@ -66,6 +68,10 @@ public class ClusterProfileProperties {
 
     public static ClusterProfileProperties fromJSON(String json) {
         return GSON.fromJson(json, ClusterProfileProperties.class);
+    }
+
+    public static ClusterProfileProperties fromConfiguration(Map<String, String> clusterProfileProperties) {
+        return GSON.fromJson(GSON.toJson(clusterProfileProperties), ClusterProfileProperties.class);
     }
 
     @Override

@@ -96,11 +96,11 @@ public interface AgentInstances<T> {
 
     /**
      * Get the status report from the agents
-     * @param pluginSettings the plugin settings object
+     * @param clusterProfileProperties the cluster properties object
      * @return A StatusReport object
      * @throws Exception
      */
-    StatusReport getStatusReport(PluginSettings pluginSettings) throws Exception;
+    StatusReport getStatusReport(ClusterProfileProperties clusterProfileProperties) throws Exception;
 
     /**
      * Get the status report of an agent instance

@@ -101,6 +101,12 @@ public class ExamplePlugin implements GoPlugin {
                     refreshInstancesForCluster(agentStatusReportRequest.clusterProperties());
                     return agentStatusReportRequest.executor(getAgentInstancesForCluster(agentStatusReportRequest.clusterProperties()), ViewBuilder.instance()).execute();
 
+                case REQUEST_CLUSTER_STATUS_REPORT:
+                    ClusterStatusReportRequest clusterStatusReportRequest = ClusterStatusReportRequest.fromJSON(request.requestBody());
+                    clusterProfileProperties = clusterStatusReportRequest.getClusterProfile();
+                    refreshInstancesForCluster(clusterProfileProperties);
+                    return clusterStatusReportRequest.executor(clusterSpecificAgentInstances.get(clusterProfileProperties.uuid())).execute();
+
                 //todo last
                 case REQUEST_PLUGIN_STATUS_REPORT:
                     refreshInstances();
