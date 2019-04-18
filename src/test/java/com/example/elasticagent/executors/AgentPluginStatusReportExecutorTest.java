@@ -38,15 +38,18 @@ public class AgentPluginStatusReportExecutorTest {
     @Test
     public void shouldGetAgentStatusReportWithElasticAgentId() throws Exception {
         String agentId = "elastic-agent-id";
-        AgentStatusReportRequest agentStatusReportRequest = new AgentStatusReportRequest(agentId, null);
+        //todo this
+        AgentStatusReportRequest agentStatusReportRequest = new AgentStatusReportRequest(agentId, null, null);
         AgentStatusReport agentStatusReport = new AgentStatusReport(null, agentId, null);
         when(pluginRequest.getPluginSettings()).thenReturn(pluginSettings);
         ExampleInstance agentInstance = new ExampleInstance("name", new Date(), new HashMap<>(), null, new JobIdentifier());
         when(agentInstances.find(agentId)).thenReturn(agentInstance);
-        when(agentInstances.getAgentStatusReport(pluginSettings, agentInstance)).thenReturn(agentStatusReport);
+        //todo fix following
+        when(agentInstances.getAgentStatusReport(null, agentInstance)).thenReturn(agentStatusReport);
         when(viewBuilder.build("status-report-template", agentStatusReport)).thenReturn("agentStatusReportView");
 
-        GoPluginApiResponse goPluginApiResponse = new AgentStatusReportExecutor(agentStatusReportRequest, pluginRequest, agentInstances, viewBuilder)
+        //todo fix following
+        GoPluginApiResponse goPluginApiResponse = new AgentStatusReportExecutor(agentStatusReportRequest, agentInstances, viewBuilder)
                 .execute();
 
         JsonObject expectedResponseBody = new JsonObject();
@@ -58,15 +61,16 @@ public class AgentPluginStatusReportExecutorTest {
     @Test
     public void shouldGetAgentStatusReportWithJobIdentifier() throws Exception {
         JobIdentifier jobIdentifier = new JobIdentifier("up42", 2L, "label", "stage1", "1", "job", 1L);
-        AgentStatusReportRequest agentStatusReportRequest = new AgentStatusReportRequest(null, jobIdentifier);
+        AgentStatusReportRequest agentStatusReportRequest = new AgentStatusReportRequest(null, jobIdentifier, null);
         AgentStatusReport agentStatusReport = new AgentStatusReport(jobIdentifier, "elastic-agent-id", null);
         when(pluginRequest.getPluginSettings()).thenReturn(pluginSettings);
         ExampleInstance instance = new ExampleInstance("name", new Date(), new HashMap<>(), null, new JobIdentifier());
         when(agentInstances.find(jobIdentifier)).thenReturn(instance);
-        when(agentInstances.getAgentStatusReport(pluginSettings, instance)).thenReturn(agentStatusReport);
+        //todo fix following
+        when(agentInstances.getAgentStatusReport(null, instance)).thenReturn(agentStatusReport);
         when(viewBuilder.build("status-report-template", agentStatusReport)).thenReturn("agentStatusReportView");
 
-        GoPluginApiResponse goPluginApiResponse = new AgentStatusReportExecutor(agentStatusReportRequest, pluginRequest, agentInstances, viewBuilder)
+        GoPluginApiResponse goPluginApiResponse = new AgentStatusReportExecutor(agentStatusReportRequest, agentInstances, viewBuilder)
                 .execute();
 
         JsonObject expectedResponseBody = new JsonObject();
@@ -79,12 +83,12 @@ public class AgentPluginStatusReportExecutorTest {
     public void shouldRenderContainerNotFoundAgentStatusReportViewWhenNoContainerIsRunningForProvidedJobIdentifier() throws Exception {
         JobIdentifier jobIdentifier = new JobIdentifier("up42", 2L, "label", "stage1", "1", "job", 1L);
 
-        AgentStatusReportRequest agentStatusReportRequest = new AgentStatusReportRequest(null, jobIdentifier);
+        AgentStatusReportRequest agentStatusReportRequest = new AgentStatusReportRequest(null, jobIdentifier, null);
 
         when(agentInstances.find(jobIdentifier)).thenReturn(null);
         when(viewBuilder.build("not-running-template")).thenReturn("errorView");
 
-        GoPluginApiResponse goPluginApiResponse = new AgentStatusReportExecutor(agentStatusReportRequest, pluginRequest, agentInstances, viewBuilder)
+        GoPluginApiResponse goPluginApiResponse = new AgentStatusReportExecutor(agentStatusReportRequest, agentInstances, viewBuilder)
                 .execute();
 
         JsonObject expectedResponseBody = new JsonObject();
@@ -96,12 +100,12 @@ public class AgentPluginStatusReportExecutorTest {
     @Test
     public void shouldRenderContainerNotFoundAgentStatusReportViewWhenNoContainerIsRunningForProvidedElasticAgentId() throws Exception {
         String elasticAgentId = "elastic-agent-id";
-        AgentStatusReportRequest agentStatusReportRequest = new AgentStatusReportRequest(elasticAgentId, null);
+        AgentStatusReportRequest agentStatusReportRequest = new AgentStatusReportRequest(elasticAgentId, null, null);
 
         when(agentInstances.find(elasticAgentId)).thenReturn(null);
         when(viewBuilder.build("not-running-template")).thenReturn("errorView");
 
-        GoPluginApiResponse goPluginApiResponse = new AgentStatusReportExecutor(agentStatusReportRequest, pluginRequest, agentInstances, viewBuilder)
+        GoPluginApiResponse goPluginApiResponse = new AgentStatusReportExecutor(agentStatusReportRequest, agentInstances, viewBuilder)
                 .execute();
 
         JsonObject expectedResponseBody = new JsonObject();

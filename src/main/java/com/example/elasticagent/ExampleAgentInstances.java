@@ -138,7 +138,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     }
 
     @Override
-    public AgentStatusReport getAgentStatusReport(PluginSettings pluginSettings, ExampleInstance agentInstance) {
+    public AgentStatusReport getAgentStatusReport(ClusterProfileProperties pluginSettings, ExampleInstance agentInstance) {
         // TODO: Implement me!
         // TODO: Read status information about agent instance from the cloud provider
 //        return new AgentStatusReport(null, null, null)

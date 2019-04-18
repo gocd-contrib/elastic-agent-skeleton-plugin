@@ -16,14 +16,12 @@ import org.apache.commons.lang3.StringUtils;
 public class AgentStatusReportExecutor {
     private static final Logger LOG = Logger.getLoggerFor(AgentStatusReportExecutor.class);
     private final AgentStatusReportRequest request;
-    private final PluginRequest pluginRequest;
     private final AgentInstances<ExampleInstance> agentInstances;
     private final ViewBuilder viewBuilder;
 
-    public AgentStatusReportExecutor(AgentStatusReportRequest request, PluginRequest pluginRequest,
+    public AgentStatusReportExecutor(AgentStatusReportRequest request,
                                      AgentInstances<ExampleInstance> agentInstances, ViewBuilder viewBuilder) {
         this.request = request;
-        this.pluginRequest = pluginRequest;
         this.agentInstances = agentInstances;
         this.viewBuilder = viewBuilder;
     }
@@ -48,7 +46,7 @@ public class AgentStatusReportExecutor {
     private GoPluginApiResponse getStatusReportUsingJobIdentifier(JobIdentifier jobIdentifier) throws Exception {
         ExampleInstance agentInstance = agentInstances.find(jobIdentifier);
         if (agentInstance != null) {
-            AgentStatusReport agentStatusReport = agentInstances.getAgentStatusReport(pluginRequest.getPluginSettings(), agentInstance);
+            AgentStatusReport agentStatusReport = agentInstances.getAgentStatusReport(request.clusterProperties(), agentInstance);
             final String statusReportView = viewBuilder.build("status-report-template", agentStatusReport);
             return constructResponseForReport(statusReportView);
         }
@@ -58,7 +56,7 @@ public class AgentStatusReportExecutor {
     private GoPluginApiResponse getStatusReportUsingElasticAgentId(String elasticAgentId) throws Exception {
         ExampleInstance agentInstance = agentInstances.find(elasticAgentId);
         if (agentInstance != null) {
-            AgentStatusReport agentStatusReport = agentInstances.getAgentStatusReport(pluginRequest.getPluginSettings(), agentInstance);
+            AgentStatusReport agentStatusReport = agentInstances.getAgentStatusReport(request.clusterProperties(), agentInstance);
             final String statusReportView = viewBuilder.build("status-report-template", agentStatusReport);
             return constructResponseForReport(statusReportView);
         }

@@ -104,10 +104,10 @@ public interface AgentInstances<T> {
 
     /**
      * Get the status report of an agent instance
-     * @param pluginSettings The plugin settings object
+     * @param clusterProfileProperties The cluster profile properties object
      * @param agentInstance The agent instance
      * @return An AgentStatusReport object
      */
-    AgentStatusReport getAgentStatusReport(PluginSettings pluginSettings, T agentInstance);
+    AgentStatusReport getAgentStatusReport(ClusterProfileProperties clusterProfileProperties, T agentInstance);
 }
 
