@@ -107,6 +107,12 @@ public class ExamplePlugin implements GoPlugin {
                     refreshInstancesForCluster(clusterProfileProperties);
                     return clusterStatusReportRequest.executor(clusterSpecificAgentInstances.get(clusterProfileProperties.uuid())).execute();
 
+                case REQUEST_GET_CLUSTER_PROFILE_METADATA: return new GetClusterProfileMetadataExecutor().execute();
+                case REQUEST_GET_CLUSTER_PROFILE_VIEW: throw new UnsupportedOperationException();
+                case REQUEST_VALIDATE_CLUSTER_PROFILE: throw new UnsupportedOperationException();
+                case REQUEST_CLUSTER_PROFILE_CHANGED: throw new UnsupportedOperationException();
+                case REQUEST_MIGRATE_CONFIGURATION: throw new UnsupportedOperationException();
+
                 //todo last
                 case REQUEST_PLUGIN_STATUS_REPORT:
                     refreshInstances();
