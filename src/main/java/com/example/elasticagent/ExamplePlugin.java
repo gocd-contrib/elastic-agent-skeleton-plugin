@@ -93,14 +93,15 @@ public class ExamplePlugin implements GoPlugin {
                     refreshInstancesForCluster(jobCompletionRequest.clusterProperties());
 
                     return jobCompletionRequest.executor(getAgentInstancesForCluster(clusterProfileProperties)).execute();
+                case REQUEST_CAPABILITIES:
+                    return new GetCapabilitiesExecutor().execute();
+
                 case REQUEST_PLUGIN_STATUS_REPORT:
                     refreshInstances();
 //                    return new PluginStatusReportExecutor(pluginRequest, agentInstances, ViewBuilder.instance()).execute();
                 case REQUEST_AGENT_STATUS_REPORT:
                     refreshInstances();
                     return AgentStatusReportRequest.fromJSON(request.requestBody()).executor(pluginRequest, agentInstances, ViewBuilder.instance()).execute();
-                case REQUEST_CAPABILITIES:
-                    return new GetCapabilitiesExecutor().execute();
                 default:
                     throw new UnhandledRequestTypeException(request.requestName());
             }

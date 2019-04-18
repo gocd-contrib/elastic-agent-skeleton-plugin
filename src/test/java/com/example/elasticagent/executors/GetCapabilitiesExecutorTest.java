@@ -7,6 +7,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 public class GetCapabilitiesExecutorTest {
 
@@ -15,8 +16,10 @@ public class GetCapabilitiesExecutorTest {
         GoPluginApiResponse response = new GetCapabilitiesExecutor().execute();
 
         assertThat(response.responseCode(), is(200));
-        JSONObject expected = new JSONObject().put("supports_status_report", true);
-        expected.put("supports_agent_status_report", true);
-        JSONAssert.assertEquals(expected, new JSONObject(response.responseBody()), true);
+        JSONObject expected = new JSONObject()
+                .put("supports_plugin_status_report", true)
+                .put("supports_agent_status_report", true)
+                .put("supports_cluster_status_report", true);
+        assertEquals(expected, new JSONObject(response.responseBody()), true);
     }
 }
