@@ -45,7 +45,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     }
 
     @Override
-    public void terminate(String agentId, ClusterProfile clusterProperties) throws Exception {
+    public void terminate(String agentId, ClusterProfile clusterProfile) throws Exception {
         // TODO: Implement me!
 //        throw new UnsupportedOperationException();
 
@@ -60,24 +60,24 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     }
 
     @Override
-    public void terminateUnregisteredInstances(ClusterProfile clusterProperties, Agents agents) throws Exception {
+    public void terminateUnregisteredInstances(ClusterProfile clusterProfile, Agents agents) throws Exception {
         // TODO: Implement me!
 //        throw new UnsupportedOperationException();
 
-        ExampleAgentInstances toTerminate = unregisteredAfterTimeout(clusterProperties, agents);
+        ExampleAgentInstances toTerminate = unregisteredAfterTimeout(clusterProfile, agents);
         if (toTerminate.instances.isEmpty()) {
             return;
         }
 
         LOG.warn("Terminating instances that did not register " + toTerminate.instances.keySet());
         for (ExampleInstance container : toTerminate.instances.values()) {
-            terminate(container.name(), clusterProperties);
+            terminate(container.name(), clusterProfile);
         }
     }
 
     @Override
     // TODO: Implement me!
-    public Agents instancesCreatedAfterTimeout(ClusterProfile clusterProperties, Agents agents) {
+    public Agents instancesCreatedAfterTimeout(ClusterProfile clusterProfile, Agents agents) {
         ArrayList<Agent> oldAgents = new ArrayList<>();
         for (Agent agent : agents.agents()) {
             ExampleInstance instance = instances.get(agent.elasticAgentId());
@@ -85,7 +85,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
                 continue;
             }
 
-            if (clock.now().isAfter(instance.createdAt().plus(clusterProperties.getAutoRegisterPeriod()))) {
+            if (clock.now().isAfter(instance.createdAt().plus(clusterProfile.getAutoRegisterPeriod()))) {
                 oldAgents.add(agent);
             }
         }

@@ -49,23 +49,23 @@ public interface AgentInstances<T> {
     /**
      * This message is sent from the {@link com.example.elasticagent.executors.ServerPingRequestExecutor}
      * to terminate instances that did not register with the server after a timeout. The timeout may be configurable and
-     * set via the {@link PluginSettings} instance that is passed in.
+     * set via the {@link ClusterProfile} instance that is passed in.
      *
-     * @param settings the plugin settings object
+     * @param clusterProfile the plugin clusterProfile object
      * @param agents   the list of all the agents
      */
-    void terminateUnregisteredInstances(ClusterProfile settings, Agents agents) throws Exception;
+    void terminateUnregisteredInstances(ClusterProfile clusterProfile, Agents agents) throws Exception;
 
     /**
      * This message is sent from the {@link com.example.elasticagent.executors.ServerPingRequestExecutor}
      * to filter out any new agents, that have registered before the timeout period. The timeout may be configurable and
-     * set via the {@link PluginSettings} instance that is passed in.
+     * set via the {@link ClusterProfile} instance that is passed in.
      *
-     * @param settings the plugin settings object
+     * @param clusterProfile the plugin clusterProfile object
      * @param agents   the list of all the agents
-     * @return a list of agent instances which were created after {@link PluginSettings#getAutoRegisterPeriod()} ago.
+     * @return a list of agent instances which were created after {@link ClusterProfile#getAutoRegisterPeriod()} ago.
      */
-    Agents instancesCreatedAfterTimeout(ClusterProfile settings, Agents agents);
+    Agents instancesCreatedAfterTimeout(ClusterProfile clusterProfile, Agents agents);
 
     /**
      * This message is sent after plugin initialization time so that the plugin may connect to the cloud provider
@@ -76,8 +76,6 @@ public interface AgentInstances<T> {
      * @param clusterProfile the cluster profile properties
      */
     void refreshAll(ClusterProfile clusterProfile) throws Exception;
-
-    void refreshAll(PluginRequest clusterProfile) throws Exception;
 
     /**
      * This
