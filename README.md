@@ -10,9 +10,9 @@ All the documentation is hosted at https://plugin-api.gocd.io/current/elastic-ag
 
 * Edit the file `build.gradle`
 * Edit the file `settings.gradle`
-* Edit the `GetPluginConfigurationExecutor.java` class to add any configuration fields that should be shown in the view.
-* Edit the `plugin-settings.template.html` file which contains the view for the plugin settings page of your plugin.
-* Edit the `PluginSettings.java` file which contains the model for your settings.
+* Edit the `GetClusterProfileMetadataExecutor.java` class to add any configuration fields that should be shown in the view.
+* Edit the `cluster-profile.template.html` file which contains the view for the plugin settings page of your plugin.
+* Edit the `ClusterProfile.java` file which contains the model for your cluster profile properties.
 * Implement the `ExampleAgentInstances.java` class to get a really basic elastic agent plugin working.
 
 ## Building the code base

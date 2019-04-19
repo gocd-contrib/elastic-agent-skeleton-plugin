@@ -24,7 +24,7 @@ version = '0.2-SNAPSHOT'
 project.ext.pluginDesc = [
     id         : 'com.example.elasticagent.foocloud',
     version    : project.version,
-    goCdVersion: '18.2.0',
+    goCdVersion: '19.3.0',
     name       : 'Example Elastic Agent Plugin',
     description: 'Some longer description of your plugin goes here',
     vendorName : 'Acme Corp',
