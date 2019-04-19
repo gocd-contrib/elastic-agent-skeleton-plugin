@@ -1,9 +1,6 @@
 package com.example.elasticagent.executors;
 
-import com.example.elasticagent.AgentInstances;
-import com.example.elasticagent.ExampleInstance;
-import com.example.elasticagent.PluginRequest;
-import com.example.elasticagent.PluginSettings;
+import com.example.elasticagent.*;
 import com.example.elasticagent.models.AgentStatusReport;
 import com.example.elasticagent.models.JobIdentifier;
 import com.example.elasticagent.requests.AgentStatusReportRequest;
@@ -12,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -21,15 +19,12 @@ import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class AgentPluginStatusReportExecutorTest {
-
-    @Mock
-    private PluginRequest pluginRequest;
-    @Mock
-    private PluginSettings pluginSettings;
     @Mock
     private AgentInstances<ExampleInstance> agentInstances;
     @Mock
@@ -38,18 +33,15 @@ public class AgentPluginStatusReportExecutorTest {
     @Test
     public void shouldGetAgentStatusReportWithElasticAgentId() throws Exception {
         String agentId = "elastic-agent-id";
-        //todo this
-        AgentStatusReportRequest agentStatusReportRequest = new AgentStatusReportRequest(agentId, null, null);
+        AgentStatusReportRequest request = new AgentStatusReportRequest(agentId, null, new ClusterProfile());
         AgentStatusReport agentStatusReport = new AgentStatusReport(null, agentId, null);
-        when(pluginRequest.getPluginSettings()).thenReturn(pluginSettings);
+
         ExampleInstance agentInstance = new ExampleInstance("name", new Date(), new HashMap<>(), null, new JobIdentifier());
         when(agentInstances.find(agentId)).thenReturn(agentInstance);
-        //todo fix following
-        when(agentInstances.getAgentStatusReport(null, agentInstance)).thenReturn(agentStatusReport);
+        when(agentInstances.getAgentStatusReport(request.clusterProperties(), agentInstance)).thenReturn(agentStatusReport);
         when(viewBuilder.build("status-report-template", agentStatusReport)).thenReturn("agentStatusReportView");
 
-        //todo fix following
-        GoPluginApiResponse goPluginApiResponse = new AgentStatusReportExecutor(agentStatusReportRequest, agentInstances, viewBuilder)
+        GoPluginApiResponse goPluginApiResponse = new AgentStatusReportExecutor(request, agentInstances, viewBuilder)
                 .execute();
 
         JsonObject expectedResponseBody = new JsonObject();
@@ -61,16 +53,15 @@ public class AgentPluginStatusReportExecutorTest {
     @Test
     public void shouldGetAgentStatusReportWithJobIdentifier() throws Exception {
         JobIdentifier jobIdentifier = new JobIdentifier("up42", 2L, "label", "stage1", "1", "job", 1L);
-        AgentStatusReportRequest agentStatusReportRequest = new AgentStatusReportRequest(null, jobIdentifier, null);
+        AgentStatusReportRequest request = new AgentStatusReportRequest(null, jobIdentifier, new ClusterProfile());
         AgentStatusReport agentStatusReport = new AgentStatusReport(jobIdentifier, "elastic-agent-id", null);
-        when(pluginRequest.getPluginSettings()).thenReturn(pluginSettings);
         ExampleInstance instance = new ExampleInstance("name", new Date(), new HashMap<>(), null, new JobIdentifier());
+
         when(agentInstances.find(jobIdentifier)).thenReturn(instance);
-        //todo fix following
-        when(agentInstances.getAgentStatusReport(null, instance)).thenReturn(agentStatusReport);
+        when(agentInstances.getAgentStatusReport(request.clusterProperties(), instance)).thenReturn(agentStatusReport);
         when(viewBuilder.build("status-report-template", agentStatusReport)).thenReturn("agentStatusReportView");
 
-        GoPluginApiResponse goPluginApiResponse = new AgentStatusReportExecutor(agentStatusReportRequest, agentInstances, viewBuilder)
+        GoPluginApiResponse goPluginApiResponse = new AgentStatusReportExecutor(request, agentInstances, viewBuilder)
                 .execute();
 
         JsonObject expectedResponseBody = new JsonObject();

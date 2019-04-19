@@ -29,7 +29,7 @@ public class ServerPingRequestTest {
         String json = "{\n" +
                 "  \"all_cluster_profile_properties\": [{\n" +
                 "    \"go_server_url\": \"https://localhost:8154/go\",\n" +
-                "    \"auto_register_timeout\": \"20m\",\n" +
+                "    \"auto_register_timeout\": \"20\",\n" +
                 "    \"api_user\": \"test\",\n" +
                 "    \"api_key\": \"test-api-key\",\n" +
                 "    \"api_url\": \"https://aws.api.com/api\"\n" +
@@ -38,8 +38,8 @@ public class ServerPingRequestTest {
 
         ClusterProfile clusterProfile = new ClusterProfile(
                 "https://localhost:8154/go",
-                "20m",
-                "test1",
+                "20",
+                "test",
                 "test-api-key",
                 "https://aws.api.com/api",
                 null

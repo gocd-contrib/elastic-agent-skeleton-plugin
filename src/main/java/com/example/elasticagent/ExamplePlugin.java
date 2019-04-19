@@ -83,10 +83,13 @@ public class ExamplePlugin implements GoPlugin {
 
                 case REQUEST_GET_ELASTIC_AGENT_PROFILE_METADATA:
                     return new GetProfileMetadataExecutor().execute();
+
                 case REQUEST_GET_ELASTIC_AGENT_PROFILE_VIEW:
                     return new GetProfileViewExecutor().execute();
+
                 case REQUEST_VALIDATE_ELASTIC_AGENT_PROFILE:
                     return ValidateElasticAgentProfileRequest.fromJSON(request.requestBody()).executor().execute();
+
                 case REQUEST_JOB_COMPLETION:
                     JobCompletionRequest jobCompletionRequest = JobCompletionRequest.fromJSON(request.requestBody());
                     ClusterProfile clusterProfileProperties = jobCompletionRequest.clusterProperties();
@@ -99,24 +102,36 @@ public class ExamplePlugin implements GoPlugin {
                 case REQUEST_AGENT_STATUS_REPORT:
                     AgentStatusReportRequest agentStatusReportRequest = AgentStatusReportRequest.fromJSON(request.requestBody());
                     refreshInstancesForCluster(agentStatusReportRequest.clusterProperties());
+
                     return agentStatusReportRequest.executor(getAgentInstancesForCluster(agentStatusReportRequest.clusterProperties()), ViewBuilder.instance()).execute();
 
                 case REQUEST_CLUSTER_STATUS_REPORT:
                     ClusterStatusReportRequest clusterStatusReportRequest = ClusterStatusReportRequest.fromJSON(request.requestBody());
                     clusterProfileProperties = clusterStatusReportRequest.getClusterProfile();
                     refreshInstancesForCluster(clusterProfileProperties);
-                    return clusterStatusReportRequest.executor(clusterSpecificAgentInstances.get(clusterProfileProperties.uuid())).execute();
 
-                case REQUEST_GET_CLUSTER_PROFILE_METADATA: return new GetClusterProfileMetadataExecutor().execute();
-                case REQUEST_GET_CLUSTER_PROFILE_VIEW: return new GetClusterProfileViewRequestExecutor().execute();
-                case REQUEST_VALIDATE_CLUSTER_PROFILE: return ClusterProfileValidateRequest.fromJSON(request.requestBody()).executor().execute();
-                case REQUEST_CLUSTER_PROFILE_CHANGED: return ClusterProfileChangedRequest.fromJSON(request.requestBody()).executor(clusterSpecificAgentInstances).execute();
-                case REQUEST_MIGRATE_CONFIGURATION: return MigrateConfigPayload.fromJSON(request.requestBody()).executor(clusterSpecificAgentInstances).execute();
+                    return clusterStatusReportRequest.executor(clusterSpecificAgentInstances.get(clusterProfileProperties.uuid())).execute();
 
                 case REQUEST_PLUGIN_STATUS_REPORT:
                     PluginStatusReportRequest pluginStatusReportRequest = PluginStatusReportRequest.fromJSON(request.requestBody());
                     refreshInstancesForAllClusters(pluginStatusReportRequest.allClusterProfileProperties());
                     return pluginStatusReportRequest.executor(clusterSpecificAgentInstances, ViewBuilder.instance()).execute();
+
+                case REQUEST_GET_CLUSTER_PROFILE_METADATA:
+                    return new GetClusterProfileMetadataExecutor().execute();
+
+                case REQUEST_GET_CLUSTER_PROFILE_VIEW:
+                    return new GetClusterProfileViewRequestExecutor().execute();
+
+                case REQUEST_VALIDATE_CLUSTER_PROFILE:
+                    return ClusterProfileValidateRequest.fromJSON(request.requestBody()).executor().execute();
+
+                case REQUEST_CLUSTER_PROFILE_CHANGED:
+                    return ClusterProfileChangedRequest.fromJSON(request.requestBody()).executor(clusterSpecificAgentInstances).execute();
+
+                case REQUEST_MIGRATE_CONFIGURATION:
+                    return MigrateConfigPayload.fromJSON(request.requestBody()).executor(clusterSpecificAgentInstances).execute();
+
                 default:
                     throw new UnhandledRequestTypeException(request.requestName());
             }
@@ -140,5 +155,4 @@ public class ExamplePlugin implements GoPlugin {
     private AgentInstances getAgentInstancesForCluster(ClusterProfile clusterProfileProperties) {
         return clusterSpecificAgentInstances.get(clusterProfileProperties.uuid());
     }
-
 }

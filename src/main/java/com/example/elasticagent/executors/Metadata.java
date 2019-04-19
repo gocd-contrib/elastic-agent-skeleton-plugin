@@ -26,6 +26,7 @@ import java.util.Map;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class Metadata {
+    protected final String displayName;
 
     @Expose
     @SerializedName("key")
@@ -35,17 +36,18 @@ public class Metadata {
     @SerializedName("metadata")
     private ProfileMetadata metadata;
 
-    public Metadata(String key, boolean required, boolean secure) {
-        this(key, new ProfileMetadata(required, secure));
+    public Metadata(String key, String displayName, boolean required, boolean secure) {
+        this(key, displayName, new ProfileMetadata(required, secure));
     }
 
     public Metadata(String key) {
-        this(key, new ProfileMetadata(false, false));
+        this(key, key, new ProfileMetadata(false, false));
     }
 
-    public Metadata(String key, ProfileMetadata metadata) {
+    public Metadata(String key, String displayName, ProfileMetadata metadata) {
         this.key = key;
         this.metadata = metadata;
+        this.displayName = displayName;
     }
 
     public Map<String, String> validate(String input) {
@@ -61,7 +63,7 @@ public class Metadata {
     protected String doValidate(String input) {
         if (isRequired()) {
             if (StringUtils.isBlank(input)) {
-                return this.key + " must not be blank.";
+                return this.displayName + " must not be blank.";
             }
         }
         return null;

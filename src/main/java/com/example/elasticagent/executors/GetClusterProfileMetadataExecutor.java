@@ -10,11 +10,11 @@ import java.util.List;
 import static com.example.elasticagent.PluginSettings.GSON;
 
 public class GetClusterProfileMetadataExecutor implements RequestExecutor {
-    public static final Metadata GO_SERVER_URL = new Metadata("go_server_url", false, false);
-    public static final Metadata API_USER = new Metadata("api_user", false, false);
-    public static final Metadata API_KEY = new Metadata("api_key", false, false);
-    public static final Metadata API_URL = new Metadata("api_url", false, false);
-    public static final Metadata AUTO_REGISTER_TIMEOUT = new Metadata("auto_register_timeout", true, false);
+    public static final Metadata GO_SERVER_URL = new Metadata("go_server_url", "Go Server URL", true, false);
+    public static final Metadata API_USER = new Metadata("api_user", "API User", true, false);
+    public static final Metadata API_KEY = new Metadata("api_key", "API Key", true, false);
+    public static final Metadata API_URL = new Metadata("api_url", "API URL", true, false);
+    public static final Metadata AUTO_REGISTER_TIMEOUT = new NumberMetadata("auto_register_timeout", "Agent auto-register Timeout (in minutes)", true);
 
 
     public static final List<Metadata> CLUSTER_PROFILE_FIELDS = new ArrayList<>();

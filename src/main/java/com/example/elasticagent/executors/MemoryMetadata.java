@@ -28,7 +28,7 @@ import java.util.List;
 public class MemoryMetadata extends Metadata {
 
     public MemoryMetadata(String key, boolean required) {
-        super(key, required, false);
+        super(key, key, required, false);
     }
 
     @Override

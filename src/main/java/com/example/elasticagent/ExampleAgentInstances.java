@@ -94,11 +94,6 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
 
     @Override
     public void refreshAll(ClusterProfile clusterProfileProperties) throws Exception {
-
-    }
-
-    @Override
-    public void refreshAll(PluginRequest pluginRequest) throws Exception {
         // TODO: Implement me!
         throw new UnsupportedOperationException();
 
