@@ -27,18 +27,18 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GetProfileMetadataExecutorTest {
+public class GetElasticAgentProfileMetadataExecutorTest {
 
     @Test
     public void shouldSerializeAllFields() throws Exception {
-        GoPluginApiResponse response = new GetProfileMetadataExecutor().execute();
+        GoPluginApiResponse response = new GetElasticAgentProfileMetadataExecutor().execute();
         List list = new Gson().fromJson(response.responseBody(), List.class);
-        assertEquals(list.size(), GetProfileMetadataExecutor.FIELDS.size());
+        assertEquals(list.size(), GetElasticAgentProfileMetadataExecutor.FIELDS.size());
     }
 
     @Test
     public void assertJsonStructure() throws Exception {
-        GoPluginApiResponse response = new GetProfileMetadataExecutor().execute();
+        GoPluginApiResponse response = new GetElasticAgentProfileMetadataExecutor().execute();
 
         assertThat(response.responseCode(), is(200));
         String expectedJSON = "[\n" +

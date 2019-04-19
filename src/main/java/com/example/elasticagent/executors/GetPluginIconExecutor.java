@@ -24,7 +24,7 @@ import com.google.gson.JsonObject;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
-public class GetPluginSettingsIconExecutor implements RequestExecutor {
+public class GetPluginIconExecutor implements RequestExecutor {
     private static final Gson GSON = new Gson();
 
     @Override

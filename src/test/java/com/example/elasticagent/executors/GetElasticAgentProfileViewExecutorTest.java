@@ -27,10 +27,10 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class GetProfileViewExecutorTest {
+public class GetElasticAgentProfileViewExecutorTest {
     @Test
     public void shouldRenderTheTemplateInJSON() throws Exception {
-        GoPluginApiResponse response = new GetProfileViewExecutor().execute();
+        GoPluginApiResponse response = new GetElasticAgentProfileViewExecutor().execute();
         assertThat(response.responseCode(), is(200));
         Map<String, String> hashSet = new Gson().fromJson(response.responseBody(), HashMap.class);
         assertThat(hashSet, hasEntry("template", Util.readResource("/profile.template.html")));
@@ -40,7 +40,7 @@ public class GetProfileViewExecutorTest {
     public void allFieldsShouldBePresentInView() throws Exception {
         String template = Util.readResource("/profile.template.html");
 
-        for (Metadata field : GetProfileMetadataExecutor.FIELDS) {
+        for (Metadata field : GetElasticAgentProfileMetadataExecutor.FIELDS) {
             assertThat(template, containsString("ng-model=\"" + field.getKey() + "\""));
             assertThat(template, containsString("<span class=\"form_error form-error\" ng-class=\"{'is-visible': GOINPUTNAME[" +
                     field.getKey() + "].$error.server}\" ng-show=\"GOINPUTNAME[" +

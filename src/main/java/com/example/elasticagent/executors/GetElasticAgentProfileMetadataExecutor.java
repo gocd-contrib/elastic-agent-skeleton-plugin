@@ -25,7 +25,7 @@ import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetProfileMetadataExecutor implements RequestExecutor {
+public class GetElasticAgentProfileMetadataExecutor implements RequestExecutor {
     private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
     public static final Metadata IMAGE = new Metadata("Image", "Image", true, false);

@@ -63,7 +63,7 @@ public class ExamplePlugin implements GoPlugin {
         try {
             switch (Request.fromString(request.requestName())) {
                 case REQUEST_GET_ICON:
-                    return new GetPluginSettingsIconExecutor().execute();
+                    return new GetPluginIconExecutor().execute();
 
                 case REQUEST_SHOULD_ASSIGN_WORK:
                     ShouldAssignWorkRequest shouldAssignWorkRequest = ShouldAssignWorkRequest.fromJSON(request.requestBody());
@@ -85,10 +85,10 @@ public class ExamplePlugin implements GoPlugin {
                     return serverPingRequest.executor(clusterSpecificAgentInstances, pluginRequest).execute();
 
                 case REQUEST_GET_ELASTIC_AGENT_PROFILE_METADATA:
-                    return new GetProfileMetadataExecutor().execute();
+                    return new GetElasticAgentProfileMetadataExecutor().execute();
 
                 case REQUEST_GET_ELASTIC_AGENT_PROFILE_VIEW:
-                    return new GetProfileViewExecutor().execute();
+                    return new GetElasticAgentProfileViewExecutor().execute();
 
                 case REQUEST_VALIDATE_ELASTIC_AGENT_PROFILE:
                     return ValidateElasticAgentProfileRequest.fromJSON(request.requestBody()).executor().execute();

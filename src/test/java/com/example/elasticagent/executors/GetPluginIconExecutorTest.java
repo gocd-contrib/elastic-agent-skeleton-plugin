@@ -29,11 +29,11 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class GetPluginSettingsIconExecutorTest {
+public class GetPluginIconExecutorTest {
 
     @Test
     public void rendersIconInBase64() throws Exception {
-        GoPluginApiResponse response = new GetPluginSettingsIconExecutor().execute();
+        GoPluginApiResponse response = new GetPluginIconExecutor().execute();
         Type type = new TypeToken<Map<String, String>>() {
         }.getType();
         Map<String, String> map = new Gson().fromJson(response.responseBody(),

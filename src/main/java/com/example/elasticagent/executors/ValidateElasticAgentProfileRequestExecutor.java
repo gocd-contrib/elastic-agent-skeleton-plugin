@@ -38,7 +38,7 @@ public class ValidateElasticAgentProfileRequestExecutor implements RequestExecut
 
         List<String> knownFields = new ArrayList<>();
 
-        for (Metadata field : GetProfileMetadataExecutor.FIELDS) {
+        for (Metadata field : GetElasticAgentProfileMetadataExecutor.FIELDS) {
             knownFields.add(field.getKey());
 
             Map<String, String> validationError = field.validate(request.getProperties().get(field.getKey()));
