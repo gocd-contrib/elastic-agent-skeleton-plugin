@@ -21,10 +21,10 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class ClusterProfilePropertiesTest {
+public class ClusterProfileTest {
     @Test
     public void shouldDeserializeFromJSON() throws Exception {
-        ClusterProfileProperties pluginSettings = ClusterProfileProperties.fromJSON("{" +
+        ClusterProfile pluginSettings = ClusterProfile.fromJSON("{" +
                 "\"api_user\": \"bob\", " +
                 "\"api_key\": \"p@ssw0rd\", " +
                 "\"api_url\": \"https://cloud.example.com/api/v1\" " +

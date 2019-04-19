@@ -89,7 +89,7 @@ public class ExamplePlugin implements GoPlugin {
                     return ValidateElasticAgentProfileRequest.fromJSON(request.requestBody()).executor().execute();
                 case REQUEST_JOB_COMPLETION:
                     JobCompletionRequest jobCompletionRequest = JobCompletionRequest.fromJSON(request.requestBody());
-                    ClusterProfileProperties clusterProfileProperties = jobCompletionRequest.clusterProperties();
+                    ClusterProfile clusterProfileProperties = jobCompletionRequest.clusterProperties();
                     refreshInstancesForCluster(jobCompletionRequest.clusterProperties());
 
                     return jobCompletionRequest.executor(getAgentInstancesForCluster(clusterProfileProperties)).execute();
@@ -111,8 +111,7 @@ public class ExamplePlugin implements GoPlugin {
                 case REQUEST_GET_CLUSTER_PROFILE_VIEW: return new GetClusterProfileViewRequestExecutor().execute();
                 case REQUEST_VALIDATE_CLUSTER_PROFILE: return ClusterProfileValidateRequest.fromJSON(request.requestBody()).executor().execute();
                 case REQUEST_CLUSTER_PROFILE_CHANGED: return ClusterProfileChangedRequest.fromJSON(request.requestBody()).executor(clusterSpecificAgentInstances).execute();
-                case REQUEST_MIGRATE_CONFIGURATION: throw new UnsupportedOperationException();
-
+                case REQUEST_MIGRATE_CONFIGURATION: return MigrateConfigPayload.fromJSON(request.requestBody()).executor(clusterSpecificAgentInstances).execute();
                 //todo last
                 case REQUEST_PLUGIN_STATUS_REPORT:
                     refreshInstances();
@@ -134,19 +133,19 @@ public class ExamplePlugin implements GoPlugin {
         }
     }
 
-    private void refreshInstancesForAllClusters(List<ClusterProfileProperties> listOfClusterProfileProperties) throws Exception {
-        for (ClusterProfileProperties clusterProfileProperties : listOfClusterProfileProperties) {
+    private void refreshInstancesForAllClusters(List<ClusterProfile> listOfClusterProfileProperties) throws Exception {
+        for (ClusterProfile clusterProfileProperties : listOfClusterProfileProperties) {
             refreshInstancesForCluster(clusterProfileProperties);
         }
     }
 
-    private void refreshInstancesForCluster(ClusterProfileProperties clusterProfileProperties) throws Exception {
+    private void refreshInstancesForCluster(ClusterProfile clusterProfileProperties) throws Exception {
         AgentInstances agentInstances = getAgentInstancesForCluster(clusterProfileProperties);
         agentInstances.refreshAll(clusterProfileProperties);
         clusterSpecificAgentInstances.put(clusterProfileProperties.uuid(), agentInstances);
     }
 
-    private AgentInstances getAgentInstancesForCluster(ClusterProfileProperties clusterProfileProperties) {
+    private AgentInstances getAgentInstancesForCluster(ClusterProfile clusterProfileProperties) {
         return clusterSpecificAgentInstances.get(clusterProfileProperties.uuid());
     }
 

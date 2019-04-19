@@ -17,12 +17,11 @@
 package com.example.elasticagent.requests;
 
 import com.example.elasticagent.Agent;
-import com.example.elasticagent.ClusterProfileProperties;
+import com.example.elasticagent.ClusterProfile;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -52,7 +51,7 @@ public class ShouldAssignWorkRequestTest {
                 "  }\n" +
                 "}";
 
-        ClusterProfileProperties expectedClusterProperties = new ClusterProfileProperties(
+        ClusterProfile expectedClusterProperties = new ClusterProfile(
                 "https://localhost:8154/go",
                 "20m",
                 "test",

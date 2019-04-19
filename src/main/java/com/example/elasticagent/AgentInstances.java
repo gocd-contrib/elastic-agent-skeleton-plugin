@@ -44,7 +44,7 @@ public interface AgentInstances<T> {
      * @param agentId  the elastic agent id
      * @param clusterProfileProperties the plugin cluster profile properties object
      */
-    void terminate(String agentId, ClusterProfileProperties clusterProfileProperties) throws Exception;
+    void terminate(String agentId, ClusterProfile clusterProfileProperties) throws Exception;
 
     /**
      * This message is sent from the {@link com.example.elasticagent.executors.ServerPingRequestExecutor}
@@ -54,7 +54,7 @@ public interface AgentInstances<T> {
      * @param settings the plugin settings object
      * @param agents   the list of all the agents
      */
-    void terminateUnregisteredInstances(ClusterProfileProperties settings, Agents agents) throws Exception;
+    void terminateUnregisteredInstances(ClusterProfile settings, Agents agents) throws Exception;
 
     /**
      * This message is sent from the {@link com.example.elasticagent.executors.ServerPingRequestExecutor}
@@ -65,7 +65,7 @@ public interface AgentInstances<T> {
      * @param agents   the list of all the agents
      * @return a list of agent instances which were created after {@link PluginSettings#getAutoRegisterPeriod()} ago.
      */
-    Agents instancesCreatedAfterTimeout(ClusterProfileProperties settings, Agents agents);
+    Agents instancesCreatedAfterTimeout(ClusterProfile settings, Agents agents);
 
     /**
      * This message is sent after plugin initialization time so that the plugin may connect to the cloud provider
@@ -75,7 +75,7 @@ public interface AgentInstances<T> {
      *
      * @param clusterProfileProperties the cluster profile properties
      */
-    void refreshAll(ClusterProfileProperties clusterProfileProperties) throws Exception;
+    void refreshAll(ClusterProfile clusterProfileProperties) throws Exception;
 
     void refreshAll(PluginRequest clusterProfileProperties) throws Exception;
 
@@ -100,7 +100,7 @@ public interface AgentInstances<T> {
      * @return A StatusReport object
      * @throws Exception
      */
-    StatusReport getStatusReport(ClusterProfileProperties clusterProfileProperties) throws Exception;
+    StatusReport getStatusReport(ClusterProfile clusterProfileProperties) throws Exception;
 
     /**
      * Get the status report of an agent instance
@@ -108,6 +108,6 @@ public interface AgentInstances<T> {
      * @param agentInstance The agent instance
      * @return An AgentStatusReport object
      */
-    AgentStatusReport getAgentStatusReport(ClusterProfileProperties clusterProfileProperties, T agentInstance);
+    AgentStatusReport getAgentStatusReport(ClusterProfile clusterProfileProperties, T agentInstance);
 }
 

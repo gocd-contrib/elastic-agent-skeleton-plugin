@@ -1,8 +1,7 @@
 package com.example.elasticagent.requests;
 
 import com.example.elasticagent.AgentInstances;
-import com.example.elasticagent.ClusterProfileProperties;
-import com.example.elasticagent.PluginRequest;
+import com.example.elasticagent.ClusterProfile;
 import com.example.elasticagent.executors.AgentStatusReportExecutor;
 import com.example.elasticagent.models.JobIdentifier;
 import com.example.elasticagent.views.ViewBuilder;
@@ -25,12 +24,12 @@ public class AgentStatusReportRequest {
     private JobIdentifier jobIdentifier;
 
     @Expose
-    private ClusterProfileProperties clusterProfileProperties;
+    private ClusterProfile clusterProfileProperties;
 
     public AgentStatusReportRequest() {
     }
 
-    public AgentStatusReportRequest(String elasticAgentId, JobIdentifier jobIdentifier, ClusterProfileProperties clusterProfileProperties) {
+    public AgentStatusReportRequest(String elasticAgentId, JobIdentifier jobIdentifier, ClusterProfile clusterProfileProperties) {
         this.elasticAgentId = elasticAgentId;
         this.jobIdentifier = jobIdentifier;
         this.clusterProfileProperties = clusterProfileProperties;
@@ -52,7 +51,7 @@ public class AgentStatusReportRequest {
         return new AgentStatusReportExecutor(this, agentInstances, viewBuilder);
     }
 
-    public ClusterProfileProperties clusterProperties() {
+    public ClusterProfile clusterProperties() {
         return clusterProfileProperties;
     }
 

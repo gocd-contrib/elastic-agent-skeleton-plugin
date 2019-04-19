@@ -23,6 +23,8 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.joda.time.Period;
 
+import java.util.Map;
+
 // TODO: Implement any settings that your plugin needs
 public class PluginSettings {
     public static final Gson GSON = new GsonBuilder()
@@ -52,8 +54,24 @@ public class PluginSettings {
 
     private Period autoRegisterPeriod;
 
+    public PluginSettings() {
+    }
+
+    public PluginSettings(String goServerUrl, String autoRegisterTimeout, String apiUser, String apiKey, String apiUrl, Period autoRegisterPeriod) {
+        this.goServerUrl = goServerUrl;
+        this.autoRegisterTimeout = autoRegisterTimeout;
+        this.apiUser = apiUser;
+        this.apiKey = apiKey;
+        this.apiUrl = apiUrl;
+        this.autoRegisterPeriod = autoRegisterPeriod;
+    }
+
     public static PluginSettings fromJSON(String json) {
         return GSON.fromJson(json, PluginSettings.class);
+    }
+
+    public static PluginSettings fromConfiguration(Map<String, String> pluginSettings) {
+        return GSON.fromJson(GSON.toJson(pluginSettings), PluginSettings.class);
     }
 
     @Override
@@ -74,7 +92,7 @@ public class PluginSettings {
     @Override
     public int hashCode() {
         int result = goServerUrl != null ? goServerUrl.hashCode() : 0;
-        result = 31 * result + (autoRegisterTimeout != null ? autoRegisterTimeout.hashCode() : 0);
+        result = 31 * result + (getAutoRegisterPeriod() != null ? getAutoRegisterPeriod().hashCode() : 0);
         result = 31 * result + (apiUser != null ? apiUser.hashCode() : 0);
         result = 31 * result + (apiKey != null ? apiKey.hashCode() : 0);
         result = 31 * result + (apiUrl != null ? apiUrl.hashCode() : 0);

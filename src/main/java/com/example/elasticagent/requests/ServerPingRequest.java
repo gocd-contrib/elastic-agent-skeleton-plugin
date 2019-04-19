@@ -27,12 +27,12 @@ import java.util.Map;
 
 public class ServerPingRequest {
     private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
-    private List<ClusterProfileProperties> allClusterProfileProperties;
+    private List<ClusterProfile> allClusterProfileProperties;
 
     public ServerPingRequest() {
     }
 
-    public ServerPingRequest(List<ClusterProfileProperties> profileList) {
+    public ServerPingRequest(List<ClusterProfile> profileList) {
         this.allClusterProfileProperties = profileList;
     }
 
@@ -40,7 +40,7 @@ public class ServerPingRequest {
         return GSON.fromJson(json, ServerPingRequest.class);
     }
 
-    public List<ClusterProfileProperties> allClusterProfileProperties() {
+    public List<ClusterProfile> allClusterProfileProperties() {
         return allClusterProfileProperties;
     }
 

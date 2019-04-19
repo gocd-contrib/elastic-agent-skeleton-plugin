@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import java.util.Map;
 
 public class ValidateElasticAgentProfileRequest {
-
     private static final Gson GSON = new Gson();
     private Map<String, String> properties;
 

@@ -1,6 +1,6 @@
 package com.example.elasticagent.requests;
 
-import com.example.elasticagent.ClusterProfileProperties;
+import com.example.elasticagent.ClusterProfile;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -22,7 +22,7 @@ public class ClusterStatusReportRequestTest {
 
         ClusterStatusReportRequest clusterStatusReportRequest = ClusterStatusReportRequest.fromJSON(json);
 
-        ClusterProfileProperties expectedClusterProfile = new ClusterProfileProperties(
+        ClusterProfile expectedClusterProfile = new ClusterProfile(
                 "https://localhost:8154/go",
                 "20m",
                 "test",
