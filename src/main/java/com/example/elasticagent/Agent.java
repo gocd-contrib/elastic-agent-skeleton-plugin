@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.example.elasticagent.ExamplePlugin.GSON;
+
 /**
  * Represents an Agent.
  * See https://plugin-api.go.cd/current/elastic-agents/#the-elastic-agent-object for more details.
@@ -49,7 +51,7 @@ public class Agent {
     public static final Type AGENT_METADATA_LIST_TYPE = new TypeToken<ArrayList<Agent>>() {
     }.getType();
 
-    private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+
 
     @Expose
     @SerializedName("agent_id")

@@ -19,6 +19,9 @@ package com.example.elasticagent;
 import com.example.elasticagent.executors.*;
 import com.example.elasticagent.requests.*;
 import com.example.elasticagent.views.ViewBuilder;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.thoughtworks.go.plugin.api.GoApplicationAccessor;
 import com.thoughtworks.go.plugin.api.GoPlugin;
 import com.thoughtworks.go.plugin.api.GoPluginIdentifier;
@@ -36,8 +39,8 @@ import static com.example.elasticagent.Constants.PLUGIN_IDENTIFIER;
 
 @Extension
 public class ExamplePlugin implements GoPlugin {
-
     public static final Logger LOG = Logger.getLoggerFor(ExamplePlugin.class);
+    public static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 
     private PluginRequest pluginRequest;
     private AgentInstances agentInstances;

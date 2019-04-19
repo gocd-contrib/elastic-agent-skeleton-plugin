@@ -28,6 +28,8 @@ import com.google.gson.GsonBuilder;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.example.elasticagent.ExamplePlugin.GSON;
+
 public class ClusterProfileChangedRequest {
     public enum ChangeStatus {
         CREATED("created"),
@@ -58,7 +60,7 @@ public class ClusterProfileChangedRequest {
         }
     }
 
-    private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+
     private String status;
     private ChangeStatus changeStatus;
     private ClusterProfile clusterProfilesProperties;
