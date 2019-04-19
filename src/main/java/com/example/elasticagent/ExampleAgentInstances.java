@@ -28,6 +28,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.example.elasticagent.ExamplePlugin.LOG;
 
+
+//TODO: This is just a basic implementation, all of the following methods need to be implemented
 public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
 
     private final ConcurrentHashMap<String, ExampleInstance> instances = new ConcurrentHashMap<>();
