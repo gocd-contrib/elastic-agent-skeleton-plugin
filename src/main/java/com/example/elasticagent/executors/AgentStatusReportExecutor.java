@@ -2,7 +2,6 @@ package com.example.elasticagent.executors;
 
 import com.example.elasticagent.AgentInstances;
 import com.example.elasticagent.ExampleInstance;
-import com.example.elasticagent.PluginRequest;
 import com.example.elasticagent.models.AgentStatusReport;
 import com.example.elasticagent.models.JobIdentifier;
 import com.example.elasticagent.requests.AgentStatusReportRequest;

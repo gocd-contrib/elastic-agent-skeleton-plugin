@@ -1,25 +1,34 @@
 package com.example.elasticagent.executors;
 
 import com.example.elasticagent.AgentInstances;
+import com.example.elasticagent.ClusterProfile;
 import com.example.elasticagent.PluginRequest;
 import com.example.elasticagent.RequestExecutor;
 import com.example.elasticagent.models.StatusReport;
+import com.example.elasticagent.requests.PluginStatusReportRequest;
 import com.example.elasticagent.views.ViewBuilder;
+import com.google.common.base.Strings;
 import com.google.gson.JsonObject;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+// Make changes as needed
 public class PluginStatusReportExecutor implements RequestExecutor {
 
-    private final PluginRequest pluginRequest;
-    private final AgentInstances agentInstances;
+    private final PluginStatusReportRequest request;
+    private final Map<String, AgentInstances> allClusterInstances;
     private final ViewBuilder viewBuilder;
     private static final Logger LOG = Logger.getLoggerFor(AgentStatusReportExecutor.class);
 
-    public PluginStatusReportExecutor(PluginRequest pluginRequest, AgentInstances agentInstances, ViewBuilder viewBuilder) {
-        this.pluginRequest = pluginRequest;
-        this.agentInstances = agentInstances;
+    public PluginStatusReportExecutor(PluginStatusReportRequest request, Map<String, AgentInstances> allClusterInstances, ViewBuilder viewBuilder) {
+        this.request = request;
+        this.allClusterInstances = allClusterInstances;
         this.viewBuilder = viewBuilder;
     }
 
@@ -27,14 +36,17 @@ public class PluginStatusReportExecutor implements RequestExecutor {
     public GoPluginApiResponse execute() throws Exception {
         LOG.info("[status-report] Generating status report");
 
-        // todo fix following
-        StatusReport statusReport = agentInstances.getStatusReport(null);
+        List<String> reports = new ArrayList<>();
 
-        final String statusReportView = viewBuilder.build("status-report-template", statusReport);
+        for (ClusterProfile profile : request.allClusterProfileProperties()) {
+            AgentInstances agentInstances = allClusterInstances.get(profile.uuid());
+            StatusReport statusReport = agentInstances.getStatusReport(profile);
+            reports.add(viewBuilder.build("status-report-template", statusReport));
+        }
 
+        // aggregate reports for different cluster into one
         JsonObject responseJSON = new JsonObject();
-        responseJSON.addProperty("view", statusReportView);
-
+        responseJSON.addProperty("view", reports.stream().collect(Collectors.joining("<hr/>")));
         return DefaultGoPluginApiResponse.success(responseJSON.toString());
     }
 }

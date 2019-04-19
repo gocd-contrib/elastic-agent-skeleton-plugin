@@ -112,22 +112,14 @@ public class ExamplePlugin implements GoPlugin {
                 case REQUEST_VALIDATE_CLUSTER_PROFILE: return ClusterProfileValidateRequest.fromJSON(request.requestBody()).executor().execute();
                 case REQUEST_CLUSTER_PROFILE_CHANGED: return ClusterProfileChangedRequest.fromJSON(request.requestBody()).executor(clusterSpecificAgentInstances).execute();
                 case REQUEST_MIGRATE_CONFIGURATION: return MigrateConfigPayload.fromJSON(request.requestBody()).executor(clusterSpecificAgentInstances).execute();
-                //todo last
+
                 case REQUEST_PLUGIN_STATUS_REPORT:
-                    refreshInstances();
-                    return new PluginStatusReportExecutor(pluginRequest, agentInstances, ViewBuilder.instance()).execute();
+                    PluginStatusReportRequest pluginStatusReportRequest = PluginStatusReportRequest.fromJSON(request.requestBody());
+                    refreshInstancesForAllClusters(pluginStatusReportRequest.allClusterProfileProperties());
+                    return pluginStatusReportRequest.executor(clusterSpecificAgentInstances, ViewBuilder.instance()).execute();
                 default:
                     throw new UnhandledRequestTypeException(request.requestName());
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    // todo: this needs to go
-    private void refreshInstances() {
-        try {
-            agentInstances.refreshAll(pluginRequest);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -42,9 +42,9 @@ public interface AgentInstances<T> {
      * This message is sent when the plugin needs to terminate the agent instance.
      *
      * @param agentId  the elastic agent id
-     * @param clusterProfileProperties the plugin cluster profile properties object
+     * @param clusterProfile the plugin cluster profile properties object
      */
-    void terminate(String agentId, ClusterProfile clusterProfileProperties) throws Exception;
+    void terminate(String agentId, ClusterProfile clusterProfile) throws Exception;
 
     /**
      * This message is sent from the {@link com.example.elasticagent.executors.ServerPingRequestExecutor}
@@ -73,11 +73,11 @@ public interface AgentInstances<T> {
      * This call should be should ideally remember if the agent instances are refreshed, and do nothing if instances
      * were previously refreshed.
      *
-     * @param clusterProfileProperties the cluster profile properties
+     * @param clusterProfile the cluster profile properties
      */
-    void refreshAll(ClusterProfile clusterProfileProperties) throws Exception;
+    void refreshAll(ClusterProfile clusterProfile) throws Exception;
 
-    void refreshAll(PluginRequest clusterProfileProperties) throws Exception;
+    void refreshAll(PluginRequest clusterProfile) throws Exception;
 
     /**
      * This
@@ -96,18 +96,18 @@ public interface AgentInstances<T> {
 
     /**
      * Get the status report from the agents
-     * @param clusterProfileProperties the cluster properties object
+     * @param clusterProfile the cluster properties object
      * @return A StatusReport object
      * @throws Exception
      */
-    StatusReport getStatusReport(ClusterProfile clusterProfileProperties) throws Exception;
+    StatusReport getStatusReport(ClusterProfile clusterProfile) throws Exception;
 
     /**
      * Get the status report of an agent instance
-     * @param clusterProfileProperties The cluster profile properties object
+     * @param clusterProfile The cluster profile properties object
      * @param agentInstance The agent instance
      * @return An AgentStatusReport object
      */
-    AgentStatusReport getAgentStatusReport(ClusterProfile clusterProfileProperties, T agentInstance);
+    AgentStatusReport getAgentStatusReport(ClusterProfile clusterProfile, T agentInstance);
 }
 

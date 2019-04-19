@@ -2,7 +2,6 @@ package com.example.elasticagent.executors;
 
 import com.example.elasticagent.AgentInstances;
 import com.example.elasticagent.ExampleInstance;
-import com.example.elasticagent.PluginRequest;
 import com.example.elasticagent.RequestExecutor;
 import com.example.elasticagent.requests.JobCompletionRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;

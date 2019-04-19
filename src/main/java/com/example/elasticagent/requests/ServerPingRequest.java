@@ -17,6 +17,7 @@
 package com.example.elasticagent.requests;
 
 import com.example.elasticagent.*;
+import com.example.elasticagent.PluginRequest;
 import com.example.elasticagent.executors.ServerPingRequestExecutor;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -44,7 +45,7 @@ public class ServerPingRequest {
         return allClusterProfileProperties;
     }
 
-    public ServerPingRequestExecutor executor(Map<String, AgentInstances> clusterSpecificAgentInstances, PluginRequest pluginRequest) {
+    public RequestExecutor executor(Map<String, AgentInstances> clusterSpecificAgentInstances, PluginRequest pluginRequest) {
         return new ServerPingRequestExecutor(clusterSpecificAgentInstances, this, pluginRequest);
     }
 }
