@@ -17,9 +17,6 @@
 package com.example.elasticagent.requests;
 
 import com.example.elasticagent.*;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 
 import java.util.List;
@@ -28,8 +25,6 @@ import java.util.Map;
 import static com.example.elasticagent.ExamplePlugin.GSON;
 
 public class MigrateConfigPayload {
-
-
     @Expose
     private PluginSettings pluginSettings;
 

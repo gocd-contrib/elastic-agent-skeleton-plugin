@@ -1,7 +1,7 @@
 package com.example.elasticagent.requests;
 
 import com.example.elasticagent.AgentInstances;
-import com.example.elasticagent.ClusterProfile;
+import com.example.elasticagent.ClusterProfileProperties;
 import com.example.elasticagent.executors.ClusterStatusReportExecutor;
 import com.example.elasticagent.views.ViewBuilder;
 import com.google.gson.FieldNamingPolicy;
@@ -21,16 +21,16 @@ public class ClusterStatusReportRequest {
 
     @Expose
     @SerializedName("cluster_profile_properties")
-    private ClusterProfile clusterProfile;
+    private ClusterProfileProperties clusterProfile;
 
     public ClusterStatusReportRequest() {
     }
 
     public ClusterStatusReportRequest(Map<String, String> clusterProfileConfigurations) {
-        this.clusterProfile = ClusterProfile.fromConfiguration(clusterProfileConfigurations);
+        this.clusterProfile = ClusterProfileProperties.fromConfiguration(clusterProfileConfigurations);
     }
 
-    public ClusterProfile getClusterProfile() {
+    public ClusterProfileProperties getClusterProfile() {
         return clusterProfile;
     }
 

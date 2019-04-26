@@ -95,7 +95,7 @@ public class ExamplePlugin implements GoPlugin {
 
                 case REQUEST_JOB_COMPLETION:
                     JobCompletionRequest jobCompletionRequest = JobCompletionRequest.fromJSON(request.requestBody());
-                    ClusterProfile clusterProfileProperties = jobCompletionRequest.clusterProperties();
+                    ClusterProfileProperties clusterProfileProperties = jobCompletionRequest.clusterProperties();
                     refreshInstancesForCluster(jobCompletionRequest.clusterProperties());
 
                     return jobCompletionRequest.executor(getAgentInstancesForCluster(clusterProfileProperties)).execute();
@@ -143,19 +143,19 @@ public class ExamplePlugin implements GoPlugin {
         }
     }
 
-    private void refreshInstancesForAllClusters(List<ClusterProfile> listOfClusterProfileProperties) throws Exception {
-        for (ClusterProfile clusterProfileProperties : listOfClusterProfileProperties) {
+    private void refreshInstancesForAllClusters(List<ClusterProfileProperties> listOfClusterProfileProperties) throws Exception {
+        for (ClusterProfileProperties clusterProfileProperties : listOfClusterProfileProperties) {
             refreshInstancesForCluster(clusterProfileProperties);
         }
     }
 
-    private void refreshInstancesForCluster(ClusterProfile clusterProfileProperties) throws Exception {
+    private void refreshInstancesForCluster(ClusterProfileProperties clusterProfileProperties) throws Exception {
         AgentInstances agentInstances = getAgentInstancesForCluster(clusterProfileProperties);
         agentInstances.refreshAll(clusterProfileProperties);
         clusterSpecificAgentInstances.put(clusterProfileProperties.uuid(), agentInstances);
     }
 
-    private AgentInstances getAgentInstancesForCluster(ClusterProfile clusterProfileProperties) {
+    private AgentInstances getAgentInstancesForCluster(ClusterProfileProperties clusterProfileProperties) {
         return clusterSpecificAgentInstances.get(clusterProfileProperties.uuid());
     }
 }

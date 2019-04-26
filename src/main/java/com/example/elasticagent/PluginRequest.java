@@ -36,17 +36,6 @@ public class PluginRequest {
         this.accessor = accessor;
     }
 
-    public PluginSettings getPluginSettings() throws ServerRequestFailedException {
-        DefaultGoApiRequest request = new DefaultGoApiRequest(Constants.REQUEST_SERVER_GET_PLUGIN_SETTINGS, PLUGIN_SETTINGS_PROCESSOR_API_VERSION, PLUGIN_IDENTIFIER);
-        GoApiResponse response = accessor.submit(request);
-
-        if (response.responseCode() != 200) {
-            throw ServerRequestFailedException.getPluginSettings(response);
-        }
-
-        return PluginSettings.fromJSON(response.responseBody());
-    }
-
     public ServerInfo getServerInfo() throws ServerRequestFailedException {
         DefaultGoApiRequest request = new DefaultGoApiRequest(Constants.REQUEST_SERVER_INFO, SERVER_INFO_PROCESSOR_API_VERSION, PLUGIN_IDENTIFIER);
         GoApiResponse response = accessor.submit(request);

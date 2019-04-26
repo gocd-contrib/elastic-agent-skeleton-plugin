@@ -29,7 +29,6 @@ public interface Constants {
 
     // The extension point API version that this plugin understands
     String ELASTIC_PROCESSOR_API_VERSION = "1.0";
-    String PLUGIN_SETTINGS_PROCESSOR_API_VERSION = "1.0";
     String SERVER_INFO_PROCESSOR_API_VERSION = "1.0";
     String EXTENSION_API_VERSION = "5.0";
 

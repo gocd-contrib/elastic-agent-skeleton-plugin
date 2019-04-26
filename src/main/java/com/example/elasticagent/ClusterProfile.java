@@ -16,28 +16,59 @@
 
 package com.example.elasticagent;
 
-import org.joda.time.Period;
+import com.google.gson.annotations.Expose;
 
-import java.util.Map;
+import java.util.Objects;
+
+import static com.example.elasticagent.ExamplePlugin.GSON;
 
 // TODO: Implement any settings that your plugin needs
-public class ClusterProfile extends PluginSettings{
-    public ClusterProfile() {
-    }
+public class ClusterProfile {
+    @Expose
+    private final String id;
 
-    public ClusterProfile(String goServerUrl, String autoRegisterTimeout, String apiUser, String apiKey, String apiUrl, Period autoRegisterPeriod) {
-        super(goServerUrl, autoRegisterTimeout, apiUser, apiKey, apiUrl, autoRegisterPeriod);
+    @Expose
+    private final String pluginId;
+
+    @Expose
+    private final ClusterProfileProperties properties;
+
+    public ClusterProfile(String id, String pluginId, ClusterProfileProperties clusterProfileProperties) {
+        this.id = id;
+        this.pluginId = pluginId;
+        this.properties = clusterProfileProperties;
     }
 
     public static ClusterProfile fromJSON(String json) {
         return GSON.fromJson(json, ClusterProfile.class);
     }
 
-    public static ClusterProfile fromConfiguration(Map<String, String> clusterProfile) {
-        return GSON.fromJson(GSON.toJson(clusterProfile), ClusterProfile.class);
+    public String getId() {
+        return id;
     }
 
-    public String uuid() {
-        return Integer.toHexString(hashCode());
+    public String getPluginId() {
+        return pluginId;
+    }
+
+    public ClusterProfileProperties getProperties() {
+        return properties;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ClusterProfile that = (ClusterProfile) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (pluginId != null ? !pluginId.equals(that.pluginId) : that.pluginId != null) return false;
+        return properties != null ? properties.equals(that.properties) : that.properties == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, pluginId, properties);
     }
 }

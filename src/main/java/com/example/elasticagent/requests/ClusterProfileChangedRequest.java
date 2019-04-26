@@ -17,13 +17,10 @@
 package com.example.elasticagent.requests;
 
 import com.example.elasticagent.AgentInstances;
-import com.example.elasticagent.ClusterProfile;
+import com.example.elasticagent.ClusterProfileProperties;
 import com.example.elasticagent.RequestExecutor;
 import com.example.elasticagent.executors.ClusterProfileChangedRequestExecutor;
 import com.google.common.base.Strings;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.Map;
 import java.util.Optional;
@@ -63,13 +60,13 @@ public class ClusterProfileChangedRequest {
 
     private String status;
     private ChangeStatus changeStatus;
-    private ClusterProfile clusterProfilesProperties;
-    private ClusterProfile oldClusterProfilesProperties;
+    private ClusterProfileProperties clusterProfilesProperties;
+    private ClusterProfileProperties oldClusterProfilesProperties;
 
     public ClusterProfileChangedRequest() {
     }
 
-    public ClusterProfileChangedRequest(ChangeStatus status, ClusterProfile clusterProfilesProperties, ClusterProfile oldClusterProfilesProperties) {
+    public ClusterProfileChangedRequest(ChangeStatus status, ClusterProfileProperties clusterProfilesProperties, ClusterProfileProperties oldClusterProfilesProperties) {
         this.changeStatus = status;
         this.clusterProfilesProperties = clusterProfilesProperties;
         this.oldClusterProfilesProperties = oldClusterProfilesProperties;
@@ -96,11 +93,11 @@ public class ClusterProfileChangedRequest {
         return changeStatus;
     }
 
-    public ClusterProfile clusterProperties() {
+    public ClusterProfileProperties clusterProperties() {
         return clusterProfilesProperties;
     }
 
-    public ClusterProfile oldClusterProperties() {
+    public ClusterProfileProperties oldClusterProperties() {
         return oldClusterProfilesProperties;
     }
 }

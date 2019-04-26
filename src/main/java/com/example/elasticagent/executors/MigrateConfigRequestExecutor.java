@@ -18,6 +18,7 @@ package com.example.elasticagent.executors;
 
 import com.example.elasticagent.*;
 import com.example.elasticagent.requests.MigrateConfigPayload;
+import com.example.elasticagent.utils.Util;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
@@ -40,14 +41,15 @@ public class MigrateConfigRequestExecutor implements RequestExecutor {
 
         PluginSettings pluginSettings = payload.pluginSettings();
 
-        ClusterProfile clusterProfile = new ClusterProfile(
-                pluginSettings.getGoServerUrl(),
-                String.valueOf(pluginSettings.getAutoRegisterPeriod().getMinutes()),
-                pluginSettings.getApiUser(),
-                pluginSettings.getApiKey(),
-                pluginSettings.getApiUrl(),
-                pluginSettings.getAutoRegisterPeriod()
-        );
+        ClusterProfile clusterProfile = new ClusterProfile("default", Util.pluginId(),
+                new ClusterProfileProperties(
+                        pluginSettings.getGoServerUrl(),
+                        String.valueOf(pluginSettings.getAutoRegisterPeriod().getMinutes()),
+                        pluginSettings.getApiUser(),
+                        pluginSettings.getApiKey(),
+                        pluginSettings.getApiUrl(),
+                        pluginSettings.getAutoRegisterPeriod()
+                ));
 
         payload.clusterProfiles().add(clusterProfile);
 
@@ -56,7 +58,7 @@ public class MigrateConfigRequestExecutor implements RequestExecutor {
           */
 
         for (Map<String, String> profile : payload.elasticAgentProfileProperties()) {
-            profile.put("clusterProfileId", clusterProfile.uuid());
+            profile.put("clusterProfileId", clusterProfile.getId());
         }
 
         return new DefaultGoPluginApiResponse(200, GSON.toJson(payload));

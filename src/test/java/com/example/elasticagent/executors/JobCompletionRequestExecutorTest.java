@@ -17,7 +17,7 @@
 package com.example.elasticagent.executors;
 
 import com.example.elasticagent.AgentInstances;
-import com.example.elasticagent.ClusterProfile;
+import com.example.elasticagent.ClusterProfileProperties;
 import com.example.elasticagent.models.JobIdentifier;
 import com.example.elasticagent.requests.JobCompletionRequest;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ public class JobCompletionRequestExecutorTest {
     @Test
     public void shouldAskDockerContainersToCreateAnAgent() throws Exception {
         String elasticAgentId = "agent-id";
-        ClusterProfile clusterProfileProperties = new ClusterProfile();
+        ClusterProfileProperties clusterProfileProperties = new ClusterProfileProperties();
         JobCompletionRequest request = new JobCompletionRequest(elasticAgentId, new JobIdentifier(), new HashMap<>(), clusterProfileProperties);
         AgentInstances agentInstances = mock(AgentInstances.class);
         new JobCompletionRequestExecutor(request, agentInstances).execute();

@@ -1,6 +1,7 @@
 package com.example.elasticagent.requests;
 
 import com.example.elasticagent.ClusterProfile;
+import com.example.elasticagent.ClusterProfileProperties;
 import com.example.elasticagent.PluginSettings;
 import org.junit.jupiter.api.Test;
 
@@ -30,35 +31,40 @@ class MigrateConfigPayloadTest {
         String json = "{" +
                 "  \"plugin_settings\":{" +
                 "    \"go_server_url\": \"https://localhost:8154/go\",\n" +
-                "    \"auto_register_timeout\": \"20m\",\n" +
+                "    \"auto_register_timeout\": \"20\",\n" +
                 "    \"api_user\": \"test\",\n" +
                 "    \"api_key\": \"test-api-key\",\n" +
                 "    \"api_url\": \"https://aws.api.com/api\"\n" +
                 "  }," +
                 "  \"cluster_profiles\": [{\n" +
+                "    \"id\": \"forTest\",\n" +
+                "    \"plugin_id\": \"go.elastic.plugin1\",\n" +
+                "    \"properties\": {\n" +
                 "    \"go_server_url\": \"https://localhost:8154/go\",\n" +
-                "    \"auto_register_timeout\": \"20m\",\n" +
+                "    \"auto_register_timeout\": \"20\",\n" +
                 "    \"api_user\": \"test\",\n" +
                 "    \"api_key\": \"test-api-key\",\n" +
                 "    \"api_url\": \"https://aws.api.com/api\"\n" +
+                "    }\n" +
                 "  }],\n" +
                 "  \"elastic_agent_profiles\":[{" +
                 "    \"Image\": \"alpine:latest\"\n" +
                 "  }]\n" +
                 "}\n";
 
-        ClusterProfile expectedClusterProfile = new ClusterProfile(
-                "https://localhost:8154/go",
-                "20m",
-                "test",
-                "test-api-key",
-                "https://aws.api.com/api",
-                null
-        );
+        ClusterProfile expectedClusterProfile = new ClusterProfile("forTest", "go.elastic.plugin1",
+                new ClusterProfileProperties(
+                        "https://localhost:8154/go",
+                        "20",
+                        "test",
+                        "test-api-key",
+                        "https://aws.api.com/api",
+                        null
+                ));
 
         PluginSettings expectedSettings = new PluginSettings(
                 "https://localhost:8154/go",
-                "20m",
+                "20",
                 "test",
                 "test-api-key",
                 "https://aws.api.com/api",

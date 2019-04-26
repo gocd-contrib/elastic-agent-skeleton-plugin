@@ -38,7 +38,7 @@ public class ServerPingRequestExecutorTest extends BaseTest {
         String agentId = UUID.randomUUID().toString();
         final Agents agents = new Agents(Arrays.asList(new Agent(agentId, Agent.AgentState.Idle, Agent.BuildState.Idle, Agent.ConfigState.Enabled)));
         PluginRequest pluginRequest = mock(PluginRequest.class);
-        ClusterProfile clusterProfileProperties = mock(ClusterProfile.class);
+        ClusterProfileProperties clusterProfileProperties = mock(ClusterProfileProperties.class);
 
         when(clusterProfileProperties.uuid()).thenReturn("ffff");
         when(pluginRequest.listAgents()).thenReturn(agents);
@@ -61,7 +61,7 @@ public class ServerPingRequestExecutorTest extends BaseTest {
         String agentId = UUID.randomUUID().toString();
         final Agents agents = new Agents(Arrays.asList(new Agent(agentId, Agent.AgentState.Idle, Agent.BuildState.Idle, Disabled)));
 
-        ClusterProfile clusterProfileProperties = mock(ClusterProfile.class);
+        ClusterProfileProperties clusterProfileProperties = mock(ClusterProfileProperties.class);
         PluginRequest pluginRequest = mock(PluginRequest.class);
 
         when(clusterProfileProperties.uuid()).thenReturn("ffff");
@@ -78,7 +78,7 @@ public class ServerPingRequestExecutorTest extends BaseTest {
 
     @Test
     public void testShouldTerminateInstancesThatNeverAutoRegistered() throws Exception {
-        ClusterProfile clusterProfileProperties = mock(ClusterProfile.class);
+        ClusterProfileProperties clusterProfileProperties = mock(ClusterProfileProperties.class);
         PluginRequest pluginRequest = mock(PluginRequest.class);
 
         when(clusterProfileProperties.uuid()).thenReturn("ffff");
@@ -87,7 +87,7 @@ public class ServerPingRequestExecutorTest extends BaseTest {
 
         ExampleAgentInstances agentInstances = new ExampleAgentInstances();
         agentInstances.clock = new Clock.TestClock().forward(Period.minutes(11));
-        ExampleInstance container = agentInstances.create(new CreateAgentRequest(null, new HashMap<>(), new ClusterProfile(), null, new JobIdentifier()));
+        ExampleInstance container = agentInstances.create(new CreateAgentRequest(null, new HashMap<>(), new ClusterProfileProperties(), null, new JobIdentifier()));
 
         final Map<String, AgentInstances> clusterSpecificInstance = Collections.singletonMap("ffff", agentInstances);
         final ServerPingRequest serverPingRequest = new ServerPingRequest(singletonList(clusterProfileProperties));
@@ -99,7 +99,7 @@ public class ServerPingRequestExecutorTest extends BaseTest {
 
     @Test
     public void shouldDeleteAgentFromConfigWhenCorrespondingContainerIsNotPresent() throws Exception {
-        ClusterProfile clusterProfileProperties = mock(ClusterProfile.class);
+        ClusterProfileProperties clusterProfileProperties = mock(ClusterProfileProperties.class);
         PluginRequest pluginRequest = mock(PluginRequest.class);
 
         when(clusterProfileProperties.uuid()).thenReturn("ffff");

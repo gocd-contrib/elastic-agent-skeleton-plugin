@@ -9,7 +9,6 @@ import com.google.gson.JsonObject;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -33,7 +32,7 @@ public class AgentPluginStatusReportExecutorTest {
     @Test
     public void shouldGetAgentStatusReportWithElasticAgentId() throws Exception {
         String agentId = "elastic-agent-id";
-        AgentStatusReportRequest request = new AgentStatusReportRequest(agentId, null, new ClusterProfile());
+        AgentStatusReportRequest request = new AgentStatusReportRequest(agentId, null, new ClusterProfileProperties());
         AgentStatusReport agentStatusReport = new AgentStatusReport(null, agentId, null);
 
         ExampleInstance agentInstance = new ExampleInstance("name", new Date(), new HashMap<>(), null, new JobIdentifier());
@@ -53,7 +52,7 @@ public class AgentPluginStatusReportExecutorTest {
     @Test
     public void shouldGetAgentStatusReportWithJobIdentifier() throws Exception {
         JobIdentifier jobIdentifier = new JobIdentifier("up42", 2L, "label", "stage1", "1", "job", 1L);
-        AgentStatusReportRequest request = new AgentStatusReportRequest(null, jobIdentifier, new ClusterProfile());
+        AgentStatusReportRequest request = new AgentStatusReportRequest(null, jobIdentifier, new ClusterProfileProperties());
         AgentStatusReport agentStatusReport = new AgentStatusReport(jobIdentifier, "elastic-agent-id", null);
         ExampleInstance instance = new ExampleInstance("name", new Date(), new HashMap<>(), null, new JobIdentifier());
 

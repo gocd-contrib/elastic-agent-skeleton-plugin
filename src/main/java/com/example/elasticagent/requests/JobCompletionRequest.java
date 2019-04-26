@@ -39,12 +39,12 @@ public class JobCompletionRequest {
     private Map<String, String> elasticAgentProfileProperties;
 
     @Expose
-    private ClusterProfile clusterProfileProperties;
+    private ClusterProfileProperties clusterProfileProperties;
 
     public JobCompletionRequest() {
     }
 
-    public JobCompletionRequest(String elasticAgentId, JobIdentifier jobIdentifier, Map<String, String> elasticAgentProfileProperties, ClusterProfile clusterProfileProperties) {
+    public JobCompletionRequest(String elasticAgentId, JobIdentifier jobIdentifier, Map<String, String> elasticAgentProfileProperties, ClusterProfileProperties clusterProfileProperties) {
         this.elasticAgentId = elasticAgentId;
         this.jobIdentifier = jobIdentifier;
         this.elasticAgentProfileProperties = elasticAgentProfileProperties;
@@ -71,7 +71,7 @@ public class JobCompletionRequest {
         return elasticAgentProfileProperties;
     }
 
-    public ClusterProfile clusterProperties() {
+    public ClusterProfileProperties clusterProperties() {
         return clusterProfileProperties;
     }
 }

@@ -37,16 +37,16 @@ public class ServerPingRequestExecutor implements RequestExecutor {
 
     @Override
     public GoPluginApiResponse execute() throws Exception {
-        List<ClusterProfile> allClusterProfileProperties = serverPingRequest.allClusterProfileProperties();
+        List<ClusterProfileProperties> allClusterProfileProperties = serverPingRequest.allClusterProfileProperties();
 
-        for (ClusterProfile clusterProfileProperties : allClusterProfileProperties) {
+        for (ClusterProfileProperties clusterProfileProperties : allClusterProfileProperties) {
             performCleanupForCluster(clusterProfileProperties, clusterSpecificAgentInstances.get(clusterProfileProperties.uuid()));
         }
 
         return DefaultGoPluginApiResponse.success("");
     }
 
-    private void performCleanupForCluster(ClusterProfile clusterProfileProperties, AgentInstances agentInstances) throws Exception {
+    private void performCleanupForCluster(ClusterProfileProperties clusterProfileProperties, AgentInstances agentInstances) throws Exception {
         Agents allAgents = pluginRequest.listAgents();
         Set<Agent> missingAgents = new HashSet<>();
 
@@ -74,7 +74,7 @@ public class ServerPingRequestExecutor implements RequestExecutor {
         pluginRequest.disableAgents(agents.findInstancesToDisable());
     }
 
-    private void terminateDisabledAgents(Agents agents, ClusterProfile pluginSettings, AgentInstances agentInstances) throws Exception {
+    private void terminateDisabledAgents(Agents agents, ClusterProfileProperties pluginSettings, AgentInstances agentInstances) throws Exception {
         Collection<Agent> toBeDeleted = agents.findInstancesToTerminate();
 
         for (Agent agent : toBeDeleted) {

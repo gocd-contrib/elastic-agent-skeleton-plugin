@@ -16,7 +16,7 @@
 
 package com.example.elasticagent.requests;
 
-import com.example.elasticagent.ClusterProfile;
+import com.example.elasticagent.ClusterProfileProperties;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +51,7 @@ public class JobCompletionRequestTest {
                 "  }\n" +
                 "}";
 
-        ClusterProfile expectedClusterProperties = new ClusterProfile(
+        ClusterProfileProperties expectedClusterProperties = new ClusterProfileProperties(
                 "https://localhost:8154/go",
                 "20m",
                 "test",

@@ -47,7 +47,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     }
 
     @Override
-    public void terminate(String agentId, ClusterProfile clusterProfile) throws Exception {
+    public void terminate(String agentId, ClusterProfileProperties clusterProfile) throws Exception {
         // TODO: Implement me!
 //        throw new UnsupportedOperationException();
 
@@ -62,7 +62,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     }
 
     @Override
-    public void terminateUnregisteredInstances(ClusterProfile clusterProfile, Agents agents) throws Exception {
+    public void terminateUnregisteredInstances(ClusterProfileProperties clusterProfile, Agents agents) throws Exception {
         // TODO: Implement me!
 //        throw new UnsupportedOperationException();
 
@@ -79,7 +79,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
 
     @Override
     // TODO: Implement me!
-    public Agents instancesCreatedAfterTimeout(ClusterProfile clusterProfile, Agents agents) {
+    public Agents instancesCreatedAfterTimeout(ClusterProfileProperties clusterProfile, Agents agents) {
         ArrayList<Agent> oldAgents = new ArrayList<>();
         for (Agent agent : agents.agents()) {
             ExampleInstance instance = instances.get(agent.elasticAgentId());
@@ -95,7 +95,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     }
 
     @Override
-    public void refreshAll(ClusterProfile clusterProfileProperties) throws Exception {
+    public void refreshAll(ClusterProfileProperties clusterProfileProperties) throws Exception {
         // TODO: Implement me!
         throw new UnsupportedOperationException();
 
@@ -127,7 +127,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     }
 
     @Override
-    public StatusReport getStatusReport(ClusterProfile clusterProfileProperties) throws Exception {
+    public StatusReport getStatusReport(ClusterProfileProperties clusterProfileProperties) throws Exception {
         // TODO: Implement me!
         // TODO: Read status information about agent instances from the cloud provider
 //        return new StatusReport("")
@@ -135,7 +135,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     }
 
     @Override
-    public AgentStatusReport getAgentStatusReport(ClusterProfile pluginSettings, ExampleInstance agentInstance) {
+    public AgentStatusReport getAgentStatusReport(ClusterProfileProperties pluginSettings, ExampleInstance agentInstance) {
         // TODO: Implement me!
         // TODO: Read status information about agent instance from the cloud provider
 //        return new AgentStatusReport(null, null, null)
@@ -151,7 +151,7 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
         instances.put(instance.name(), instance);
     }
 
-    private ExampleAgentInstances unregisteredAfterTimeout(ClusterProfile settings, Agents knownAgents) throws Exception {
+    private ExampleAgentInstances unregisteredAfterTimeout(ClusterProfileProperties settings, Agents knownAgents) throws Exception {
         Period period = settings.getAutoRegisterPeriod();
         ExampleAgentInstances unregisteredContainers = new ExampleAgentInstances();
 

@@ -1,13 +1,11 @@
 package com.example.elasticagent.executors;
 
 import com.example.elasticagent.AgentInstances;
-import com.example.elasticagent.ClusterProfile;
-import com.example.elasticagent.PluginRequest;
+import com.example.elasticagent.ClusterProfileProperties;
 import com.example.elasticagent.RequestExecutor;
 import com.example.elasticagent.models.StatusReport;
 import com.example.elasticagent.requests.PluginStatusReportRequest;
 import com.example.elasticagent.views.ViewBuilder;
-import com.google.common.base.Strings;
 import com.google.gson.JsonObject;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
@@ -38,7 +36,7 @@ public class PluginStatusReportExecutor implements RequestExecutor {
 
         List<String> reports = new ArrayList<>();
 
-        for (ClusterProfile profile : request.allClusterProfileProperties()) {
+        for (ClusterProfileProperties profile : request.allClusterProfileProperties()) {
             AgentInstances agentInstances = allClusterInstances.get(profile.uuid());
             StatusReport statusReport = agentInstances.getStatusReport(profile);
             reports.add(viewBuilder.build("status-report-template", statusReport));

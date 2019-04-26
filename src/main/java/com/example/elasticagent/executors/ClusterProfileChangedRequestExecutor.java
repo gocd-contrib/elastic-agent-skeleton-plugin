@@ -17,7 +17,7 @@
 package com.example.elasticagent.executors;
 
 import com.example.elasticagent.AgentInstances;
-import com.example.elasticagent.ClusterProfile;
+import com.example.elasticagent.ClusterProfileProperties;
 import com.example.elasticagent.ExampleAgentInstances;
 import com.example.elasticagent.RequestExecutor;
 import com.example.elasticagent.requests.ClusterProfileChangedRequest;
@@ -52,7 +52,7 @@ public class ClusterProfileChangedRequestExecutor implements RequestExecutor {
     }
 
     private void handleCreate(ClusterProfileChangedRequest request, Map<String, AgentInstances> allClusterInstances) {
-        ClusterProfile newlyCreatedCluster = request.clusterProperties();
+        ClusterProfileProperties newlyCreatedCluster = request.clusterProperties();
         // Create new cluster on cloud
         allClusterInstances.put(newlyCreatedCluster.uuid(), new ExampleAgentInstances());
     }
@@ -67,8 +67,8 @@ public class ClusterProfileChangedRequestExecutor implements RequestExecutor {
     }
 
     private void handleUpdate(ClusterProfileChangedRequest request, Map<String, AgentInstances> allClusterInstances) {
-        ClusterProfile newCluster = request.clusterProperties();
-        ClusterProfile oldCluster = request.oldClusterProperties();
+        ClusterProfileProperties newCluster = request.clusterProperties();
+        ClusterProfileProperties oldCluster = request.oldClusterProperties();
 
         AgentInstances oldClusterInstances = allClusterInstances.get(oldCluster.uuid());
 

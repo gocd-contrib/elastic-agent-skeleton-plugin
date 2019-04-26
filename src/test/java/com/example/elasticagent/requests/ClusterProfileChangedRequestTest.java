@@ -16,7 +16,7 @@
 
 package com.example.elasticagent.requests;
 
-import com.example.elasticagent.ClusterProfile;
+import com.example.elasticagent.ClusterProfileProperties;
 import com.example.elasticagent.requests.ClusterProfileChangedRequest.ChangeStatus;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -50,7 +50,7 @@ public class ClusterProfileChangedRequestTest {
                 "  }\n" +
                 "}";
 
-        ClusterProfile expectedClusterProperties = new ClusterProfile(
+        ClusterProfileProperties expectedClusterProperties = new ClusterProfileProperties(
                 "https://localhost:8154/go",
                 "20m",
                 "test",
@@ -94,7 +94,7 @@ public class ClusterProfileChangedRequestTest {
 
 
 
-        ClusterProfile newClusterProperties = new ClusterProfile(
+        ClusterProfileProperties newClusterProperties = new ClusterProfileProperties(
                 "https://localhost:8154/go",
                 "20m",
                 "prod",
@@ -103,7 +103,7 @@ public class ClusterProfileChangedRequestTest {
                 null
         );
 
-        ClusterProfile oldClusterProperties = new ClusterProfile(
+        ClusterProfileProperties oldClusterProperties = new ClusterProfileProperties(
                 "https://localhost:8154/go",
                 "20m",
                 "test",

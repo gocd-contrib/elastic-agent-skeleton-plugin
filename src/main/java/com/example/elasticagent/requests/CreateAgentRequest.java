@@ -19,9 +19,6 @@ package com.example.elasticagent.requests;
 import com.example.elasticagent.*;
 import com.example.elasticagent.executors.CreateAgentRequestExecutor;
 import com.example.elasticagent.models.JobIdentifier;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -37,14 +34,14 @@ public class CreateAgentRequest {
     private String environment;
     private JobIdentifier jobIdentifier;
     private Map<String, String> elasticAgentProfileProperties;
-    private ClusterProfile clusterProfileProperties;
+    private ClusterProfileProperties clusterProfileProperties;
 
     public CreateAgentRequest() {
     }
 
     public CreateAgentRequest(String autoRegisterKey,
                               Map<String, String> elasticAgentProfileProperties,
-                              ClusterProfile clusterProfileProperties,
+                              ClusterProfileProperties clusterProfileProperties,
                               String environment,
                               JobIdentifier jobIdentifier) {
         this.autoRegisterKey = autoRegisterKey;
@@ -109,7 +106,7 @@ public class CreateAgentRequest {
         return elasticAgentProfileProperties;
     }
 
-    public ClusterProfile clusterProperties() {
+    public ClusterProfileProperties clusterProperties() {
         return clusterProfileProperties;
     }
 

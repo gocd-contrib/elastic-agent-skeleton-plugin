@@ -16,7 +16,7 @@
 
 package com.example.elasticagent.requests;
 
-import com.example.elasticagent.ClusterProfile;
+import com.example.elasticagent.ClusterProfileProperties;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -36,7 +36,7 @@ public class ServerPingRequestTest {
                 "  }]\n" +
                 "}";
 
-        ClusterProfile clusterProfile = new ClusterProfile(
+        ClusterProfileProperties clusterProfile = new ClusterProfileProperties(
                 "https://localhost:8154/go",
                 "20",
                 "test",
