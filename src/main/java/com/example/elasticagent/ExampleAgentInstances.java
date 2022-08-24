@@ -23,7 +23,11 @@ import com.example.elasticagent.requests.CreateAgentRequest;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.example.elasticagent.ExamplePlugin.LOG;
@@ -40,7 +44,6 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     @Override
     public ExampleInstance create(CreateAgentRequest request) throws Exception {
         // TODO: Implement me!
-//        throw new UnsupportedOperationException();
         ExampleInstance instance = ExampleInstance.create(request);
         register(instance);
         return instance;
@@ -49,7 +52,6 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     @Override
     public void terminate(String agentId, ClusterProfileProperties clusterProfile) throws Exception {
         // TODO: Implement me!
-//        throw new UnsupportedOperationException();
 
         ExampleInstance instance = instances.get(agentId);
         if (instance != null) {
@@ -64,7 +66,6 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     @Override
     public void terminateUnregisteredInstances(ClusterProfileProperties clusterProfile, Agents agents) throws Exception {
         // TODO: Implement me!
-//        throw new UnsupportedOperationException();
 
         ExampleAgentInstances toTerminate = unregisteredAfterTimeout(clusterProfile, agents);
         if (toTerminate.instances.isEmpty()) {
@@ -97,7 +98,6 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     @Override
     public void refreshAll(ClusterProfileProperties clusterProfileProperties) throws Exception {
         // TODO: Implement me!
-        throw new UnsupportedOperationException();
 
 //        if (!refreshed) {
 //            TODO: List all instances from the cloud provider and select the ones that are created by this plugin
@@ -129,9 +129,15 @@ public class ExampleAgentInstances implements AgentInstances<ExampleInstance> {
     @Override
     public StatusReport getStatusReport(ClusterProfileProperties clusterProfileProperties) throws Exception {
         // TODO: Implement me!
-        // TODO: Read status information about agent instances from the cloud provider
-//        return new StatusReport("")
-        throw new UnsupportedOperationException();
+
+        // Add dummy instances
+        if (instances.isEmpty()) {
+            Date createdAt = new Date(ZonedDateTime.of(2022, 8, 27, 12, 12, 12, 12, ZoneId.of("UTC")).toInstant().toEpochMilli());
+            instances.put("instance-1", new ExampleInstance("instance-1", createdAt, Collections.emptyMap(), "", null));
+            instances.put("instance-2", new ExampleInstance("instance-2", createdAt, Collections.emptyMap(), "", null));
+        }
+
+        return new StatusReport(clusterProfileProperties, instances);
     }
 
     @Override

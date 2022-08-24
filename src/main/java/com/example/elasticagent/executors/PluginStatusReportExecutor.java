@@ -44,7 +44,7 @@ public class PluginStatusReportExecutor implements RequestExecutor {
 
         // aggregate reports for different cluster into one
         JsonObject responseJSON = new JsonObject();
-        responseJSON.addProperty("view", reports.stream().collect(Collectors.joining("<hr/>")));
+        responseJSON.addProperty("view", String.join("<hr/>", reports));
         return DefaultGoPluginApiResponse.success(responseJSON.toString());
     }
 }

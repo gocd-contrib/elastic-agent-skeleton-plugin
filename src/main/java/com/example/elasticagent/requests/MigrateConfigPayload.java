@@ -17,6 +17,7 @@
 package com.example.elasticagent.requests;
 
 import com.example.elasticagent.*;
+import com.example.elasticagent.executors.MigrateConfigRequestExecutor;
 import com.google.gson.annotations.Expose;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class MigrateConfigPayload {
     }
 
     public RequestExecutor executor(Map<String, AgentInstances> allAgentInstances) {
-        return null;
+        return new MigrateConfigRequestExecutor(this);
     }
 
     public PluginSettings pluginSettings() {

@@ -19,6 +19,7 @@ package com.example.elasticagent.requests;
 import com.example.elasticagent.*;
 import com.example.elasticagent.PluginRequest;
 import com.example.elasticagent.executors.ServerPingRequestExecutor;
+import com.google.gson.annotations.Expose;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,8 @@ import static com.example.elasticagent.ExamplePlugin.GSON;
 
 public class ServerPingRequest {
 
-    private List<ClusterProfileProperties> allClusterProfileProperties;
+    @Expose
+    protected List<ClusterProfileProperties> allClusterProfileProperties;
 
     public ServerPingRequest() {
     }

@@ -117,7 +117,7 @@ public class ExamplePlugin implements GoPlugin {
 
                 case REQUEST_PLUGIN_STATUS_REPORT:
                     PluginStatusReportRequest pluginStatusReportRequest = PluginStatusReportRequest.fromJSON(request.requestBody());
-                    refreshInstancesForAllClusters(pluginStatusReportRequest.allClusterProfileProperties());
+                    refreshInstancesForAllClusters(pluginStatusReportRequest.allClusterProfilePropertiesWithDefaultClusterProfile());
                     return pluginStatusReportRequest.executor(clusterSpecificAgentInstances, ViewBuilder.instance()).execute();
 
                 case REQUEST_GET_CLUSTER_PROFILE_METADATA:
@@ -156,6 +156,7 @@ public class ExamplePlugin implements GoPlugin {
     }
 
     private AgentInstances getAgentInstancesForCluster(ClusterProfileProperties clusterProfileProperties) {
-        return clusterSpecificAgentInstances.get(clusterProfileProperties.uuid());
+        AgentInstances agentInstances = clusterSpecificAgentInstances.get(clusterProfileProperties.uuid());
+        return agentInstances != null ? agentInstances : new ExampleAgentInstances();
     }
 }

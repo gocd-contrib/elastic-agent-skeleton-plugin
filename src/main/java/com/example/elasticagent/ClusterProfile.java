@@ -33,6 +33,10 @@ public class ClusterProfile {
     @Expose
     private final ClusterProfileProperties properties;
 
+    public ClusterProfile() {
+        this("", "", new ClusterProfileProperties());
+    }
+
     public ClusterProfile(String id, String pluginId, ClusterProfileProperties clusterProfileProperties) {
         this.id = id;
         this.pluginId = pluginId;

@@ -17,7 +17,7 @@
 apply plugin: 'java'
 
 group = 'com.example.elasticagent.template'
-version = '0.2-SNAPSHOT'
+version = '0.4-SNAPSHOT'
 
 // these values that go into plugin.xml
 // TODO: change these
