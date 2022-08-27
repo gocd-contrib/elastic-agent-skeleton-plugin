@@ -31,42 +31,44 @@ project.ext.pluginDesc = [
     vendorUrl  : 'https://github.com/user/repository'
 ]
 
-// Force 1.7 compatibility to ensure that it works with older JVMs
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 1.11
+targetCompatibility = 1.11
 
 // In this section you declare where to find the dependencies of your project
 repositories {
-  jcenter()
-  mavenLocal()
+  mavenCentral()
 }
 
-sourceSets {
-  test {
-    java {
-      compileClasspath += configurations.compileOnly
-      runtimeClasspath += configurations.compileOnly
-    }
-  }
+ext {
+  deps = [
+    gocdPluginApi: 'cd.go.plugin:go-plugin-api:22.1.0',
+    junit        : 'org.junit.jupiter:junit-jupiter-api:5.9.0',
+    mockito      : 'org.mockito:mockito-core:4.6.1',
+  ]
+
+  versions = project.ext.deps.collectEntries { lib, libGav -> [lib, libGav.split(':').last()] }
 }
 
 dependencies {
-  compileOnly group: 'cd.go.plugin', name: 'go-plugin-api', version: '18.2.0'
-  compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
-  compile group: 'com.google.guava', name: 'guava', version: '23.0'
-  compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
-  compile group: 'joda-time', name: 'joda-time', version: '2.10.1'
+  compileOnly project.deps.gocdPluginApi
 
-  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.2'
-  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.4.1'
-  testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.3.2'
-  testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: '2.1'
-  testCompile group: 'org.mockito', name: 'mockito-core', version: '2.25.1'
-  testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '2.25.1'
-  testCompile group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.0'
+  implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
+  implementation group: 'com.google.guava', name: 'guava', version: '23.0'
+  implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+  implementation group: 'joda-time', name: 'joda-time', version: '2.11.1'
+
+  testImplementation project.deps.junit
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: project.versions.junit
+  testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: project.versions.junit
+  testImplementation group: 'org.mockito', name: 'mockito-core', version: project.versions.mockito
+  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: project.versions.mockito
+  testImplementation group: 'org.hamcrest', name: 'hamcrest-library', version: '2.2'
+  testImplementation group: 'cd.go.plugin', name: 'go-plugin-api', version: project.versions.gocdPluginApi
+  testImplementation group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.1'
 }
 
 processResources {
+  duplicatesStrategy(DuplicatesStrategy.INCLUDE)
   from("src/main/resource-templates") {
     filesMatching('plugin.xml') {
       expand project.pluginDesc
@@ -107,7 +109,7 @@ test {
 }
 
 jar {
-  from(configurations.compile) {
+  from(configurations.runtimeClasspath) {
     into "lib/"
   }
 }
