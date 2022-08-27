@@ -36,7 +36,7 @@ public class PluginStatusReportExecutor implements RequestExecutor {
 
         List<String> reports = new ArrayList<>();
 
-        for (ClusterProfileProperties profile : request.allClusterProfileProperties()) {
+        for (ClusterProfileProperties profile : request.allClusterProfilePropertiesWithDefaultClusterProfile()) {
             AgentInstances agentInstances = allClusterInstances.get(profile.uuid());
             StatusReport statusReport = agentInstances.getStatusReport(profile);
             reports.add(viewBuilder.build("status-report-template", statusReport));
