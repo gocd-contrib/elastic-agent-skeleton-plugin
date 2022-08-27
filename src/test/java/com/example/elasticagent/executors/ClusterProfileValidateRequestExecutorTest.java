@@ -20,7 +20,7 @@ class ClusterProfileValidateRequestExecutorTest {
         assertThat(response.responseCode(), is(200));
         String expectedJSON = "[\n" +
                 "  {\n" +
-                "    \"message\": \"Go Server URL must not be blank.\",\n" +
+                "    \"message\": \"Go Server URL must not be blank\",\n" +
                 "    \"key\": \"go_server_url\"\n" +
                 "  },\n" +
                 "  {\n" +
@@ -28,15 +28,15 @@ class ClusterProfileValidateRequestExecutorTest {
                 "    \"key\": \"auto_register_timeout\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"message\": \"API URL must not be blank.\",\n" +
+                "    \"message\": \"API URL must not be blank\",\n" +
                 "    \"key\": \"api_url\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"message\": \"API User must not be blank.\",\n" +
+                "    \"message\": \"API User must not be blank\",\n" +
                 "    \"key\": \"api_user\"\n" +
                 "  },\n" +
                 "  {\n" +
-                "    \"message\": \"API Key must not be blank.\",\n" +
+                "    \"message\": \"API Key must not be blank\",\n" +
                 "    \"key\": \"api_key\"\n" +
                 "  }\n" +
                 "]";

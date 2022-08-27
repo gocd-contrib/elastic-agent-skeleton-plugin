@@ -27,7 +27,7 @@ public class NonBlankField extends Field {
     @Override
     public String doValidate(String input) {
         if (StringUtils.isBlank(input)) {
-            return this.displayName + " must not be blank.";
+            return this.displayName + " must not be blank";
         }
         return null;
     }

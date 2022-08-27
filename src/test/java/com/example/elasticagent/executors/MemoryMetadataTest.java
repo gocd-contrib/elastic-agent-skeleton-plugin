@@ -41,7 +41,7 @@ public class MemoryMetadataTest {
     public void shouldValidateMemoryBytesWhenRequireField() throws Exception {
         Map<String, String> validate = new MemoryMetadata("Disk", true).validate(null);
         assertThat(validate.size(), is(2));
-        assertThat(validate, hasEntry("message", "Disk must not be blank."));
+        assertThat(validate, hasEntry("message", "Disk must not be blank. Invalid size: null"));
         assertThat(validate, hasEntry("key", "Disk"));
     }
 }

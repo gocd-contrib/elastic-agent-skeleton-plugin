@@ -76,6 +76,7 @@ public class Size implements Comparable<Size> {
     }
 
     public static Size parse(String size) {
+        checkArgument(size != null, "Invalid size: null");
         final Matcher matcher = SIZE_PATTERN.matcher(size);
         checkArgument(matcher.matches(), "Invalid size: " + size);
 

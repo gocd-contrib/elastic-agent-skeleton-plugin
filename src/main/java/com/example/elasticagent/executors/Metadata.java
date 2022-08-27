@@ -63,7 +63,7 @@ public class Metadata {
     protected String doValidate(String input) {
         if (isRequired()) {
             if (StringUtils.isBlank(input)) {
-                return this.displayName + " must not be blank.";
+                return this.displayName + " must not be blank";
             }
         }
         return null;

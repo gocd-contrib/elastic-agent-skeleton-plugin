@@ -28,13 +28,13 @@ public class ValidateElasticAgentProfileRequestExecutorTest {
     public void shouldBarfWhenUnknownKeysArePassed() throws Exception {
         ValidateElasticAgentProfileRequestExecutor executor = new ValidateElasticAgentProfileRequestExecutor(new ValidateElasticAgentProfileRequest(Collections.singletonMap("foo", "bar")));
         String json = executor.execute().responseBody();
-        JSONAssert.assertEquals("[{\"message\":\"Image must not be blank.\",\"key\":\"Image\"},{\"key\":\"foo\",\"message\":\"Is an unknown property\"}]", json, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals("[{\"message\":\"Image must not be blank\",\"key\":\"Image\"},{\"message\":\"Invalid size: null\",\"key\":\"MaxMemory\"},{\"key\":\"foo\",\"message\":\"Is an unknown property\"}]", json, JSONCompareMode.NON_EXTENSIBLE);
     }
 
     @Test
     public void shouldValidateMandatoryKeys() throws Exception {
         ValidateElasticAgentProfileRequestExecutor executor = new ValidateElasticAgentProfileRequestExecutor(new ValidateElasticAgentProfileRequest(Collections.<String, String>emptyMap()));
         String json = executor.execute().responseBody();
-        JSONAssert.assertEquals("[{\"message\":\"Image must not be blank.\",\"key\":\"Image\"}]", json, JSONCompareMode.NON_EXTENSIBLE);
+        JSONAssert.assertEquals("[{\"message\":\"Image must not be blank\",\"key\":\"Image\"},{\"message\":\"Invalid size: null\",\"key\":\"MaxMemory\"}]", json, JSONCompareMode.NON_EXTENSIBLE);
     }
 }
