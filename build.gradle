@@ -62,6 +62,7 @@ dependencies {
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api'
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params'
   testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine'
+  testRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-launcher'
   testImplementation group: 'org.mockito', name: 'mockito-core', version: project.versions.mockito
   testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: project.versions.mockito
   testImplementation group: 'org.hamcrest', name: 'hamcrest-library', version: '2.2'
