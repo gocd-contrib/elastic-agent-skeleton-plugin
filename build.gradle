@@ -58,7 +58,7 @@ dependencies {
   implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.14.0'
   implementation group: 'joda-time', name: 'joda-time', version: '2.12.7'
 
-  testImplementation platform('org.junit:junit-bom:5.10.2')
+  testImplementation platform('org.junit:junit-bom:5.10.3')
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api'
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params'
   testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine'
