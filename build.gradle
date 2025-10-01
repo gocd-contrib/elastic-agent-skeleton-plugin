@@ -24,15 +24,20 @@ version = '0.4-SNAPSHOT'
 project.ext.pluginDesc = [
     id         : 'com.example.elasticagent.foocloud',
     version    : project.version,
-    goCdVersion: '19.3.0',
+    goCdVersion: '22.1.0',
     name       : 'Example Elastic Agent Plugin',
     description: 'Some longer description of your plugin goes here',
     vendorName : 'Acme Corp',
     vendorUrl  : 'https://github.com/user/repository'
 ]
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 tasks.withType(JavaCompile).configureEach {
-    options.release = 11
+    options.release = 17
 }
 
 // In this section you declare where to find the dependencies of your project
