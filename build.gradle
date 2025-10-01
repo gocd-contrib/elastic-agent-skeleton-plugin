@@ -31,9 +31,8 @@ project.ext.pluginDesc = [
     vendorUrl  : 'https://github.com/user/repository'
 ]
 
-java {
-  sourceCompatibility = JavaVersion.VERSION_11
-  targetCompatibility = JavaVersion.VERSION_11
+tasks.withType(JavaCompile).configureEach {
+    options.release = 11
 }
 
 // In this section you declare where to find the dependencies of your project
