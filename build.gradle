@@ -57,21 +57,21 @@ ext {
 dependencies {
   compileOnly project.deps.gocdPluginApi
 
-  implementation group: 'com.google.code.gson', name: 'gson', version: '2.13.2'
-  implementation group: 'com.google.guava', name: 'guava', version: '23.0'
-  implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.19.0'
-  implementation group: 'joda-time', name: 'joda-time', version: '2.14.0'
+  implementation 'com.google.code.gson:gson:2.13.2'
+  implementation 'com.google.guava:guava:23.0'
+  implementation 'org.apache.commons:commons-lang3:3.19.0'
+  implementation 'joda-time:joda-time:2.14.0'
 
   testImplementation platform('org.junit:junit-bom:6.0.0')
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api'
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params'
-  testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine'
-  testRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-launcher'
-  testImplementation group: 'org.mockito', name: 'mockito-core', version: project.versions.mockito
-  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: project.versions.mockito
-  testImplementation group: 'org.hamcrest', name: 'hamcrest', version: '3.0'
-  testImplementation group: 'cd.go.plugin', name: 'go-plugin-api', version: project.versions.gocdPluginApi
-  testImplementation group: 'org.skyscreamer', name: 'jsonassert', version: '1.5.3'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+  testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+  testImplementation "org.mockito:mockito-core:${project.versions.mockito}"
+  testImplementation "org.mockito:mockito-junit-jupiter:${project.versions.mockito}"
+  testImplementation 'org.hamcrest:hamcrest:3.0'
+  testImplementation "cd.go.plugin:go-plugin-api:${project.versions.gocdPluginApi}"
+  testImplementation 'org.skyscreamer:jsonassert:1.5.3'
 }
 
 processResources {
