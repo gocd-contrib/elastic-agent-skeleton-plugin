@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-apply plugin: 'java'
+plugins {
+  id 'java'
+}
 
 group = 'com.example.elasticagent.template'
 version = '0.4-SNAPSHOT'
