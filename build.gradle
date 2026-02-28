@@ -59,7 +59,9 @@ ext {
 dependencies {
   compileOnly project.deps.gocdPluginApi
 
-  implementation 'com.google.code.gson:gson:2.13.2'
+  implementation('com.google.code.gson:gson:2.13.2') {
+    exclude(module: 'error_prone_annotations') // Not needed at runtime
+  }
   implementation 'com.google.guava:guava:23.0'
   implementation 'org.apache.commons:commons-lang3:3.20.0'
   implementation 'joda-time:joda-time:2.14.0'
